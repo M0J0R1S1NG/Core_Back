@@ -1,0 +1,27 @@
+{
+    "version": "0.1.0",
+    "command": "dotnet",
+    "isShellCommand": true,
+    "args": [],
+    "tasks": [
+        // {
+        //     "taskName": "build",
+        //     "args": [
+        //         "${workspaceRoot}/Core.csproj"
+        //     ],
+        //     "isBuildCommand": true,
+        //     "problemMatcher": "$msCompile"
+        // },
+        {
+            "taskName": "build",
+            "args": [
+                "${workspaceRoot}/Core.csproj",
+                " /p:DeployOnBuild=true",
+                " /p:PublishProfile=./Properties/PublishProfiles/Core22.PublishSettings"
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        }
+
+    ]
+}

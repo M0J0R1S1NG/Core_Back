@@ -1,0 +1,132 @@
+@model IEnumerable<Core.Models.MnpForm>
+
+@{
+    ViewData["Title"] = "MNP Form";
+}
+
+<p>
+    <a asp-controller="MnpForm" asp-action="Create">Create New</a>
+    <a asp-controller="MnpForm" asp-action="Edit">Edit This</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MedConditionsExisting)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MedConditions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MedConditionsTreatment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MedCannabisUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearsUsing)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RelievesCondition)
+                </th>
+               <th>
+                    @Html.DisplayNameFor(model => model.HasAlergies)
+                </th>
+                <th>
++                    @Html.DisplayNameFor(model => model.Alergies)
+                </th>
+                <th>
++                    @Html.DisplayNameFor(model => model.Signature)
+                </th>
+                <th>
++                    @Html.DisplayNameFor(model => model.SignatureFile)
+                </th>
+                <th>
++                    @Html.DisplayNameFor(model => model.PhotoId)
+                </th>
+                <th>
++                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
++                    @Html.DisplayNameFor(model => model.ImageName)
+                </th>
+                <th>
++                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@if(Model != null){
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedConditionsExisting)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.MedConditions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedConditionsTreatment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedCannabisUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearsUsing)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RelievesCondition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasAlergies)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Alergies)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.Signature)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.SignatureFile)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.PhotoId)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.ImageName)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+}
+}
+    </tbody>
+</table>
+
+
+
+
+
+

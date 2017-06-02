@@ -1,0 +1,124 @@
+@model Core.Models.Order
+@using Core.Helpers
+
+@{
+    ViewData["Title"] = "Create";
+
+    var message="";
+    // Specify validation requirements for different fields.
+    //Validation.RequireField("GeocodedAddress", "Class name is required");
+    //Validation.Add("GeocodedAddress", Validator.StringLength(5));
+    //Validation.Add("GeocodedAddress", Validator.Integer("Credits must be an integer"));
+    //Validation.Add("credits", Validator.Range(1, 5, "Credits must be between 1 and 5"));
+    //Validation.Add("startDate", Validator.DateTime("Start date must be a date"));
+
+    //if (IsPost)  {
+        // Before processing anything, make sure that all user input is valid.
+    //    if (Validation.IsValid()) {
+    //        var coursename = Request["coursename"];
+    //        var credits = Request["credits"].AsInt();
+    //        var startDate = Request["startDate"].AsDateTime();
+    //        message += @"For Class, you entered " + coursename;
+    //        message += @"<br/>For Credits, you entered " + credits.ToString();
+    //       message += @"<br/>For Start Date, you entered " + startDate.ToString("dd-MMM-yyyy");
+
+            // Further processing here
+    //    }
+    //}
+}
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Order</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CustomerId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CustomerId" class="form-control" />
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OrderDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryDate" class="form-control" />
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="GeocodedAddress" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="GeocodedAddress" class="form-control" />
+                <span asp-validation-for="GeocodedAddress" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Total" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Weight" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType" class="form-control" />
+                <span asp-validation-for="PaymentType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Details" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Details" class="form-control" />
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SpecialInstructions" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SpecialInstructions" class="form-control" />
+                <span asp-validation-for="SpecialInstructions" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DriverId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DriverId" class="form-control" />
+                <span asp-validation-for="DriverId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -1,0 +1,91 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Extensions.PlatformAbstractions;
+
+
+
+
+
+namespace Core.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly IOptions<SiteSettings> config;
+        public HomeController(IOptions<SiteSettings> config)
+        {
+            this.config = config;
+        }
+        public IActionResult Index()
+        {
+           
+            return View();
+        }
+        public IActionResult Default()
+        {
+            return View();
+        }
+        public IActionResult About()
+        { 
+            ViewData["DomainName"]=HttpContext.Request.Host;
+            ViewData["Message"] ="";
+            ViewData["Title"] ="About us...";
+          
+           
+            return View();
+        }
+        public IActionResult Shipping()
+        { 
+            ViewData["DomainName"]=HttpContext.Request.Host;
+            ViewData["Message"] ="24 hour local dispatched delivery and mail order services";
+            ViewData["Title"] ="Shipping and Deliveries";
+          
+           
+            return View();
+        }
+         public IActionResult Downloads()
+        { 
+            ViewData["DomainName"]=HttpContext.Request.Host;
+            ViewData["Message"] ="";
+            ViewData["Title"] ="Shipping and Deliveries";
+          
+           
+            return View();
+        }
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "";
+            //ViewData["WebDomain"] = Configuration["SiteSettings:WebDomain"];
+            ViewData["ContactEmail"] =config.Value.ContactEmail;
+            ViewData["SupportEmail"] =config.Value.SupportEmail;
+            ViewData["SalesEmail"] = config.Value.SalesEmail;
+            ViewData["ContactPhoneNumber"] = config.Value.ContactPhoneNumber;
+            ViewData["CompanyName"] = config.Value.CompanyName;
+            return View();
+        }
+        public IActionResult Returns()
+        {
+            ViewData["Message"] = "";
+            ViewData["ContactPhoneNumber"] = "1 (647)-528-4350";
+            ViewData["EmailSupport"] = "support@dubes.com";
+            
+            return View();
+        }
+        public IActionResult Medical()
+        {
+            ViewData["Message"] = "";
+            ViewData["Title"] = "Current Medical Marijuana Status";
+          
+            
+            return View();
+        }
+        public IActionResult Error()
+        {
+            return View();
+        }
+    }
+}

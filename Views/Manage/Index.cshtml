@@ -1,0 +1,84 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Manage your account";
+}
+
+
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+
+   @if (Model.HasPassword && (Model.PhoneNumber != null))
+   {
+        <h4 class="AccountConfiged">Your account is setup correctly. <a href="Shopping">Click here to go to the order page</a></h4>
+       
+   }else{
+
+   }
+   
+
+
+<div><h3>@ViewData["Title"].</h3>
+    <h4>Change settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            @if (Model.HasPassword)
+            {
+                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Change</a>
+            }
+            else
+            {
+                <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">Create</a>
+            }
+        </dd>
+        <dt>External Logins:</dt>
+        <dd>
+
+            @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
+        </dd>
+        <dt>Phone Number:</dt>
+        <dd>
+            <p>
+                Please verify your phone number.  You must complete this step to order deliveries.  
+                Once you verify your phone number you will be updated you with order status and delivery notifications via SMS text.
+            </p>
+            @(Model.PhoneNumber ?? "None")
+                @if (Model.PhoneNumber != null)
+                {
+                    <br />
+                    <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">Change</a>
+                    <!--<form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post">
+                        [<button type="submit" class="btn-link">Remove</button>]
+                    </form>-->
+                }
+                else
+                {
+                    <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">Add</a>
+                }
+        </dd>
+        <dt>Profile Data:</dt>
+        <dd>
+             <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Manage</a>
+        </dd>
+        <!--<dt>Two-Factor Authentication:</dt>
+        <dd>
+            <p>
+                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532713">this article</a>
+                for setting up this application to support two-factor authentication.
+            </p>
+            @if (Model.TwoFactor)
+                {
+                    <form asp-controller="Manage" asp-action="DisableTwoFactorAuthentication" method="post" class="form-horizontal">
+                        Enabled <button type="submit" class="btn-link btn-bracketed">Disable</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Manage" asp-action="EnableTwoFactorAuthentication" method="post" class="form-horizontal">
+                        <button type="submit" class="btn-link btn-bracketed">Enable</button> Disabled
+                    </form>
+                }
+        </dd>-->
+    </dl>
+</div>

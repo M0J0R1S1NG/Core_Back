@@ -1,0 +1,107 @@
+@model Core.Models.Order
+@using System.Linq;
+@{
+    ViewData["Title"] = "Shopping";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h3>Your current delivery addresss is:@ViewData["DeliveryAddress"]</h3>
+If you would like just this order deliverd to a differnt location verify a different address for instant delivery.  Tha address in this box will be delivered to.  
+<br>
+    <div class="form-group">
+        <label asp-for="GeocodedAddress" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+           <div id='searchBoxContainer'> 
+               <input id='DeliveryAddress' type=text  asp-for="GeocodedAddress" value="@ViewData["DeliveryAddress"]" class="form-control" />
+           </div>
+            <span asp-validation-for="GeocodedAddress" class="text-danger"></span>
+        </div>
+    </div><hr/>  
+    
+
+<div class="form-group">
+        <label asp-for="SpecialInstructions" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            
+               <input id='SpecialInstructions' type=text  asp-for="SpecialInstructions" value="" class="form-control" />
+           
+            <span asp-validation-for="SpecialInstructions" class="text-danger"></span>
+        </div>
+    </div>
+
+    
+<table><tr><td>
+<div class="simpleCart_shelfItem">
+    <img class="item_add" src="/images/purple_cheese_bud.jpg" height="75px" width="75px" />
+    <h2 class="item_name">Ghost Train Haze-GHT</h2>
+    <input type="text" value="1" class="item_Quantity">
+    <span class="item_price">$35.00</span>
+    <a class="item_add" href="javascript:;"> Add to Cart </a>
+</div></td><td>
+<div class="simpleCart_shelfItem">
+    <img class="item_add" src="~/images/Blissberry.jpg" height="75px" width="75px" />
+    <h2 class="item_name">Holy Grail Kush-HGK</h2>
+    <input type="text" value="1" class="item_Quantity">
+    <span class="item_price">$35.00</span>
+    <a class="item_add" href="javascript:;"> Add to Cart </a>
+</div></td><td>
+<div class="simpleCart_shelfItem">
+    <img class="item_add" src="~/images/lovelypurple.jpg" height="75px" width="75px" />
+    <h2 class="item_name">KD Purple Diesel</h2>
+    <input type="text" value="1" class="item_Quantity">
+    <span class="item_price">$35.00</span>
+    <a class="item_add" href="javascript:;"> Add to Cart </a>
+</div></td><td>
+<div class="simpleCart_shelfItem">
+    <img class="item_add" src="~/images/marijuana-flower-5.jpg" height="75px" width="75px" />
+    <h2 class="item_name">Sky Walker-Dutch Passion</h2>
+    <input type="text" value="1" class="item_Quantity">
+    <span class="item_price">$35.00</span>
+    <a class="item_add" href="javascript:;"> Add to Cart </a>
+</div></td><td>
+<div class="simpleCart_shelfItem">
+    <img class="item_add" src="~/images/budder.jpg" height="75px" width="75px" />
+    <h2 class="item_name">Fresh Budder</h2>
+    <input type="text" value="1" class="item_Quantity">
+    <span class="item_price">$50.00</span>
+    <a class="item_add" href="javascript:;"> Add to Cart </a>
+</div></td></tr></table>
+<h2>Cart</h2>
+<span id="demo" class="demo">Holder for order update</span>
+<div class="yabholder" >
+    <div >
+        <Table>
+            <tr>
+                <td colspan="2" class="tabcell" ><div class="simpleCart_items"></div></td>
+            </tr>
+        </table><table>    
+           <tr>
+                <td  class="tabcell" >Sub Total</td>
+                <td class="tabcell" align="right"><div class="simpleCart_total"></div></td>
+           </tr>
+            <tr>
+                <td  class="tabcell">Delivery Fee</td>
+                <td class="tabcell" ><div class="simpleCart_shipping"></div></td>
+            </tr>
+            <tr>
+                <td  class="tabcell">GST</td>
+                <td class="tabcell"><div class="simpleCart_tax"></div></td>
+            </tr>
+            <tr>
+                <td  class="tabcell">Total</td>
+                <td class="tabcell" ><div class="simpleCart_grandTotal"></div></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tabcell"><button class="simpleCart_checkout">Checkout</button>
+               <button class="simpleCart_empty">Empty Cart</button></td>
+            </tr>
+        </Table>
+    </div>
+</div>
+<script src="/js/checkmeout.js"></script>
+
+
+    <script type='text/javascript' src='/js/deliveryzone.js'></script>
+
+        <script  type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=LoadMap' async defer></script>
+  

@@ -1,0 +1,195 @@
+@model Core.Models.MnpForm
+@using Core.Helpers
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User)){}
+
+
+@{
+    ViewData["Title"] = "Medical Marijuana Rx Info";
+    
+}
+
+    <h2>Medical Information</h2>
+    You do not have to fill out this page to continue. &nbsp<a asp-area="" asp-controller="Shopping" asp-action="Index" title="Shopping" textsize=4> Click here</a> to go to the shop, 
+but if you would like us to get you a an MMAR "license" then contue with the form below. <br>
+We process medical marijuana prescriptions.  We accept all valid marijuana decumentation made by medical practitioners in Canada. 
+<br>If you have any reccomendation letters or Rx's, government issued medical marijuana documentation, or licensing please fill out the form below.  
+You will be aksed to upload a copy of your documents below.
+
+<br>If you don't already have documentation please fill out the form below and we will obtain the proper documentation for you.  
+You will recieve a response within 24 hours during regular business days.  Please make sure you fill out the required fields.
+<hr/>
+
+        Do you have any medical documents? This includes; prescription for your medical condition, 
+        dispensary card or letter ofrecommendation for cannabis use. Use the upload button to capture a photo of your prescription/dispensary card/letter 
+        from your mobile device. If you do not have these documents please choose 'No', 
+        fill out the rest of the form and our Health Care Practitioner will review your application and provide a response within 24 hours. 
+
+@if (Model==null){<span> "Create"</span>}else{<span> "Edit"</span>}
+ <br> <h4>Medical information for user:</h4>@User.Identity.Name
+        <hr />
+        
+
+<form asp-action="@(Model==null ? "Create": "Edit")">
+    <div class="form-horizontal">
+      
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      @if (Model!=null){<input asp-for="Id" class="form-control" type=hidden ></input>}
+               
+        
+         <div class="form-group">
+            <label asp-for="UserId" class="col-md-2 control-label"></label>
+            <div class="col-md-10"> 
+                <Select multiline=FALSE asp-for="UserId" name="UserId" class="form-control" type="hidden" />
+                    @foreach (var myUser in UserManager.Users.Where(m =>m.UserName == User.Identity.Name) )  
+                    {
+                        <option value=@myUser.Id>@myUser.Email</option>
+                    }         
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+        </div> 
+        <div class="form-group">
+            <label asp-for="LegalFirstName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LegalFirstName" class="form-control" ></input>
+                <span asp-validation-for="LegalFirstName" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="LegalLastName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LegalLastName" class="form-control" ></input>
+                <span asp-validation-for="LegalLastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Doctor" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input Value="Doctor Spock" asp-for="Doctor" class="form-control" ></input>
+                <span asp-validation-for="Doctor" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DoctorCity" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input value="Toronto"  asp-for="DoctorCity" class="form-control" ></input>
+                <span asp-validation-for="DoctorCity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Dispencery" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input value="none" asp-for="Dispencery" class="form-control" ></input>
+                <span asp-validation-for="Dispencery" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MedConditionsExisting" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input  checked asp-for="MedConditionsExisting" class="form-control" ></input>
+                <span asp-validation-for="MedConditionsExisting" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MedConditions" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input value="Sore Back"  asp-for="MedConditions" class="form-control" multiline=true></input>
+                <span asp-validation-for="MedConditions" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MedConditionsTreatment" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input Value="Smoking Marijuana" asp-for="MedConditionsTreatment" class="form-control" multiline=true></input>
+                <span asp-validation-for="MedConditionsTreatment" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MedCannabisUser" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input checked value=true asp-for="MedCannabisUser" class="form-control" />
+                <span asp-validation-for="MedCannabisUser" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="YearsUsing" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="YearsUsing" class="form-control" value="1"  />
+                <span asp-validation-for="YearsUsing" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RelievesCondition" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input checked asp-for="RelievesCondition" class="form-control" />
+                <span asp-validation-for="RelievesCondition" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="HasAlergies" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="HasAlergies" class="form-control" />
+                <span asp-validation-for="HasAlergies" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Alergies" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input value="None" asp-for="Alergies" class="form-control" multiline=true />
+                <span asp-validation-for="Alergies" class="text-danger"></span>
+            </div>
+        </div>
+        <div  class="form-group">
+            <label asp-for="SignatureFile" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <canvas style="width:280px;height:54px" id="signature" class="form-control" ondblclick="signaturePad.clear()"></canvas>
+               
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhotoId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PhotoId" class="form-control" />
+                <span asp-validation-for="PhotoId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Image" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input disbaled asp-for="Date" value=@DateTime.Now class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="WantRx" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input checked asp-for="WantRx" class="form-control" ></input>
+                <span asp-validation-for="WantRx" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@(Model==null ? "Create": "Edit");" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+<script src="/js/sig.js"></script>

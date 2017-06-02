@@ -1,0 +1,51 @@
+@model IEnumerable<Core.Models.MnpForm>
+
+@{
+    ViewData["Title"] = "Subscription Deliveries";
+}
+<h2>@ViewData["Title"]</h2>
+  
+  
+<table>
+    <tr>
+        <td>Ask Yourself:
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            <h1>Do you like fresh flowers?</h1>
+            <h1>Do you have a prescription?</h1>
+            <h1>Do you consumer regularly?</h1>
+            <h1>Do you want to save money?</h1>
+            <h1>Do you want to make this easier?</h1>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            If you answered yes to any 2 questions above then you will benefit dramaticaly from our subscription service. Take advantage of our best pricing and our free delivery service.  Some of the features and benefits of buying this way include:
+        </td>  
+        <td></td>
+        </tr><tr>
+        <td>
+            <li>Our best pricing</li>
+            <li>No committments/Cancel anytime</li>
+            <li>Money debited on delivery day</li>
+            <li>Use debit or credit cards</li>
+            <li>Fresh on-time deliveries</li>
+            <li>Choose strain or try sample packs</li>
+        </td>
+   </tr>
+</table
+
+<p>
+    <h4>Large or small amounts</h4>
+ <h4>Monthly, Weekly, Daily, Hourly(Really?)</h4>
+ Want to get started?  
+    <a asp-controller="RecurringOrders" asp-action="Subscribe"> Subscribe </a>with todays order<br>
+   Already subscibed? Need to make <a asp-controller="RecurringOrders" asp-action="Edit">Changes</a>
+</p>

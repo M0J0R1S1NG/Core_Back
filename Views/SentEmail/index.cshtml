@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Confirmation Email";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+<h4>Sent to:@ViewData["User.Identity.Name"]</h4>
+<p>
+    Thank you, if you have been redirected to this page we have sent an email to the account you registered with please follow the link to confirm your email address.
+</p>
+<p>
+    After you confirm your email you can contimue the registration process and login.
+</p>
+<p>
+    If you try and login before you confirm the email, a new confirmation and code is generated and emailed to you and the old one is no longer valid.  You must confirm the last email you recieve from us.
+</p>

@@ -1,0 +1,60 @@
+@model IEnumerable<Core.Models.SMS>
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SMS Messages</h4>
+    <hr />
+    <dl class="dl-horizontal">
+@foreach (var item in Model) {
+
+        <dt>
+            @Html.DisplayNameFor(modelItem => item.DateSent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(modelItem => item.DateSent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(modelItem => item.SentFrom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(modelItem => item.SentFrom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(modelItem => item.DateRecieved)
+        </dt>
+        <dd>
+            @Html.DisplayFor(modelItem => item.DateRecieved)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(modelItem => item.SentTo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(modelItem => item.SentTo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(modelItem => item.AppUser)
+        </dt>
+         <dd>
+            @Html.DisplayFor(modelItem => item.AppUser)
+        </dd>
+}
+    </dl>
+
+
+
+
+
+
+
+
+
+
+<div>
+
+</div>

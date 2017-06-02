@@ -1,0 +1,167 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+
+/* Wrapping element */
+
+
+/* Set some basic padding to keep content from hitting the edges */
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+/* Carousel */
+
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+
+/* buttons and links extension to use brackets: [ click me ] */
+
+.btn-bracketed::before {
+    display: inline-block;
+    content: "[";
+    padding-right: 0.5em;
+}
+
+.btn-bracketed::after {
+    display: inline-block;
+    content: "]";
+    padding-left: 0.5em;
+}
+
+
+/* Make .svg files in the carousel display properly in older browsers */
+
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+
+/* Hide/rearrange for smaller screens */
+
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+.cartPopover {
+    position: absolute;
+    width: 218px;
+    top: 72px;
+    right: 14px;
+    z-index: 9999;
+    display: none;
+    color: #fff;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .8);
+    font-family: "FreightSansMedium", sans-serif;
+}
+
+.cartInfo {
+    float: right;
+    top: 11px;
+    width: 30px;
+    height: 27px;
+    background: #EFF1F4 URL(../images/cart.png);
+    font-size: 13px;
+    font-weight: bold;
+    color: #6e6e6e;
+    text-shadow: 1px 1px 0 #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0 0 1px 0px rgba(0, 0, 0, .20), 0 1px 0 #fff;
+    -moz-box-shadow: inset 0 0 1px 0px rgba(0, 0, 0, .20), 0 1px 0 #fff;
+    box-shadow: inset 0 0 1px 0px rgba(0, 0, 0, .20), 0 1px 0 #fff;
+    position: relative;
+    cursor: pointer;
+    -webkit-transition: background-color .2s linear;
+}
+
+.simpleCart_quantity {}
+
+#popoverButtons {
+    padding: 10px;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.hudbtn.primary {
+    border-color: #3D7530;
+    background: #97c865;
+    background: -moz-linear-gradient(top, #97c865 0%, #44933d 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c865), color-stop(100%, #44933d));
+    background: -webkit-linear-gradient(top, #97c865 0%, #44933d 100%);
+    background: -o-linear-gradient(top, #97c865 0%, #44933d 100%);
+    background: -ms-linear-gradient(top, #97c865 0%, #44933d 100%);
+    background: linear-gradient(top, #97c865 0%, #44933d 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#97c865', endColorstr='#44933d', GradientType=0);
+    -webkit-box-shadow: inset 0 1px 0 #D8E994;
+    -moz-box-shadow: inset 0 1px 0 #D8E994;
+    box-shadow: inset 0 1px 0 #D8E994;
+    color: #fff;
+}
+
+.right {
+    float: right;
+}
+
+.hudbtn {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font: bold 13px/26px "FreightSans", sans-serif;
+    color: #d9d9d9;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
+    padding: 0 12px;
+    height: 24px;
+    border: 1px solid #000;
+    -webkit-box-shadow: inset 0 1px 0 #6d6d6e;
+    -moz-box-shadow: inset 0 1px 0 #6d6d6e;
+    box-shadow: inset 0 1px 0 #6d6d6e;
+    background: #3a3a3b;
+    background: -moz-linear-gradient(top, #3a3a3b 0%, #343434 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3a3a3b), color-stop(100%, #343434));
+    background: -webkit-linear-gradient(top, #3a3a3b 0%, #343434 100%);
+    background: -o-linear-gradient(top, #3a3a3b 0%, #343434 100%);
+    background: -ms-linear-gradient(top, #3a3a3b 0%, #343434 100%);
+    background: linear-gradient(top, #3a3a3b 0%, #343434 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#3a3a3b', endColorstr='#343434', GradientType=0);
+}
+
+td {
+    padding-left: 44px;
+}
+
+.tabcell {
+    text-align: right;
+}
+
+th {
+    text-align: right;
+}
+
+.item_thumb {
+    height: 75px;
+    width: 75px;
+}

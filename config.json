@@ -1,0 +1,44 @@
+{
+
+    "AzureAd": {
+
+        "ClientId": "11a11df8-c318-4984-912e-87a52be9a6b6",
+
+        "Tenant": "a2bmanhotmail.onmicrosoft.com",
+
+        "AadInstance": "https://login.microsoftonline.com/{0}", // This is the public instance of Azure AD
+
+        "PostLogoutRedirectUri": "https://localhost/"
+
+    },
+
+"SiteSettings:WebDomain": "dubes.ca",
+"SiteSettings:SupportEmail": "support@",
+"SiteSettings:ContactEmail": "contact@",
+"SiteSettings:SalesEmail":"sales@",
+"SiteSettings:ContactPhoneNumber":"1-647-528-4350",
+"SiteSettings:CompanyName":"Dubes",
+
+
+
+
+
+  "gmailUser": "andrewmoore46@gmail.com",
+  "authToken": "0973ee748dfa4cedc5a2256da0f16c15",
+  "Authentication:Twitter:ConsumerSecret": "xMgkswlp5DMRhwlNsIaq5Yl3bks68CZu12cFQX7W3iFWAnVgS1",
+  "Authentication:Twitter:ConsumerKey": "n0lzf0BliHRgaU7mEQVhfBUXl",
+  "Authentication:Microsoft:ClientSecret": "H2POfHMbCwu1PQRByAVwifm",
+  "Authentication:Microsoft:ClientId": "ca3e0e09-9038-41c8-ba76-0a4fa320c104",
+  "Authentication:Google:ClientSecret": "xBd5Rdb6Drv2ZjtVrjKDN3hQ",
+  "Authentication:Google:ClientID": "198140796890-e69d8lj0roo0rj1i3uja3al8lofre84u.apps.googleusercontent.com",
+  "Authentication:Facebook:AppSecret": "368028cf4b04bc1df182c74da0023d81",
+  "Authentication:Facebook:AppId": "613183752213376",
+  "accountSid": "ACe563ec08befe4b6a7194ff78a28043d4",
+  "gmailPassword": "ganuTHa8",
+  "AzureAd:ClientId": "11a11df8-c318-4984-912e-87a52be9a6b6",
+  "AzureAd:Tenant": "a2bmanhotmail.onmicrosoft.com]",
+  "AzureAd:AadInstance": "https://login.microsoftonline.com/{0}", 
+  "AzureAd:PostLogoutRedirectUri": "https://localhost/",
+ "PayPal:ClienSecretD": "EE_Ahhw1PAqaEyNrg_5vuuTtw17n8ll4r4BgBx5rAJKK_SC7f4GjoZL-jgVolE1Yu87Ke3IxUhElyHqw",
+ "PayPal:ClientID":"Ad8iVR8gF9NUD4bijXXLqMHo4dy9XQ8NtXgPsdz5AGbqcpQ6ZQrwpr6Z6FSe44nPI8pwFNFdZG73JUlS"
+}

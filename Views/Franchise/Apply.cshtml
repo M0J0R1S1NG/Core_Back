@@ -1,0 +1,62 @@
+@model Core.Models.Franchise
+
+@{
+    ViewData["Title"]="Careers and Franchise Opportunities";
+}    
+
+<h2>@ViewData["Title"]</h2>
+<p>
+
+<form asp-action="Apply">
+    <div class="form-horizontal">
+                <input type="hidden" id="AppUser" value="@ViewData["UserGuid"]"/>
+
+        <div class="form-group">
+            <label asp-for="City" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ContactDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ContactDate" class="form-control" />
+                <span asp-validation-for="ContactDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="HasVehicle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="HasVehicle" class="form-control" />
+                <span asp-validation-for="HasVehicle" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="VehicleType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="VehicleType" class="form-control" />
+                <span asp-validation-for="VehicleType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="VehicleYear" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="VehicleYear" class="form-control" />
+                <span asp-validation-for="VehicleYear" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Consent" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Consent" class="form-control" />
+                <span asp-validation-for="Consent" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>

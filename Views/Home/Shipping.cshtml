@@ -1,0 +1,34 @@
+@{
+if (ViewData["Message"]==null){
+           ViewData["Message"] = "24 hour local dispatched delivery and mail order services";
+        }
+        if (ViewData["Title"]==null){
+            ViewData["Title"] = "Shipping and Delivery";  
+        }
+}
+<h2>@ViewData["Title"].</h2>
+
+
+<h>All of our shipping and delivery is FREE</h>
+<h>There are no handling charges. There are no hidden fees.</h>
+You only pay for what you get and of course taxes(there's nothing we can do about that).    
+
+<h4>Inside The Instant Delivery Area</h4>
+If you are located inside our dispacthed delivery area we will immediately prepare your order for edispatched delivery service 24 hours a day 7 days of the week.  
+All orders received for delivery addresses located within our instant delivery area are dispatch within 15 minutes 24/7, deliveries are expected to arrive within 30 minutes. 
+However we reserve the right to longer delivery times.  Please allow 2-3 hours for your orders to arrive during especially busy periods or when driving conditions are particularly adverse.
+We have our own internal service level agreements for delivery targets.  We strive to match and beat our target deklivery times.  Orders will normally arrive between 15 and 30 minutes from the time you confirm your order. 
+
+
+<h4>Outside The Instant Delivery Area</h4>
+If you are located outside of our instant delivery area and your orders are received and accepted before 4:00PM ET/1:00PM PT, Monday to Friday (except thursdays and holidays) 
+they will be processed and shipped on the same day. Orders received and accepted after the cut-off time will be processed on the following business day.
+All Products will be shipped by Canada Post delivery to the shipping address associated on the Account.  We do not mark up shipping and there are no handling fees.  
+If you would like to choose your own shippers or if you would like to upgrade shipping options there will be additional charges.
+<br>
+To keep informed:
+<br>
+<li>Please check our<a asp-area="" asp-controller="SystemStatus" asp-action="Index" title="" textsize=4> System Status </a> page for overall system and service status.</li>
+<li<a asp-area="" asp-controller="Orders" asp-action="Index" title="Orders" textsize=4>The Orders Pages</a> to keep track of your order status and confirm or change the details in your orders prior to dispatch.</li>
+<li>Look at <a asp-area="" asp-controller="DeliveryMap" asp-action="Index" title="A to B Map" textsize=4>Delivery Map</a> to see when the driver has finished his last delivery and is now on his way to your location for drop off.</li>
+<li>Look at your phones <a asp-area="" asp-controller="SMS" asp-action="Index" title="SMS Messaging" textsize=4>SMS Messages</a> for the chronoligical order of events and to keep updated without using a computer or tablet. </li>

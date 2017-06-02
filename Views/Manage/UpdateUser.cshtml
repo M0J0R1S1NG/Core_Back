@@ -1,0 +1,90 @@
+
+@model Core.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Update User Profile";
+}
+
+
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+
+<div><h3>@ViewData["Title"].</h3>
+    <h4>Change your account settings</h4>
+    <hr />
+
+
+<form asp-controller="Manage" asp-action="UpdateUser" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <h4>If you have been automatically redirected here you don't have all of your information setup in your profile.  You must have a confirmed email address, confirmed phone number, and a valid Delivery Address.  Note if you want same day delivery youmust also have a confirmed delivery address inside our delivery zone</h4>
+    <hr />
+  <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="DeliveryAddress" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+           <div id='searchBoxContainer'> 
+               <input id='DeliveryAddress' type=text  asp-for="DeliveryAddress" class="form-control" />
+           </div>This address will be varified against our delivery zone
+            <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="StreetNumber" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="StreetNumber" class="form-control" />
+            <span asp-validation-for="StreetNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="StreetName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="StreetName" class="form-control" />
+            <span asp-validation-for="StreetName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="PostalCode" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="PostalCode" class="form-control" />
+            <span asp-validation-for="PostalCode" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="City" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Province" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Province" class="form-control" />
+            <span asp-validation-for="Province" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Country" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Country" class="form-control" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="DoB" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="DoB" class="form-control" />
+            <span asp-validation-for="DoB" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Update</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+    <script  type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=LoadMap' async defer></script>
+    <script type='text/javascript' src='/js/deliveryzone.js'></script>

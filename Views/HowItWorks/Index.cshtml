@@ -1,0 +1,54 @@
+
+@{
+    ViewData["Title"] = "HowItWorks";
+}
+<div style="height:100%;width:100%;max-width:1100px">
+
+	<div class="cd-nugget-info">
+		<h1>How It Works</h1>
+		<h2>We have a dynamic system that keeps you updated in real time throughout 
+			the order and delivery process</h2>
+		<button id="cd-tour-trigger" style="padding:0em 1em" class="cd-btn">Start Here</button>
+	</div>
+
+	<ul class="cd-tour-wrapper">
+
+@{var item="span";}
+@{String[] myarr;}
+
+@{
+	string[,] elementarr=new string[1,2] {{"/img/step-",".png"}};
+				
+		string[,] TEXTARR=new string[7,2] {
+			{"Register","You must register to make an order. Its easy and starts with just your email address or you can login with Google, twitter etc."}
+			,{"Authenticate","You will be asked to verify and authenticate your email address and phone number.  We send live status updates to both."}
+			,{"Delivery Address","You must select a delivery address to complete your registration.  You will be notified if your address is within the same day delivery area or is only eligable for mail orders."}
+			,{"Medical Information","The final section is your medical information.  This is not required, unless you would like us to get you an MMAR certificate.  Just submit the form no fields are required."}
+			,{"First Order","The first time you visit the store you have to select your gift and pay for membership.  This is your first order.  You can create new orders immediately after joining.  Theres no shipping fees so you don't need to bundle orders."}
+			,{"Order Confirmation","You will get confirmation email and SMS message with your ETA when your order is paid and another when it is dispatched.  You can look at your delivery status by going to your<a href='/Orders'> orders page </a> anytime."}
+			,{"Delivery Dispatched","Sit back, deliveries usually arrive within 20 minutes but can take more than a few hours depending on conditions. Come back often, use your credit your eraned from our frequent flyer program."}
+		};
+            @for(int i=0; i<=6; i++)
+            {
+					<li class="cd-single-step">
+						<span>Step @i+1</span>
+						<div class="cd-more-info top">
+							<h2>@TEXTARR[i,0]</h2>
+							<p>@TEXTARR[i,1]</p>
+							<img src=@elementarr[0,0]@i@elementarr[0,1]>
+						</div>
+					</li> <!-- .cd-single-step -->
+              
+            }
+}
+		
+	</ul> <!-- .cd-tour-wrapper -->
+
+
+
+
+</div>
+
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/jquery.mobile.min.js"></script> 
+<script src="js/main.js"></script>

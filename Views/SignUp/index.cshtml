@@ -1,0 +1,30 @@
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using System;
+@using System.Linq;
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Signup Process";
+}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<div class="cd-nugget-info">
+		<h1>Welcome to the signup wizard</h1>
+		<h2>Just follow the steps and you'll be setup and ready to order in about a few minutes</h2>
+		<button id="cd-tour-trigger"  style="padding:0em 1em" class="cd-btn">Start Here</button>
+	</div>
+	<ul class="cd-tour-wrapper">
+@{var item="span";}
+@for(var i = 1; i <= 7; i++)
+    { 
+		<li class=cd-single-step>
+			<div class=cd-more-info bottom>
+				<span class='DuberSpan' id=@item@i ></span>
+			</div>
+		</li> <!-- .cd-single-step -->
+	}
+	</ul> <!-- .cd-tour-wrapper -->
+<script src="../js/jquery-2.1.1.js"></script>
+<script src="../js/jquery.mobile.min.js"></script> 
+<script src="../js/main.js"></script> <!-- Resource jQuery -->
+

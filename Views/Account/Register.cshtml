@@ -1,0 +1,69 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+ <style>
+        #searchBox {
+            width: 400px;
+        }
+        
+        .addressForm {
+            margin-top:10px;
+            background-color: #008272;
+            color: #fff;
+            border-radius:10px;
+            padding: 10px;
+        }
+
+        .addressForm input{
+            width:265px;
+        }
+    </style>
+
+<h2>@ViewData["Title"].</h2>
+
+ <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <h4>Create a new account.</h4>
+    <hr />
+    <h6>An email will be sent to your account to verify your address.  Follow the link in the email to continue the registration process.</h6>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+        <div class="form-group">
+        <label class="col-md-2 control-label">I am not a robot</label>
+            <div class="col-md-offset-2 col-md-10">
+           <div class="g-recaptcha" data-sitekey="6LdCPSMUAAAAAIU1H4Sc_9k1LLvlfD7d-qUjVZrd"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Register</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+<script  type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=LoadMap' async defer></script>
+    <script type='text/javascript' src='/js/deliveryzone.js'></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>

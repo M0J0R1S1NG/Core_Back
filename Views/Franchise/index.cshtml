@@ -1,0 +1,51 @@
+@model Core.Models.Franchise
+
+@{
+    ViewData["Title"]="Careers and Franchise Opportunities";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p>
+    Are you interested in becoming a franchise partner? Are you looking for work? 
+<br>
+    It doesn't matter if you live in Downtown Toronto or Nunavut. If you are interested in starting a new career you've come to the right place.  
+<br>
+    We are looking for enthusiastic and energetic people to setup and run delivery and brick and morter services in other cities and territories across Canada.
+    We provide a complete fully automated turnkey solution.  You need little more than a bank account and a lot of energy.  
+    We handle advertising and promotion so customers are automatically directed to you. We supply all inventory automatically so theres nothing to worry about. 
+    The backend system creates your orders, processes the order payment, confirms the details, collects the funds, dispatches your closest driver(or you), then tarnsfers your funds electronically.  
+    You access our partner platform where you can administer your account, setup banking info, manage inventory, drivers, customers, orders, and more.
+<br>
+     This is only the beginning of a brand new multi billion dollar industry. There are going to be plenty of winners, if you want to be one with us, click the button below and send us your information.  
+     We will have someone contact you within the next 24-48 hours.
+<hr>
+<br>
+     Please note you must already have an account on our system to signup for franchising information. If you gaven't already registered please do so here. 
+     This way we can capture your email and phone information information and reduce the inforation required for the Franchise page 
+     and it reduces the number of junk and robot inquiries we get.  
+     Thank You for your cooperation.  
+
+
+<form method="GET" asp-action="Apply">
+ <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+       <input type="submit" value="Apply" class="btn btn-default" />
+    </div>
+ </div>
+</form>
+
+<!--
+
+
+
+
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CustomerId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CustomerId" class="form-control" />
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+        </div>
+</form>-->
