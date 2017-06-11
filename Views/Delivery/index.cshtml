@@ -143,14 +143,19 @@ function selectedSuggestion(result) {
         }
 
        
-    InDeliveryAreaConfirmed ? message="<h2>Your all set</h2>This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qulaify for immediate delivery, your items will be mailed vi aCanada Post<br>Please add your email and submit the form behind this message and we will notify you when the area opens "
-    InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
-    AreaOpen==2 ? message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.": message="Your all setThis address qualifies for immediate delivery between " + openStr + " and " + closeStr
-    top.document.getElementById("message").value=message;
+            InDeliveryAreaConfirmed ? message="Your all set! This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
+            InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
+           if (AreaOpen==2){  
+               message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
+           } top.document.getElementById("message").value=message;
     top.document.getElementById("title").value=title;
     //top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
     top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
     top.document.getElementById("myLink").click();
+    message="";
+    title="";
+    InDeliveryAreaConfirmed=false;
+    AreaOpen=0;
 }
 
         $('#myForm2').on('submit', function (e) {
