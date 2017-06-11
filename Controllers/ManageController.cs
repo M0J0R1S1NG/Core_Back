@@ -58,6 +58,7 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
+            ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
             return View(users);
         }
         //

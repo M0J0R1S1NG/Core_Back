@@ -1,97 +1,153 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Core.Models;
-using Core.Services;
-using Core.Data;
-using Core.Models.ManageViewModels;
-using Core.Models.MnpFormViewModels;
 using Microsoft.EntityFrameworkCore;
+using Core.Data;
+using Core.Models;
 
 namespace Core.Controllers
 {
-    
     public class FranchiseController : Controller
-    {   private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
-        private readonly ISmsSender _smsSender;
-        private readonly ILogger _logger;
-        private readonly string _externalCookieScheme;
+    {
+        private readonly ApplicationDbContext _context;
 
-        public FranchiseController(
-            ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IOptions<IdentityCookieOptions> identityCookieOptions,
-            IEmailSender emailSender,
-            ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+        public FranchiseController(ApplicationDbContext context)
         {
-            _context = context;   
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            _emailSender = emailSender;
-            _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;    
         }
 
-        //
-        // GET: 
-        [HttpGet]
-        public IActionResult ThankYou()
+        // GET: Franchise
+        public async Task<IActionResult> Index()
         {
-            // Clear the existing external cookie to ensure a clean login process
-            return View();
+            return View(await _context.Franchise.ToListAsync());
         }
-        [HttpGet]
-        
-        public IActionResult index()
+
+        // GET: Franchise/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            // Clear the existing external cookie to ensure a clean login process
-            return View();
-        }
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Apply()
-        {   var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (!await _userManager.IsPhoneNumberConfirmedAsync(user))
-                    {
-                        return RedirectToAction("index","shopping");
-                    } 
-            var UserId=  _userManager.GetUserId(User);
-            Franchise mything = _context.Franchise.Where(c=>c.AppUser==Guid.Parse(UserId)).SingleOrDefault();
-            
-            return View(mything);
-            
-        }
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Apply([Bind("AppUser,City,ContractDate,HasVehicle,VehcileType,VehcileYear,Consent,StartDate")] Franchise model)
-        {   var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if (!await _userManager.IsPhoneNumberConfirmedAsync(user))
-                    {
-                        return RedirectToAction("index","Shopping");
-                    } 
-            if (ModelState.IsValid)
-            {   //addnewrecord
-                model.AppUser = Guid.Parse(user.Id) ;
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("ThankYou");
+            if (id == null)
+            {
+                return NotFound();
             }
-            return View(model);
+
+            var franchise = await _context.Franchise
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (franchise == null)
+            {
+                return NotFound();
+            }
+
+            return View(franchise);
+        }
+
+        // GET: Franchise/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Franchise/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,AppUser,City,ContactDate,HasVehicle,VehicleType,VehicleYear,Consent,StartDate")] Franchise franchise)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(franchise);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(franchise);
+        }
+
+        // GET: Franchise/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var franchise = await _context.Franchise.SingleOrDefaultAsync(m => m.Id == id);
+            if (franchise == null)
+            {
+                return NotFound();
+            }
+            return View(franchise);
+        }
+
+        // POST: Franchise/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUser,City,ContactDate,HasVehicle,VehicleType,VehicleYear,Consent,StartDate")] Franchise franchise)
+        {
+            if (id != franchise.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(franchise);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!FranchiseExists(franchise.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return View(franchise);
+        }
+
+        // GET: Franchise/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var franchise = await _context.Franchise
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (franchise == null)
+            {
+                return NotFound();
+            }
+
+            return View(franchise);
+        }
+
+        // POST: Franchise/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var franchise = await _context.Franchise.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Franchise.Remove(franchise);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        private bool FranchiseExists(int id)
+        {
+            return _context.Franchise.Any(e => e.Id == id);
         }
     }
 }
- 

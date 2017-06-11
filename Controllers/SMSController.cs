@@ -1,68 +1,154 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Core.Services;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Core.Helpers;
-using Core;
-using Core.Models.AccountViewModels;
-
-
 
 namespace Core.Controllers
 {
-    [Authorize]
     public class SMSController : Controller
- {
+    {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly string _externalCookieScheme;
-        private readonly IEmailSender _emailSender;
-        private readonly ISmsSender _smsSender;
-        private readonly ILogger _logger;
 
-        public SMSController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-          SignInManager<ApplicationUser> signInManager,
-          IOptions<IdentityCookieOptions> identityCookieOptions,
-          IEmailSender emailSender,
-          ISmsSender smsSender,
-          ILoggerFactory loggerFactory)
+        public SMSController(ApplicationDbContext context)
         {
-            _context = context;   
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            _emailSender = emailSender;
-            _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<ManageController>(); 
+            _context = context;    
         }
 
-        // GET: Orders
-        public async Task <IActionResult> Index()
-        {   
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var userGuid = Guid.Parse(user.Id);
-            var SMS =  (_context.SMS).Where(m => m.AppUser == userGuid );
-            return View(SMS);
-        }
-        public IActionResult Default()
+        // GET: SMS
+        public async Task<IActionResult> Index()
         {
-            return View(_context.SMS);
+            return View(await _context.SMS.ToListAsync());
         }
-         public IActionResult orderPayed()
+
+        // GET: SMS/Details/5
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var sMS = await _context.SMS
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (sMS == null)
+            {
+                return NotFound();
+            }
+
+            return View(sMS);
+        }
+
+        // GET: SMS/Create
+        public IActionResult Create()
         {
             return View();
+        }
+
+        // POST: SMS/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,AppUser,SentTo,SentFrom,DateSent,DateRecieved")] SMS sMS)
+        {
+            if (ModelState.IsValid)
+            {
+                sMS.Id = Guid.NewGuid();
+                _context.Add(sMS);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(sMS);
+        }
+
+        // GET: SMS/Edit/5
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var sMS = await _context.SMS.SingleOrDefaultAsync(m => m.Id == id);
+            if (sMS == null)
+            {
+                return NotFound();
+            }
+            return View(sMS);
+        }
+
+        // POST: SMS/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,AppUser,SentTo,SentFrom,DateSent,DateRecieved")] SMS sMS)
+        {
+            if (id != sMS.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(sMS);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SMSExists(sMS.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return View(sMS);
+        }
+
+        // GET: SMS/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var sMS = await _context.SMS
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (sMS == null)
+            {
+                return NotFound();
+            }
+
+            return View(sMS);
+        }
+
+        // POST: SMS/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var sMS = await _context.SMS.SingleOrDefaultAsync(m => m.Id == id);
+            _context.SMS.Remove(sMS);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        private bool SMSExists(Guid id)
+        {
+            return _context.SMS.Any(e => e.Id == id);
         }
     }
 }

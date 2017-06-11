@@ -1,0 +1,86 @@
+@model Core.Models.Vehicle
+
+
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Vehicle</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+         <div class="form-group">
+            <label asp-for="UserGuid" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="UserGuid" asp-items=ViewBag.userGuids class="form-control" ></select>
+                <span asp-validation-for="UserGuid" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Make" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Make" class="form-control" />
+                <span asp-validation-for="Make" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Model" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Year" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Details" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Details" class="form-control" />
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LicensePlate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LicensePlate" class="form-control" />
+                <span asp-validation-for="LicensePlate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="InsurancePolicy" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="InsurancePolicy" class="form-control" />
+                <span asp-validation-for="InsurancePolicy" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>

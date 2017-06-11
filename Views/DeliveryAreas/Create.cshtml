@@ -1,0 +1,102 @@
+@model Core.Models.DeliveryArea
+
+
+
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>DeliveryArea</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                <input type="hidden" asp-for="CreatedBy" class="form-control" value=@ViewBag.CreatedBy />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreatedDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CreatedDate" class="form-control" value=@DateTime.Now />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="Partner" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="Partner" asp-items=ViewBag.userGuids class="form-control" ></select>
+                <span asp-validation-for="Partner" class="text-danger"></span>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            <label asp-for="Points" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Points" class="form-control" />
+                <span asp-validation-for="Points" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OpenTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input value="7:30:00" asp-for="OpenTime" class="form-control" />
+                <span asp-validation-for="OpenTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ClosedTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input value="3:30:00" asp-for="ClosedTime" class="form-control" />
+                <span asp-validation-for="ClosedTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="Open" />
+                    <label asp-for="Open"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" value=-1 />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>

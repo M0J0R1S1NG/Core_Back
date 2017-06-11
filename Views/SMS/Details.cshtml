@@ -1,0 +1,57 @@
+@model Core.Models.SMS
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+
+<div>
+    <h4>SMS</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SentTo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SentTo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SentFrom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SentFrom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateSent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateSent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateRecieved)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateRecieved)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+</body>
+</html>

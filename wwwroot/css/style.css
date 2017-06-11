@@ -20,7 +20,8 @@ body {
     font-family: Helvetica, sans-serif;
     color: #222d33;
     background-color: #15374d;
-    overflow-x: hidden;
+    overflow-x:scroll;
+    /*background-image:url("/images/page1.jpg")*/
 }
 
 a {

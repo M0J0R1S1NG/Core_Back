@@ -12,6 +12,7 @@ namespace Core.Models
     {
         public String StreetName {get;set;}
         public String PostalCode {get;set;}
+        [Display(Name = "Unit/Apt #")]
         public String StreetNumber {get;set;}
         public String City {get;set;}
         public String DeliveryAddress {get; set;}
@@ -25,7 +26,7 @@ namespace Core.Models
         public bool Mnp {get;set;}
         public Guid MnpGuid {get;set;}
          
-
+       
     }
     
 }

@@ -21,17 +21,22 @@ namespace Core.Data
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<MnpForm> MnpForms { get; set; }
         public DbSet<Franchise> Franchise { get; set; }
-          public DbSet<SMS> SMS { get; set; }
-          
-
+        
+        public DbSet<SMS> SMS { get; set; }
+        public DbSet<Partner> Partners { get; set; }
+         public DbSet<Comment> Comments { get; set; }
+        public DbSet<DeliveryArea> DeliveryAreas { get; set; }
+         public DbSet<DeliveryAreaDriver> DeliveryAreaDrivers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-          builder.Entity<ApplicationUser>()
+            builder.Entity<ApplicationUser>()
             .ToTable("Core_User");
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Core.Models.DeliveryArea> DeliveryArea { get; set; }
     }
 }

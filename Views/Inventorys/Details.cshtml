@@ -1,0 +1,163 @@
+@model Core.Models.Inventory
+
+
+<div>
+    <h4>Inventory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Label)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Label)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OnHand)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OnHand)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BestBefore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BestBefore)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Supplier)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Supplier)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Photo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.THCContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.THCContent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CBDContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CBDContent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Likes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Likes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageFilePath)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ImageFilePath)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerGram)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PricePerGram)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerQuarter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PricePerQuarter)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerhalf)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PricePerhalf)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerOz)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PricePerOz)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CostPerGram)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CostPerGram)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Discount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UPC)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UPC)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Qualities)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Qualities)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.catagory)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.catagory)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

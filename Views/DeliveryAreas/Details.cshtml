@@ -1,0 +1,74 @@
+@model Core.Models.DeliveryArea
+
+<div>
+    <h4>DeliveryArea</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd>
+             @Html.DropDownListFor(model=>model.CreatedBy, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Partner)
+        </dt>
+        <dd>
+             @Html.DropDownListFor(model=>model.Partner, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Points)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Points)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpenTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpenTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosedTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ClosedTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Open)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Open)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+</body>
+</html>

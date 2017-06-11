@@ -27,11 +27,11 @@ namespace Core.Migrations
 
                     b.Property<string>("FullAddress");
 
-                    b.Property<Guid>("GUID");
-
                     b.Property<bool>("Geocoded");
 
-                    b.Property<decimal>("PhoneNumber");
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PhoneNumber");
 
                     b.Property<string>("PostalCode");
 
@@ -122,6 +122,76 @@ namespace Core.Migrations
                     b.ToTable("Core_User");
                 });
 
+            modelBuilder.Entity("Core.Models.Comment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("CreatedBy");
+
+                    b.Property<int>("DisLikes");
+
+                    b.Property<int>("Likes");
+
+                    b.Property<int>("Rating");
+
+                    b.Property<int>("Status");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Core.Models.DeliveryArea", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ClosedTime");
+
+                    b.Property<Guid>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.Property<bool>("Open");
+
+                    b.Property<DateTime>("OpenTime");
+
+                    b.Property<Guid>("Partner");
+
+                    b.Property<string>("Points");
+
+                    b.Property<int>("Status");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("DeliveryArea");
+                });
+
+            modelBuilder.Entity("Core.Models.DeliveryAreaDriver", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("DeliverAreaIdID");
+
+                    b.Property<int?>("DriverIdID");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliverAreaIdID");
+
+                    b.HasIndex("DriverIdID");
+
+                    b.ToTable("DeliveryAreaDrivers");
+                });
+
             modelBuilder.Entity("Core.Models.Driver", b =>
                 {
                     b.Property<int>("ID")
@@ -131,9 +201,11 @@ namespace Core.Migrations
 
                     b.Property<string>("Details");
 
-                    b.Property<Guid>("GUID");
-
                     b.Property<string>("GeocodedAddress");
+
+                    b.Property<string>("LicenseNumber");
+
+                    b.Property<string>("LicenseProvince");
 
                     b.Property<string>("PhoneNumber");
 
@@ -145,7 +217,7 @@ namespace Core.Migrations
 
                     b.Property<Guid>("UserGuid");
 
-                    b.Property<Guid>("VehicleGuid");
+                    b.Property<int>("VehicleId");
 
                     b.HasKey("ID");
 
@@ -189,7 +261,13 @@ namespace Core.Migrations
 
                     b.Property<double>("Cost");
 
+                    b.Property<int>("CostPerGram");
+
                     b.Property<string>("Description");
+
+                    b.Property<int>("Discount");
+
+                    b.Property<string>("ImageFilePath");
 
                     b.Property<string>("Label");
 
@@ -201,9 +279,21 @@ namespace Core.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
+                    b.Property<int>("PartnerId");
+
                     b.Property<byte[]>("Photo");
 
                     b.Property<double>("Price");
+
+                    b.Property<int>("PricePerGram");
+
+                    b.Property<int>("PricePerOz");
+
+                    b.Property<int>("PricePerQuarter");
+
+                    b.Property<int>("PricePerhalf");
+
+                    b.Property<string>("Qualities");
 
                     b.Property<double>("Quantity");
 
@@ -212,6 +302,10 @@ namespace Core.Migrations
                     b.Property<string>("Supplier");
 
                     b.Property<double>("THCContent");
+
+                    b.Property<string>("UPC");
+
+                    b.Property<string>("catagory");
 
                     b.HasKey("ID");
 
@@ -308,6 +402,44 @@ namespace Core.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Core.Models.Partner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Company");
+
+                    b.Property<int>("DeliveryArea");
+
+                    b.Property<Guid>("GUID");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<string>("PostalCode");
+
+                    b.Property<string>("Province");
+
+                    b.Property<string>("SMSNumber");
+
+                    b.Property<string>("ShippingAddress");
+
+                    b.Property<string>("SpecialInstructions");
+
+                    b.Property<int>("Status");
+
+                    b.Property<string>("StreetAddress");
+
+                    b.Property<string>("TaxId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Partners");
+                });
+
             modelBuilder.Entity("Core.Models.SMS", b =>
                 {
                     b.Property<Guid>("Id")
@@ -333,25 +465,23 @@ namespace Core.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address1");
+                    b.Property<string>("Description");
 
                     b.Property<string>("Details");
 
-                    b.Property<Guid>("GUID");
+                    b.Property<string>("InsurancePolicy");
 
-                    b.Property<string>("GeocodedAddress");
+                    b.Property<string>("LicensePlate");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("Make");
 
-                    b.Property<string>("PostalCode");
-
-                    b.Property<string>("SpecialInstructions");
+                    b.Property<string>("Model");
 
                     b.Property<int>("Status");
 
                     b.Property<Guid>("UserGuid");
 
-                    b.Property<Guid>("VehicleGuid");
+                    b.Property<int>("Year");
 
                     b.HasKey("ID");
 
@@ -463,6 +593,17 @@ namespace Core.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Core.Models.DeliveryAreaDriver", b =>
+                {
+                    b.HasOne("Core.Models.DeliveryArea", "DeliverAreaId")
+                        .WithMany()
+                        .HasForeignKey("DeliverAreaIdID");
+
+                    b.HasOne("Core.Models.Driver", "DriverId")
+                        .WithMany()
+                        .HasForeignKey("DriverIdID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

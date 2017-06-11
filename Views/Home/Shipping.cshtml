@@ -32,3 +32,6 @@ To keep informed:
 <li<a asp-area="" asp-controller="Orders" asp-action="Index" title="Orders" textsize=4>The Orders Pages</a> to keep track of your order status and confirm or change the details in your orders prior to dispatch.</li>
 <li>Look at <a asp-area="" asp-controller="DeliveryMap" asp-action="Index" title="A to B Map" textsize=4>Delivery Map</a> to see when the driver has finished his last delivery and is now on his way to your location for drop off.</li>
 <li>Look at your phones <a asp-area="" asp-controller="SMS" asp-action="Index" title="SMS Messaging" textsize=4>SMS Messages</a> for the chronoligical order of events and to keep updated without using a computer or tablet. </li>
+<Div id=myModal style="display:none;">
+    @await Html.PartialAsync("_ModalWrapper")
+</Div>

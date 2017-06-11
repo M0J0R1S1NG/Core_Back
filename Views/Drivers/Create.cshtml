@@ -1,0 +1,89 @@
+@model Core.Models.Driver
+
+
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Driver</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="UserGuid" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="UserGuid" asp-items=ViewBag.userGuids class="form-control" ></select>
+                <span asp-validation-for="UserGuid" class="text-danger"></span>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label asp-for="GeocodedAddress" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="GeocodedAddress" class="form-control" />
+                <span asp-validation-for="GeocodedAddress" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address1" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Address1" class="form-control" />
+                <span asp-validation-for="Address1" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PostalCode" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Details" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Details" class="form-control" />
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SpecialInstructions" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SpecialInstructions" class="form-control" />
+                <span asp-validation-for="SpecialInstructions" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="VehicleId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="VehicleId" asp-items=ViewBag.vehicles class="form-control" ></select>
+                <span asp-validation-for="VehicleId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>

@@ -87,4 +87,86 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
     <script  type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=LoadMap' async defer></script>
-    <script type='text/javascript' src='/js/deliveryzone.js'></script>
+    <!--<script type='text/javascript' src='/js/deliveryzone.js'></script>-->
+
+<script>
+
+@foreach (var item in ViewBag.deliveryareas) {
+
+}
+ function LoadMap() {
+        Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', {
+            callback: function () {
+                var manager = new Microsoft.Maps.AutosuggestManager({
+                    placeSuggestions: false
+                });
+                manager.attachAutosuggest('#DeliveryAddress', '#searchBoxContainer', selectedSuggestion);
+            },
+            errorCallback: function(msg){
+                alert(msg);
+            },
+            credentials: 'AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA' 
+        });
+    }
+ 
+    function selectedSuggestion(result) {
+        //Populate the address textbox values.
+        if (top.document.getElementById('StreetName')!=null){
+            top.document.getElementById('StreetName').value = result.address.addressLine;
+            top.document.getElementById('City').value = result.address.locality;
+            top.document.getElementById('Province').value = result.address.adminDistrict;
+            top.document.getElementById('PostalCode').value = result.address.postalCode;
+            top.document.getElementById('Country').value = result.address.countryRegion;
+        }
+var exteriorRing;
+var InDeliveryArea;
+var InDeliveryAreaConfirmed;
+       @foreach (var item in ViewBag.deliveryareas){
+ 
+         @:exteriorRing = [
+            @:@item.Points
+        @:];
+        @: polygon@(item.ID) = new Microsoft.Maps.Polygon(exteriorRing, {
+        @:fillColor: 'rgba(0, 255, 0, 0.5)',
+        @:strokeColor: 'red',
+        @:strokeThickness: 2
+        @:});
+
+        @:var points@(item.ID) = polygon@(item.ID).getLocations();
+        @:InDeliveryArea =  pointInPolygon(points@(item.ID),result.location.latitude,result.location.longitude) 
+        @:if (InDeliveryArea==true){InDeliveryAreaConfirmed=true}
+    }
+   
+
+
+        
+        var myAnswer = confirm(InDeliveryAreaConfirmed ? "This address qulaifies for immediate delivery and will be dispatched ASAP" : "Sorry this address does not qulaify for immediate delivery your order will ship via Canada Post tonight");
+           
+    }
+
+function pointInPolygon(points,lat,lon) 
+{
+  var i;
+  var j=points.length-1;
+  var inPoly=false;
+
+  for (i=0; i<points.length; i++) 
+  {
+    if (points[i].longitude<lon && points[j].longitude>=lon 
+      || points[j].longitude<lon && points[i].longitude>=lon) 
+    {
+      if (points[i].latitude+(lon-points[i].longitude)/ 
+        (points[j].longitude-points[i].longitude)*(points[j].latitude 
+          -points[i].latitude)<lat) 
+      {
+        inPoly=!inPoly; 
+      }
+    }
+    j=i; 
+  }
+  return inPoly; 
+}
+
+
+
+</script>

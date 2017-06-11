@@ -1,3 +1,5 @@
+@model List<Core.Models.DeliveryArea>
+
 @{
 if (ViewData["Message"]==null){
            ViewData["Message"] = "";
@@ -8,6 +10,158 @@ if (ViewData["Message"]==null){
 }
 
 
+
+<div class="container">
+ <div class="top-buffer"></div>
+<div class="panel panel-primary">
+    <div class="panel-heading panel-head">Delivery Area</div>
+    <div class="panel-body">
+     
+<div id="modal-container" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div  class="modal-content">
+           
+        </div>
+    </div>
+</div>
+
+ <form hidden id=myForm asp-controller="Delivery" asp-action="ModalAction" method="post" data-target="#modal-container" class="form-horizontal">
+                <input name=Id type=hidden value=1 />
+                <input id=message name="message" class="form-control" />
+                <input id=title name="title" class="form-control" />
+                 <input type="submit" value="" class="btn btn-default" data-target="#modal-container"  />
+
+ </form>    
+
+<a id="myLink" name="myLink" href="/delivery/ModalAction"  data-toggle="modal" data-target="#modal-container" > </a>
+
+
+    <INPUT id="deliveryArea" type="button" value="Hide Delivery Area" onclick="toggleDeliveryArea();"> 
+    <INPUT id="deletePushpins" type="button" value="Clear Addresses"  onclick="clearPushpins();"> 
+    <!--<INPUT id="showRequests" type="button" value="Show Requested Addresses" onclick="showRequests();"> -->
+<span>Green areas are open Blue areas are coming very soon <span>
+<span id="tempHolderSpan"></span>
+<div class='container-fluid'>
+    <form  id="myForm2" asp-controller="Delivery" asp-action="AddEmail" method="post" >
+        <div class='row'>
+            
+            <div class='col-md-3'>
+                <div id='searchBoxContainer'>
+                    Check Address: <br>       <input type='text' name='searchBox' id='searchBox'></input>
+                </div>
+            </div>
+            <div class='col-md-3'>
+                        Email:       <br>   <input name='emailAddress' id='emailAddress' type=text  ></input>
+            </div>
+            <div class='col-md-3'>
+                Request this area:<br><input id='submit' type=submit class'btn btn-info' value='Notify me' />
+            </div>
+        
+        </div>
+    </form>
+</div>
+<div   style="position:relative;height:40em">
+
+    <div id='myMap' style="position: relative; width: 100%; height:100%;"></div>
+</div>
+
+
+ </div></div></div>
+
+
+@foreach (var item in Model){
+ <script>
+function createDeliveryArea@(item.ID)(Initing) {
+    var exteriorRing = [
+        @item.Points
+];
+ polygon@(item.ID) = new Microsoft.Maps.Polygon(exteriorRing, {
+
+        @{  if (@item.Status==1){
+                @: fillColor: 'rgba(0,255,0, 0.25)',
+                @: strokeColor: 'red',
+                @: strokeThickness:4,
+                @: strokeDashArray: '1,3'
+            }else{
+                @: fillColor: 'rgba(0, 0,2550, 0.25)',
+                @: strokeColor: 'red',
+                @: strokeThickness: 4,
+                @: strokeDashArray: '1,3'
+            }
+        }
+     });
+
+    // Add the polygon to map
+    map.entities.push(polygon@(item.ID));
+    if (Initing == false) {
+        resizeMapWindow();
+    };
+    //resizeMapWindow();
+}
+ </script>
+}
+
+<script>
+function loadMaps(){
+
+    @foreach (var item in Model){
+
+        @:createDeliveryArea@(item.ID)(true);
+    }
+
+}
+
+
+
+function selectedSuggestion(result) {
+    //Remove previously selected suggestions from the map.
+    //map.entities.clear();
+    //Show the suggestion as a pushpin and center map over it.
+    //var pin = new Microsoft.Maps.Pushpin(result.location);
+    var pin = createFontPushpin(result.location, '\uF015', 'FontAwesome', 13, 'blue');
+    map.entities.push(pin);
+    resizeMapWindow();
+     var InDeliveryArea=false;
+     var InDeliveryAreaConfirmed=false;
+        @foreach (var item in Model){
+            @:var points@(item.ID) = polygon@(item.ID).getLocations();
+            @:InDeliveryArea = pointInPolygon(points@(item.ID), result.location.latitude, result.location.longitude)
+            @:if (InDeliveryArea==true){
+            @:        InDeliveryAreaConfirmed=true;
+            
+            @:        var openTime = new Date(Date.parse('@item.OpenTime'));
+            @:        var closedTime = new Date(Date.parse('@item.ClosedTime'));
+            
+            @:        var openStr = openTime.getHours() + ":" + openTime.getMinutes();
+            @:        var closeStr = closedTime.getHours() + ":" + closedTime.getMinutes();
+            @:        var status = @item.Status ;
+            @:        var open = @item.Open.ToString().ToLower();
+            @:}
+        }
+
+    if (InDeliveryAreaConfirmed){
+        
+    }
+    
+    InDeliveryAreaConfirmed ? message="This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qulaify for immediate delivery, your items will be mailed"
+    InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
+    top.document.getElementById("message").value=message;
+    top.document.getElementById("title").value=title;
+    //top.document.getElementById("myLink")top.document.getElementById("myLink")top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
+    top.document.getElementById("myLink").click();
+}
+    window.addEventListener("DOMContentLoaded", function() {
+       @if(TempData["searchBox"]!=null){
+            @:top.document.getElementById("message").value="Thanks you we received your request";
+            @:top.document.getElementById("title").value="Request Added";
+            @:top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
+            @:top.document.getElementById("myLink").click();
+        }
+    }, false);
+
+</script>
+ <script src="/js/delivery.js"></script>
+ <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario' async defer></script>
 <style>
 
  .ui-autocomplete {
@@ -70,25 +224,66 @@ if (ViewData["Message"]==null){
 min-width:400px;
 min-height:400px
 }
+  </style><style>
+
+ .ui-autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    display: none;
+    min-width: 160px;   
+    padding: 4px 0;
+    margin: 0 0 10px 25px;
+    list-style: none;
+    background-color: #ffffff;
+    border-color: #ccc;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-style: solid;
+    border-width: 1px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+}
+.ui-helper-hidden-accessible{
+    display:none;
+    fill-opacity:0;
+    flood-opacity:0;
+
+}
+.ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.ui-state-hover, .ui-state-active {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #0088cc;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    background-image: none;
+}
+.myMap, .canvas{
+    max-width: 1800px;
+    max-height:1000px;
+min-width:400px;
+min-height:400px
+}
   </style>
-
-
-     
-
-    <INPUT id="deliveryArea" type="button" value="Hide Delivery Area" onclick="toggleDeliveryArea();"> 
-    <INPUT id="deletePushpins" type="button" value="Clear Addresses"  onclick="clearPushpins();"> 
-    <INPUT id="showRequests" type="button" value="Show Requested Addresses" onclick="showRequests();"> 
-
-
-
-    <div id='searchBoxContainer'>
-            Address:        <input type='text' id='searchBox'/>
-    </div>
-<div   style="position:relative;height:40em">
-
-
-    <div id='myMap' style="position: relative; width: 100%; height:100%;"></div>
-</div>
-
- <script src="~/js/delivery.js"></script>
- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario' async defer></script>

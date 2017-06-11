@@ -48,7 +48,7 @@ namespace Core.Controllers
             _logger = loggerFactory.CreateLogger<ManageController>(); 
         }
 
-        // GET: Orders
+        // GET:Shopping
         public async Task <IActionResult> Index()
         {   var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user != null){
@@ -56,6 +56,7 @@ namespace Core.Controllers
                     return RedirectToAction("UpdateUser","Manage");
                 }
                 ViewData["DeliveryAddress"]=user.DeliveryAddress;
+                
                 if (!await _userManager.IsEmailConfirmedAsync(user))
                     {
                         ModelState.AddModelError(string.Empty, $"You must have a confirmed email to log in. The confirmation email has been re-sent to {User.Identity.Name}");
@@ -75,19 +76,36 @@ namespace Core.Controllers
                 //     } 
                 if (  user.status==0)
                     {
-                        ViewData["Title"]="Membership Purchase";
                         return RedirectToAction("PurchaseMembership","Shopping");
                     } 
-                return View();
+
+                    ViewData["Inventory"]=_context.Inventorys;
+                    var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+                    ViewBag.query2 = new SelectList(Products, "Id", "Value");
+                    ViewBag.query = _context.Inventorys.Where(c=> c.Status>0);
+                    ViewBag.UserId = _userManager.GetUserId(User);
+                    
+                    //this is how the following select list gets populated
+                    //<!--<select asp-items=ViewBag.query2></select>-->
+                     ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
+                    
+                    return View();
+               
             }else{
                 return RedirectToAction("Register","Account");
             }
         }
          public async Task <IActionResult> PurchaseMembership(){
             
+            ViewBag.UserId = _userManager.GetUserId(User);
+            var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+            ViewBag.query2 = new SelectList(Products, "Id", "Value");
+            ViewBag.query = _context.Inventorys.Where(c=> c.Status==1);
+            ViewData["Title"]="Membership Purchase";
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            ViewBag.DeliveryAddress=user.DeliveryAddress;
             if (user.status!=0){
-                return RedirectToAction("Shopping");
+                return RedirectToAction("Index","Shopping");
             }
             return View();
 

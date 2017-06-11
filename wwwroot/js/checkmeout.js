@@ -81,7 +81,7 @@ simpleCart({
         //    releaseEvents();
         // }
         
-        // var person = prompt("We are delivery this to @User.Identity.Name", " @User.Identity.Name");
+        // var person = prompt("We are delivering this to @User.Identity.Name", " @User.Identity.Name");
 
         // if (person == null || person == "") {
         //     txt = "User cancelled the prompt.";
@@ -90,40 +90,7 @@ simpleCart({
         // }
         
     }
-    function loadDoc() {
-    var xhttp = new XMLHttpRequest();
-    var datevar = Date().substr(0,Date().indexOf("GMT")-10);
-    xhttp.onreadystatechange = function() {
-        //alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
-        if (this.readyState == 4 && this.status == 200) {
-           
-            document.getElementById("demo").innerHTML =  "Order was posted to orders table";
-        }
-    };
-    xhttp.open("POST", "/Orders/CreateApi/", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //xhttp.send("fname=Henry&lname=Ford");
-    //return;
-    var buildstr2 = "";
-    for (var i in simpleCart.items()){
-        buildstr2 +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('name') + " at: $" + simpleCart.items()[i].get('price') + " for a total of: $" +  simpleCart.items()[i].get('total') +  '  \n\r';
-    }
-    buildstr2 += "Grand Total: $" + simpleCart.grandTotal();
-     var buildStr = ""
-    //buildStr += "OrderDate='" + datevar + "'&";
-    //buildStr += "DeliveryDate='" + datevar + "'&";
-    buildStr += "Total=" +  simpleCart.grandTotal() + "&";    //"1" + "&";  
-    buildStr += "GeocodedAddress='" + top.document.getElementById("DeliveryAddress").value + "'&";
-    //buildStr += "Weight=" + "7" + "&";
-    buildStr += "PaymentType=" + "1" + "&";
-    buildStr += "Details='" +  buildstr2 + "'&";   // "test details" + "'&";   
-    buildStr += "SpecialInstructions='" + top.document.getElementById("SpecialInstructions").value + "'&";
-    buildStr += "Status=" + "1" + "&";
-    //buildStr += "DriverId=" + "1" + "&";
-    //buildStr += "CustomerId=" + "1" ;
-    xhttp.send(buildStr); 
    
-}
 
     // Render the PayPal button
 

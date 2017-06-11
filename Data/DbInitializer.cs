@@ -17,22 +17,22 @@ namespace Core.Data
             //context.Database.Migrate();
             
             // Look for any data.
-            if (context.Orders.Any())
-            {
-                return;   // DB has been seeded
-            }
+        //     if (context.Orders.Any())
+        //     {
+        //         return;   // DB has been seeded
+        //     }
 
-            var orders = new Order[]
-            {
-            //new Order{CustomerId=1,OrderDate=DateTime.Now ,DeliveryDate=DateTime.Now,Total=70,Weight=7},
-           //new Order{CustomerId=1,OrderDate=DateTime.Now ,DeliveryDate=DateTime.Now,Total=35,Weight=3},
+        //     var orders = new Order[]
+        //     {
+        //     //new Order{CustomerId=1,OrderDate=DateTime.Now ,DeliveryDate=DateTime.Now,Total=70,Weight=7},
+        //    //new Order{CustomerId=1,OrderDate=DateTime.Now ,DeliveryDate=DateTime.Now,Total=35,Weight=3},
 
-            };
-            foreach (Order s in orders)
-            {
-                context.Orders.Add(s);
-            }
-            context.SaveChanges();
+        //     };
+        //     foreach (Order s in orders)
+        //     {
+        //         context.Orders.Add(s);
+        //     }
+        //     context.SaveChanges();
             return;
         }
     }

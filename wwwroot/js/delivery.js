@@ -1,3 +1,6 @@
+
+
+
 var map = null;
 
 var myHome;
@@ -9,6 +12,13 @@ top.addEventListener('resize', function() {
     var height = $(document).height();
     map.setView({ width: width, height: height })
 });
+   $(function () {
+      
+        $('#myLink').on('click', function (e) {
+            e.preventDefault();
+            top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
+        });
+    });
 
 function createFontPushpin(location, text, fontName, fontSizePx, color) {
     var c = document.createElement('canvas');
@@ -148,21 +158,7 @@ function showRequests() {
     }
 }
 
-function selectedSuggestion(result) {
-    //Remove previously selected suggestions from the map.
-    //map.entities.clear();
 
-    //Show the suggestion as a pushpin and center map over it.
-    //var pin = new Microsoft.Maps.Pushpin(result.location);
-    var pin = createFontPushpin(result.location, '\uF015', 'FontAwesome', 13, 'blue');
-    map.entities.push(pin);
-
-    resizeMapWindow();
-    var points = polygon.getLocations();
-    var InDeliveryArea = pointInPolygon(points, result.location.latitude, result.location.longitude)
-        //map.setView({ bounds: result.bestView });
-    alert(InDeliveryArea ? "This address qulaifies for immediate delivery" : "Sorry this address does not qulaify for immediate delivery");
-}
 
 function pointInPolygon(points, lat, lon) {
     var i;
@@ -203,69 +199,94 @@ function loadMapScenario() {
 
     var tempHolder2 = [];
     var tempHolder = [];
-    // Microsoft.Maps.Events.addHandler(map, 'click', function (e) {;
-    //         //if (e.targetType == "map") {
-    //         var point = new Microsoft.Maps.Point(e.getX(), e.getY());
-    //         var loc = e.target.tryPixelToLocation(point);
-    //         var location = new Microsoft.Maps.Location(loc.latitude, loc.longitude);
-    //         top.document.getElementById("tempHolderSpan").innerHTML += "<li>new Microsoft.Maps.Location(" + loc.latitude + ",  " + loc.longitude + "),</li>";
-    //          tempHolder = tempHolder2.concat(location,tempHolder);
-    //            polygon = new Microsoft.Maps.Polygon(tempHolder, {
-    //             fillColor: 'rgba(0, 255, 0, 0.5)',
-    //             strokeColor: 'red',
-    //             strokeThickness: 3
-    //         });
-    //             map.entities.pop(polygon)
-    //             //Add the polygon to map
-    //             map.entities.push(polygon);
-    //         //}
-    // });
+
+    Microsoft.Maps.Events.addHandler(map, 'click', function (e) {;
+            //if (e.targetType == "map") {
+            var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+            var loc = e.target.tryPixelToLocation(point);
+            var location = new Microsoft.Maps.Location(loc.latitude, loc.longitude);
+            top.document.getElementById("tempHolderSpan").innerHTML += "<li>new Microsoft.Maps.Location(" + loc.latitude + ",  " + loc.longitude + "),</li>";
+             tempHolder = tempHolder2.concat(location,tempHolder);
+               polygon = new Microsoft.Maps.Polygon(tempHolder, {
+                fillColor: 'rgba(0, 255, 0, 0.5)',
+                strokeColor: 'red',
+                strokeThickness: 3
+            });
+                map.entities.pop(polygon)
+                //Add the polygon to map
+                map.entities.push(polygon);
+            //}
+    });
 
     var center = map.getCenter();
     var polygon;
     //Create array of locations to form a ring.
-    createDeliveryArea(true);
-
+    loadMaps();
 }
+// function createDeliveryArea2(Initing) {
+//     var exteriorRing = [
+// new Microsoft.Maps.Location(43.56003065539521, -79.61158674638868),
+// new Microsoft.Maps.Location(43.54062192736565, -79.5854942170918),
+// new Microsoft.Maps.Location(43.534150962462746, -79.59373396318556),
+// new Microsoft.Maps.Location(43.52120694936544, -79.5964805452168),
+// new Microsoft.Maps.Location(43.509256164195875, -79.595793899709),
+// new Microsoft.Maps.Location(43.49580870191352, -79.59922712724806),
+// new Microsoft.Maps.Location(43.48109633810351, -79.61570661943556),
+// new Microsoft.Maps.Location(43.46814094416184, -79.6342460481465),
+// new Microsoft.Maps.Location(43.45817336656578, -79.64248579424024),
+// new Microsoft.Maps.Location(43.475615548859274, -79.66926496904493),
+// new Microsoft.Maps.Location(43.501520354489244, -79.66857832353712),
+// new Microsoft.Maps.Location(43.55578475890212, -79.60884016435743)
+//     ];
+//  //Create a polygon
+//     polygon2 = new Microsoft.Maps.Polygon(exteriorRing, {
+//         fillColor: 'rgba(0, 255, 0, 0.5)',
+//         strokeColor: 'red',
+//         strokeThickness: 2
+//     });
+//      map.entities.push(polygon2);
+//     if (Initing == false) {
+//         resizeMapWindow();
+//     };
+// }
+// function createDeliveryArea(Initing) {
+//     var exteriorRing = [
+//         new Microsoft.Maps.Location(43.58852173036803, -79.53497284334303),
+//         new Microsoft.Maps.Location(43.58842227813971, -79.53634613435865),
+//         new Microsoft.Maps.Location(43.61378152265527, -79.55213898103834),
+//         new Microsoft.Maps.Location(43.67241489267107, -79.57548492830396),
+//         new Microsoft.Maps.Location(43.70667399177409, -79.5555722085774),
+//         new Microsoft.Maps.Location(43.731487197930384, -79.4457089273274),
+//         new Microsoft.Maps.Location(43.76234047426849, -79.39764374178053),
+//         new Microsoft.Maps.Location(43.767299325631875, -79.3633114663899),
+//         new Microsoft.Maps.Location(43.767299325631875, -79.34271210115553),
+//         new Microsoft.Maps.Location(43.78812201249422, -79.23010223787428),
+//         new Microsoft.Maps.Location(43.72960174598528, -79.21224945467115),
+//         new Microsoft.Maps.Location(43.70379498564007, -79.23834198396803),
+//         new Microsoft.Maps.Location(43.675990660512994, -79.27816742342115),
+//         new Microsoft.Maps.Location(43.65711609928246, -79.31661957185865),
+//         new Microsoft.Maps.Location(43.64618600915746, -79.35919159334303),
+//         new Microsoft.Maps.Location(43.632272123628894, -79.41549652498365),
+//         new Microsoft.Maps.Location(43.6362478374456, -79.45806854646803),
+//         new Microsoft.Maps.Location(43.628296116453576, -79.4786679117024),
+//         new Microsoft.Maps.Location(43.59647871168799, -79.49102753084303),
+//         new Microsoft.Maps.Location(43.58155850872511, -79.52673309724928)
+//     ];
 
-function createDeliveryArea(Initing) {
-    var exteriorRing = [
-        new Microsoft.Maps.Location(43.58852173036803, -79.53497284334303),
-        new Microsoft.Maps.Location(43.58842227813971, -79.53634613435865),
-        new Microsoft.Maps.Location(43.61378152265527, -79.55213898103834),
-        new Microsoft.Maps.Location(43.67241489267107, -79.57548492830396),
-        new Microsoft.Maps.Location(43.70667399177409, -79.5555722085774),
-        new Microsoft.Maps.Location(43.731487197930384, -79.4457089273274),
-        new Microsoft.Maps.Location(43.76234047426849, -79.39764374178053),
-        new Microsoft.Maps.Location(43.767299325631875, -79.3633114663899),
-        new Microsoft.Maps.Location(43.767299325631875, -79.34271210115553),
-        new Microsoft.Maps.Location(43.78812201249422, -79.23010223787428),
-        new Microsoft.Maps.Location(43.72960174598528, -79.21224945467115),
-        new Microsoft.Maps.Location(43.70379498564007, -79.23834198396803),
-        new Microsoft.Maps.Location(43.675990660512994, -79.27816742342115),
-        new Microsoft.Maps.Location(43.65711609928246, -79.31661957185865),
-        new Microsoft.Maps.Location(43.64618600915746, -79.35919159334303),
-        new Microsoft.Maps.Location(43.632272123628894, -79.41549652498365),
-        new Microsoft.Maps.Location(43.6362478374456, -79.45806854646803),
-        new Microsoft.Maps.Location(43.628296116453576, -79.4786679117024),
-        new Microsoft.Maps.Location(43.59647871168799, -79.49102753084303),
-        new Microsoft.Maps.Location(43.58155850872511, -79.52673309724928)
-    ];
+//     //Create a polygon
+//     polygon = new Microsoft.Maps.Polygon(exteriorRing, {
+//         fillColor: 'rgba(0, 255, 0, 0.5)',
+//         strokeColor: 'red',
+//         strokeThickness: 2
+//     });
 
-    //Create a polygon
-    polygon = new Microsoft.Maps.Polygon(exteriorRing, {
-        fillColor: 'rgba(0, 255, 0, 0.5)',
-        strokeColor: 'red',
-        strokeThickness: 2
-    });
-
-    // Add the polygon to map
-    map.entities.push(polygon);
-    if (Initing == false) {
-        resizeMapWindow();
-    };
-    //resizeMapWindow();
-}
+//     // Add the polygon to map
+//     map.entities.push(polygon);
+//     if (Initing == false) {
+//         resizeMapWindow();
+//     };
+//     //resizeMapWindow();
+// }
 
 function resizeMapWindow() {
     if (pushpin == null || polygon == null) { return; }
@@ -305,6 +326,48 @@ function clearPushpins() {
         }
     }
     resizeMapWindow();
+}
+
+function SetupModal(){
+
+var xhttp = new XMLHttpRequest();
+    var datevar = Date().substr(0,Date().indexOf("GMT")-10);
+    xhttp.onreadystatechange = function() {
+        //alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
+        if (this.readyState == 4 && this.status == 200) {
+           
+            document.getElementById("demo").innerHTML =  "Order was posted to orders table";
+        }
+    };
+    
+    xhttp.open("POST", "/delivery/ModalAction", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //xhttp.send("fname=Henry&lname=Ford");
+    //return;
+    var buildstr2 = "";
+    for (var i in simpleCart.items()){
+        buildstr2 +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('name') + " at: $" + simpleCart.items()[i].get('price') + " for a total of: $" +  simpleCart.items()[i].get('total') +  '  \n\r';
+    }
+    buildstr2 += "Grand Total: $" + simpleCart.grandTotal();
+     var buildStr = ""
+    //buildStr += "OrderDate='" + datevar + "'&";
+    //buildStr += "DeliveryDate='" + datevar + "'&";
+    buildStr += "Total=" +  simpleCart.grandTotal() + "&";    //"1" + "&";  
+    buildStr += "GeocodedAddress='" + top.document.getElementById("DeliveryAddress").value + "'&";
+    //buildStr += "Weight=" + "7" + "&";
+    buildStr += "PaymentType=" + "1" + "&";
+    buildStr += "Details='" +  buildstr2 + "'&";   // "test details" + "'&";   
+    buildStr += "SpecialInstructions='" + top.document.getElementById("SpecialInstructions").value + "'&";
+    buildStr += "Status=" + "1" + "&";
+    //buildStr += "DriverId=" + "1" + "&";
+    //buildStr += "CustomerId=" + "1" ;
+    xhttp.send(buildStr); 
+
+
+
+
+
+
 }
 //       function CheckAddress(){
 //            var address = encodeURIComponent( top.document.getElementById("tags").value);

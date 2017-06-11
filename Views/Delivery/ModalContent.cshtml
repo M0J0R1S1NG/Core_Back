@@ -1,0 +1,10 @@
+@model BootstrapModel
+@using Core.Models
+@using Core.Code
+
+
+@await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading=@ViewBag.Title })   
+
+@ViewBag.Message
+
+ @await Html.PartialAsync("_ModalFooter", new ModalFooter{})   

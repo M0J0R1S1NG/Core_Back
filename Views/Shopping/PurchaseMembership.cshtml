@@ -1,23 +1,16 @@
 @using System;
 @using System.Threading;
 @using System.Globalization;
+@using Core.Models;
+<h2>@ViewData["Title"]</h2>
 
-@ViewData["Title"]
 
-<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-
-	<link rel="stylesheet" href="~/css/reset.css"> <!-- CSS reset -->
-	<link rel="stylesheet" href="~/css/main.css"> <!-- Resource style -->
-	<script src="~/js/modernizr.js"></script> <!-- Modernizr -->
-
-Thanks you for becoming a member.  We appreciate your business.  As part of our introductory special offer we are giving all new members a complimentary gift for signing up.  This is only for a limited time so take advantage today.
-You can choose between one of 2 gifts you would like to recieve.    Make your gift selection below.  You will be redirected to paypals website to complete your purchase.
-We will be offering Interac Online payments within the next few weeks. 
-<hr>
-Please note: you cannot proceed to the the shopping area until you purchase your membership.  The purchase of the membership provides us with a verification of your age name and address and that you are in fact a customer and not a competitor or worse...
+Thanks for becoming a member, we appreciate your business and will work hard to keep it.  Your membership gift will be delivered to your profile address.  
+Subsequent purchases can be delivered to wherever you are.  As part of our introductory special offer we are giving all new members a complimentary gift for signing up.  
+This is only for a limited time so take advantage today. You can choose between one of 2 gifts you would like to recieve. Make your gift selection below.  You will be redirected to paypals website to complete your purchase.
+<br>
+Please note: you cannot proceed to the the shopping area until you purchase your membership.   
 If you would like to register without using paypal please call the support line and we can make alternative arrangements
 <hr>
 @{
@@ -34,37 +27,107 @@ int minuteback = myDateTime.Minute;
 TimeSpan ts2 = new TimeSpan( 0, hourback,minuteback, 0, 0 );
 var TimeOut = myDateTime.Subtract(ts2);
 }
-<h1>Curent gifts as of @TimeOut </h1>
+<h4>Curent gifts as of @TimeOut </h4>
+<!--<select asp-items=ViewBag.query2></select>-->
+@{var i=0;
+    @foreach (var item in ViewBag.query) {
+        i+=1;        
+<div class="row>">
+        <div class="col-md-2">
+            Gift @i is @item.Likes gram of <span> @item.Label; </span> 
+    
+        <div class="simpleCart_shelfItem">
+        <img class="item_add" src=" @item.ImageFilePath" height="75px" width="75px" />
+        <h2 class="item_name">Membership Gift @i</h2>
+        <input type=hidden type="text" value="1" class="item_Quantity">
+        <span class="item_price">$@item.Price</span>
 
-<table><tr><td>Gift A is 1 gram of our finest freshly made Ghost Train Haze budder </td><td>Gift B is 7 Grams of One of our best Indicas Ghost Train Haze</td></tr>
-    <tr><td>
-<div class="simpleCart_shelfItem">
-    <img class="item_add" src="~/images/budder.jpg" height="75px" width="75px" />
-    <h2 class="item_name">Gift A</h2>
-    <input type=hidden type="text" value="1" class="item_Quantity">
-    <span class="item_price">$50.00</span>
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
-    <input type="image" src="http://www.dubes.ca/images/paypal.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-    </form>
-</div>
-   </td><td>
 
-<div class="simpleCart_shelfItem">
-    <img class="item_add" src="~/images/blissberry.jpg" height="75px" width="75px" />
-    <h2 class="item_name">Gift B</h2>
-    <input type=hidden type="text" value="1" class="item_Quantity">
-    <span class="item_price">$50.00</span>
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
-    <input type="image" src="http://www.dubes.ca/images/paypal.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-    </form>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" id="form1">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="encrypted" value="@item.UPC">
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" id=submit@(i) alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+        </form>
+        
+        
+        </div>
+    </div>
+</div> 
+   }   
+ 
+}
 
+
+<script>
+   var myQuantitys = [];
+   var  myTotals= [];
+   var myStrings = [];
+@{ i=0;
+    @foreach (var item in ViewBag.query) {
+        i+=1;   
+
+        @: myTotals[@(i-1)]=@item.Price;
+
+        @: myQuantitys[@(i-1)]=@item.Likes;
+
+        @: myStrings[@(i-1)]='@item.Label';
+        
+    @:Total@(i)=@item.Price;
+    @:Quantity@(i)=@item.Likes
+    
+    @:$('#submit@(i)').on('click', function (e) {
+        @:e.preventDefault();
+        @: loaddoc(@(i));
+    @:});
+ }
+}
+
+ 
+var userId = '@ViewBag.UserId';
+ function loaddoc(giftNumber) {
+    var xhttp = new XMLHttpRequest();
+    
+    var datevar = Date().substr(0,Date().indexOf("GMT")-4);
+    
+    
+    xhttp.onreadystatechange = function() {
+        //alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
+        if (this.readyState == 4 && this.status == 200) {
+           
+            document.getElementById("demo").innerHTML =  "Order was posted to orders table";
+        }
+    };
+    xhttp.open("POST", "/Orders/CreateApi/", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //xhttp.send("fname=Henry&lname=Ford");
+    //return;
+    var buildstr2 = "";
+    var buildStr = "";
+    
    
-</div>
+        buildstr2 += "Membership Gift " + giftNumber + " - " +  myQuantitys[giftNumber-1] + " Grams of " + myStrings[giftNumber-1];
+        buildStr += "Total=" +  myTotals[giftNumber-1] + "&";
+   
+     
+    //buildStr += "OrderDate='" + datevar + "'&";
+    //buildStr += "DeliveryDate='" + datevar + "'&";
+    //buildStr += "Total=" +  simpleCart.grandTotal() + "&";    //"1" + "&";  
+    buildStr += "GeocodedAddress='@(ViewBag.DeliveryAddress)'&";
+    //buildStr += "Weight=" + "7" + "&";
+    buildStr += "PaymentType=" + "1" + "&";
+    buildStr += "Details='" +  buildstr2 + "'&";   // "test details" + "'&";   
+    buildStr += "SpecialInstructions='" +  "'&";
+    buildStr += "Status=" + "1" + "&";
+    //buildStr += "DriverId=" + "1" + "&";
+    //buildStr += "CustomerId=" + "1" ;
+    xhttp.send(buildStr); 
+   
+}
 
-</td></tr></table>
+
+      
+       
+
+
+</script>

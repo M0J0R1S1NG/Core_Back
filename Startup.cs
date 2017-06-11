@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Session;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +76,7 @@ namespace Core
                 config.Password.RequireLowercase = false;
                 config.User.RequireUniqueEmail = true;
                 config.SignIn.RequireConfirmedPhoneNumber = false;
+            
                 //config.Tokens.EmailConfirmationTokenProvider = "";
 
             })
@@ -87,7 +90,14 @@ namespace Core
             //    options.
                      
             // });
-
+            services.AddDistributedMemoryCache();
+            
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.CookieHttpOnly = true;
+            });
             services.AddMvc(options =>
             {
                 options.SslPort = 443;
@@ -95,7 +105,12 @@ namespace Core
                 //options.Filters.Add(new RequireHttpsAttribute());
             
             });
-
+            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ElevatedRights", policy =>
+                  policy.RequireRole("Admin", "PowerUser", "BackupAdministrator"));
+            });
             // Add application services.
             
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -154,7 +169,7 @@ namespace Core
                ConsumerSecret = "xMgkswlp5DMRhwlNsIaq5Yl3bks68CZu12cFQX7W3iFWAnVgS1" //Configuration["Authentication:Twitter:ConsumerSecret"]
             });
             //app.UseDirectoryBrowser();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {   
                 routes.MapRoute(

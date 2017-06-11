@@ -51,7 +51,16 @@ namespace Core.Controllers
         { 
             ViewData["DomainName"]=HttpContext.Request.Host;
             ViewData["Message"] ="";
-            ViewData["Title"] ="Shipping and Deliveries";
+            ViewData["Title"] ="Downloads";
+          
+           
+            return View();
+        }
+         public IActionResult Info()
+        { 
+            ViewData["DomainName"]=HttpContext.Request.Host;
+            ViewData["Message"] ="";
+            ViewData["Title"] ="Info";
           
            
             return View();

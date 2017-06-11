@@ -23,7 +23,7 @@ using Core.Models.AccountViewModels;
 
 namespace Core.Controllers
 {
-    [Authorize]
+    [Authorize]    
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -79,6 +79,7 @@ namespace Core.Controllers
         }
 
         // GET: Orders/Create
+        [Authorize(Roles="Admin")]
         public IActionResult Create()
         {
             return View();
@@ -105,7 +106,7 @@ namespace Core.Controllers
             
             return  View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateApi([Bind("Total,GeocodedAddress,Weight,PaymentType,Details,SpecialInstructions,Status,DriverId,CustomerId")] Order order)
         {
@@ -115,19 +116,23 @@ namespace Core.Controllers
                 order.AppUser= Guid.Parse(user.Id);
                 order.GeocodedAddress= user.DeliveryAddress;
                 _context.Add(order);
+
                 await _context.SaveChangesAsync();
-                string message = "Thanks You, we got your order. We are delivering to " ;
-                message += order.GeocodedAddress;
-                message+= "You can edit the delivery address up until we dispatch your order";
+                string message = "Thanks You, we got your order. We are delivering the following: "  + (char)10 +(char)13 + order.Details + (char)10 +(char)13 +  "To: " ;
+                message += order.GeocodedAddress + (char)10 + (Char)13  ;
+                message += "You can edit the delivery address up until we dispatch your order."  +  (char)10 + (Char)13;
+                message += "The total for this order is " +  order.Total.ToString() + " + tax"+  (char)10 + (Char)13;
+                message += "Your order number is " + order.ID + "-" + order.AppUser;
+                
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
-                await _smsSender.SendSmsAsync("6475284350", order.GeocodedAddress);
+                await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user) + " " + order.GeocodedAddress + " " +  order.Details);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
-                await _emailSender.SendEmailAsync("a2bman@hotmail.com", "New Order", message);
-                var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
-                return new ObjectResult(item);
+                await _emailSender.SendEmailAsync("a2bman@hotmail.com",  _userManager.GetPhoneNumberAsync(user) + " " + "New Order", message);
+                //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
+                return StatusCode(200);
             }
             
-            return  NotFound();
+            return StatusCode(404);
         }
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)

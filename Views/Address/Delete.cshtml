@@ -1,0 +1,89 @@
+@model Core.Models.Address
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Address</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="ID" />
+        <dt>
+            @Html.DisplayNameFor(model => model.GUID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GUID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedUser)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Geocoded)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Geocoded)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FullAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FullAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StreetNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StreetNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StreetName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StreetName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Province)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Province)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostalCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostalCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SpecialInstructions)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SpecialInstructions)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
