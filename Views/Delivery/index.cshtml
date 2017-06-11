@@ -151,7 +151,7 @@ function selectedSuggestion(result) {
     top.document.getElementById("myLink").click();
 }
     window.addEventListener("DOMContentLoaded", function() {
-       @if(TempData["searchBox"]!=null){
+       @if(TempData["emailAddress"]!=null){
             @:top.document.getElementById("message").value="Thanks you we received your request";
             @:top.document.getElementById("title").value="Request Added";
             @:top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);

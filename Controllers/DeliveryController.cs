@@ -44,7 +44,7 @@ namespace Core.Controllers
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> AddEmail(string searchBox, string emailAddress)
         {
-           TempData["searchBox"] =searchBox;
+           TempData["emailAddress"] =emailAddress;
 
            
             Address newadd = new Core.Models.Address();
