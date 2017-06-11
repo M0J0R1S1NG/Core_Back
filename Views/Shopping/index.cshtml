@@ -205,6 +205,7 @@ var userId = '@ViewBag.UserId';
         if (this.readyState == 4 && this.status == 200) {
            
             document.getElementById("demo").innerHTML =  "Order was posted to orders table";
+            
         }
     };
     xhttp.open("POST", "/Orders/CreateApi/", true);

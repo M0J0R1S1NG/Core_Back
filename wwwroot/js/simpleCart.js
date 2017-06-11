@@ -918,7 +918,7 @@
 							// if no one has any objections, send the checkout form
 							if( false !== simpleCart.trigger('beforeCheckout', [checkoutData.data]) ){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////								
-								//simpleCart.generateAndSendForm( checkoutData );
+								simpleCart.generateAndSendForm( checkoutData );
 							}
 						}
 						
