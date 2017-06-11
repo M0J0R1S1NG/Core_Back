@@ -127,8 +127,9 @@ If you would like just this order deliverd to a differnt location verify a diffe
             top.document.getElementById('Country').value = result.address.countryRegion;
         }
         var exteriorRing;
-        var InDeliveryArea;
-        var InDeliveryAreaConfirmed;
+        var InDeliveryArea=false;
+        var  AreaOpen=0;
+        var InDeliveryAreaConfirmed=false;
         @foreach (var item in ViewBag.deliveryareas){
  
                 @:exteriorRing = [
@@ -142,18 +143,35 @@ If you would like just this order deliverd to a differnt location verify a diffe
 
             @:var points@(item.ID) = polygon@(item.ID).getLocations();
             @:InDeliveryArea =  pointInPolygon(points@(item.ID),result.location.latitude,result.location.longitude) 
-            @:if (InDeliveryArea==true){InDeliveryAreaConfirmed=true}
+            @:if (InDeliveryArea==true){
+            @:    InDeliveryAreaConfirmed=true; 
+            @:    AreaOpen=@(item.Status)  
+            @:        var openTime = new Date(Date.parse('@item.OpenTime'));
+            @:        var closedTime = new Date(Date.parse('@item.ClosedTime'));
+            
+            @:        var openStr = openTime.getHours() + ":" + openTime.getMinutes();
+            @:        var closeStr = closedTime.getHours() + ":" + closedTime.getMinutes();
+            @:        var status = @item.Status ;
+            @:        var open = @item.Open.ToString().ToLower();
+         
+            @:}
         }
    
 
-
-        
-            var myAnswer = confirm(InDeliveryAreaConfirmed ? "This address qulaifies for immediate delivery and will be dispatched ASAP" : "Sorry this address does not qualify for immediate delivery your order will ship via Canada Post tonight");
+            InDeliveryAreaConfirmed ? message="Your all set! This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
+            InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
+           if (AreaOpen==2){  
+               message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
+           }
+   
+            var myAnswer = alert(title + " - " + message);
             if (myAnswer){
                 top.document.getElementById("GeocodedAddress").value=""
             }else{
                 top.document.getElementById("GeocodedAddress").value=""
             }
+            InDeliveryAreaConfirmed=false;
+            AreaOpen=0;
     }
 
 function pointInPolygon(points,lat,lon) 

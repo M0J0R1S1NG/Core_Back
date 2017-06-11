@@ -12,13 +12,13 @@ top.addEventListener('resize', function() {
     var height = $(document).height();
     map.setView({ width: width, height: height })
 });
-   $(function () {
+//    $(function () {
       
-        $('#myLink').on('click', function (e) {
-            e.preventDefault();
-            top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
-        });
-    });
+//         $('#myLink').on('click', function (e) {
+//             e.preventDefault();
+//             //top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
+//         });
+//     });
 
 function createFontPushpin(location, text, fontName, fontSizePx, color) {
     var c = document.createElement('canvas');

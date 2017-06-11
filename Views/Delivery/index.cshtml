@@ -122,13 +122,16 @@ function selectedSuggestion(result) {
     map.entities.push(pin);
     resizeMapWindow();
      var InDeliveryArea=false;
+     var  AreaOpen=0;
      var InDeliveryAreaConfirmed=false;
         @foreach (var item in Model){
             @:var points@(item.ID) = polygon@(item.ID).getLocations();
-            @:InDeliveryArea = pointInPolygon(points@(item.ID), result.location.latitude, result.location.longitude)
+            @:InDeliveryArea = pointInPolygon(points@(item.ID), result.location.latitude, result.location.longitude);
+            @:
+
             @:if (InDeliveryArea==true){
             @:        InDeliveryAreaConfirmed=true;
-            
+            @:        AreaOpen=@(item.Status)  
             @:        var openTime = new Date(Date.parse('@item.OpenTime'));
             @:        var closedTime = new Date(Date.parse('@item.ClosedTime'));
             
@@ -139,24 +142,30 @@ function selectedSuggestion(result) {
             @:}
         }
 
-    if (InDeliveryAreaConfirmed){
-        
-    }
-    
-    InDeliveryAreaConfirmed ? message="This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qulaify for immediate delivery, your items will be mailed"
+       
+    InDeliveryAreaConfirmed ? message="<h2>Your all set</h2>This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qulaify for immediate delivery, your items will be mailed vi aCanada Post<br>Please add your email and submit the form behind this message and we will notify you when the area opens "
     InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
+    AreaOpen==2 ? message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.": message="Your all setThis address qualifies for immediate delivery between " + openStr + " and " + closeStr
     top.document.getElementById("message").value=message;
     top.document.getElementById("title").value=title;
-    //top.document.getElementById("myLink")top.document.getElementById("myLink")top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
+    //top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
+    top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
     top.document.getElementById("myLink").click();
 }
+
+        $('#myForm2').on('submit', function (e) {
+        if (top.document.getElementById("emailAddress").value==null || top.document.getElementById("emailAddress").value=="" ){
+        e.preventDefault();}
+        });
     window.addEventListener("DOMContentLoaded", function() {
        @if(TempData["emailAddress"]!=null){
             @:top.document.getElementById("message").value="Thanks you we received your request";
             @:top.document.getElementById("title").value="Request Added";
             @:top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
             @:top.document.getElementById("myLink").click();
+
         }
+
     }, false);
 
 </script>
