@@ -114,20 +114,22 @@ namespace Core.Controllers
              {   
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 order.AppUser= Guid.Parse(user.Id);
-                order.GeocodedAddress= user.DeliveryAddress;
+                if (order.GeocodedAddress==null || order.GeocodedAddress==""){order.GeocodedAddress= user.DeliveryAddress;}
+                if (order.SpecialInstructions.Contains("Must add")) {order.SpecialInstructions= "";}
                 _context.Add(order);
 
                 await _context.SaveChangesAsync();
                 string message = "Thanks You, we got your order. We are delivering the following: "  + (char)10 +(char)13 + order.Details + (char)10 +(char)13 +  "To: " ;
                 message += order.GeocodedAddress + (char)10 + (Char)13  ;
+                message+= "-" + order.SpecialInstructions + " " + (char)10 + (Char)13;
                 message += "You can edit the delivery address up until we dispatch your order."  +  (char)10 + (Char)13;
                 message += "The total for this order is " +  order.Total.ToString() + " + tax"+  (char)10 + (Char)13;
                 message += "Your order number is " + order.ID + "-" + order.AppUser;
                 
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
-                await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user) + " " + order.GeocodedAddress + " " +  order.Details);
+                await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user).Result + " " + order.GeocodedAddress + " " +  order.Details);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
-                await _emailSender.SendEmailAsync("a2bman@hotmail.com",  _userManager.GetPhoneNumberAsync(user) + " " + "New Order", message);
+                await _emailSender.SendEmailAsync("a2bman@hotmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
                 return StatusCode(200);
             }
