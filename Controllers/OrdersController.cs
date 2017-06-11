@@ -119,7 +119,7 @@ namespace Core.Controllers
                 _context.Add(order);
 
                 await _context.SaveChangesAsync();
-                string message = "Thanks You, we got your order. We are delivering the following: "  + (char)10 +(char)13 + order.Details + (char)10 +(char)13 +  "To: " ;
+                string message = "Thank You, we got your order. We are delivering the following: "  + (char)10 +(char)13 + order.Details + (char)10 +(char)13 +  "To: " ;
                 message += order.GeocodedAddress + (char)10 + (Char)13  ;
                 message+= "-" + order.SpecialInstructions + " " + (char)10 + (Char)13;
                 message += "You can edit the delivery address up until we dispatch your order."  +  (char)10 + (Char)13;
