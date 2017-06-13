@@ -9,7 +9,8 @@
 
 <h2>@ViewData["Title"]</h2>
 <h3>Your current delivery addresss is: @ViewData["DeliveryAddress"]</h3>
-If you would like just this order deliverd to a differnt location verify a different address for instant delivery.  Tha address in this box will be delivered to.  
+If you would like just this order deliverd to a differnt location verify a different address for instant delivery.  The address in this box will be delivered to.
+If you wouldlike to try your current GPS location please click here <input type=button class=btn btn-default value="Use My Current Location" onclick="getLocation()"></input>  
 <hr/>
 <div class=container>
     <div class="row">
@@ -36,7 +37,7 @@ If you would like just this order deliverd to a differnt location verify a diffe
             </div>
         </div>
     </div>
-</div>
+</div> getLocation();
 
 <hr/>  
 <div class="container">    
@@ -233,6 +234,74 @@ var userId = '@ViewBag.UserId';
    
 }
 
+
+var x = top.document.getElementById("GeocodedAddress");
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+  
+    checkLocation(position.coords.latitude ,position.coords.longitude);
+}
+window.addEventListener("DOMContentLoaded", function() {
+     
+
+    }, false);
+
+
+function checkLocation(lat,lon){
+     var exteriorRing;
+         var InDeliveryArea=false;
+        var  AreaOpen=0;
+        var InDeliveryAreaConfirmed=false;
+        @foreach (var item in ViewBag.deliveryareas){
+                @:exteriorRing = [
+                    @:@item.Points
+                @:];
+            @:polygon@(item.ID) = new Microsoft.Maps.Polygon(exteriorRing, {
+            @:fillColor: 'rgba(0, 255, 0, 0.5)',
+            @:strokeColor: 'red',
+            @:strokeThickness: 2
+            @:});
+
+        
+            @:var points@(item.ID) = polygon@(item.ID).getLocations();
+            @:InDeliveryArea =  pointInPolygon(points@(item.ID),lat,lon) 
+            @:if (InDeliveryArea==true){
+            @:    InDeliveryAreaConfirmed=true; 
+            @:    AreaOpen=@(item.Status)  
+            @:        var openTime = new Date(Date.parse('@item.OpenTime'));
+            @:        var closedTime = new Date(Date.parse('@item.ClosedTime'));
+            
+            @:        var openStr = openTime.getHours() + ":" + openTime.getMinutes();
+            @:        var closeStr = closedTime.getHours() + ":" + closedTime.getMinutes();
+            @:        var status = @item.Status ;
+            @:        var open = @item.Open.ToString().ToLower();
+         
+            @:}
+        }
+            InDeliveryAreaConfirmed ? message="Your current GPS location is located in an area that qualifies for immediate delivery between " + openStr + " and " + closeStr  + "Do you want to use this location for this order": message="Sorry your current GPS location does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
+            InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
+           if (AreaOpen==2){  
+               message = "Your current GPS location is in area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
+           }
+   
+            var myAnswer = confirm(title + " - " + message);
+            if (myAnswer){
+                top.document.getElementById("GeocodedAddress").value=lat + " - " + lon
+            }else{
+            //    top.document.getElementById("GeocodedAddress").value=""
+            }
+            InDeliveryAreaConfirmed=false;
+            AreaOpen=0;
+        
+            
+    }
 </script>
 
 
