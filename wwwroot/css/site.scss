@@ -1,0 +1,68 @@
+/// Stroke font-character
+/// @param  {Integer} $stroke - Stroke width
+/// @param  {Color}   $color  - Stroke color
+/// @return {List}            - text-shadow list
+@function stroke($stroke, $color) {
+  $shadow: ();
+  $from: $stroke*-1;
+  @for $i from $from through $stroke {
+   @for $j from $from through $stroke {
+      $shadow: append($shadow, $i*1px $j*1px 0 $color, comma);
+    }
+  }
+  @return $shadow;
+}
+/// Stroke font-character
+/// @param  {Integer} $stroke - Stroke width
+/// @param  {Color}   $color  - Stroke color
+/// @return {Style}           - text-shadow
+@mixin stroke($stroke, $color) {
+  text-shadow: stroke($stroke, $color);
+}
+
+
+
+
+
+
+
+
+
+@import url(//fonts.googleapis.com/css?family=Armata);
+
+html {
+  font-family: "Armata", sans-serif;
+  fot-weight: 900;
+  background: #F5F5F5 ;
+  font-size: (100%/16)*14;
+}
+
+h1 {
+  font-size: 3em;
+  @include stroke(2,#26A69A);
+  color: #F5F5F5 ;
+}
+.function {
+  @include stroke(2,#FF6F00);
+  color: #FFE082;
+}
+.mixin {
+  @include stroke(3,#CDDC39);
+  color: #827717;
+}
+.fonts {
+  @include stroke(2,#424242);
+  color: #BDBDBD;
+}
+
+.large {
+  font-size: 2em;
+  line-height: 1.2;
+  @include stroke(4,#6D4C41);
+  color: #FFAB91;
+  div {margin: 4px;}
+}
+
+
+
+

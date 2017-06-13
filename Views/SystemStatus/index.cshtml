@@ -78,46 +78,46 @@
                         }else{
                                 @:<img src=/Img/redlightSmall.png />
                         }
-                       <a asp-controller="Manage" asp-action="SetPassword"><br>Password Valid:
+                       <a asp-controller="Manage" asp-action="SetPassword"><br>Password :
                 </a>
              </div>
                <div class="col-md-2">
                
                          @if (ViewData["LockoutEndDate"]==null){
-                                @:<img src=/Img/greenlightSmall.png /> <a asp-controller="Account" asp-action="Login"><br>Account UnLocked:  
+                                @:<img src=/Img/greenlightSmall.png /> <a href=="/Account/login"><br>Account :  
                         }else{
-                                @:<img src=/Img/redlightSmall.png /> <a asp-controller="Account" asp-action="Login"><br>Account Locked:   
+                                @:<img src=/Img/redlightSmall.png /> <a href="/Account/login"><br>Account :   
                         }
                 </a>                               
              </div>
              <div class="col-md-2">
 
                         @if (ViewData["Mnp"]!= null && ViewData["Mnp"].ToString()=="True"){<img src=/Img/greenlightSmall.png />}else{<img src=/Img/redlightSmall.png /> }
-                        <a asp-controller="MnpForm" asp-action="Create">                      <br>Medical Info:
+                        <a asp-controller="MnpForm" asp-action="Create">                      <br>Medical :
                 </a>
              </div>
               <div class="col-md-2"> 
 
                         @if (ViewData["profileCreated"]!= null && ViewData["profileCreated"].ToString()=="True"){<img src=/Img/greenlightSmall.png />}else{<img src=/Img/redlightSmall.png /> }
-                        <a asp-controller="Manage" asp-action="UpdateUser">                      <br>Delivery Address:
+                        <a asp-controller="Manage" asp-action="UpdateUser">                      <br>Address :
                 </a>
              </div>
               <div class="col-md-2">
 
                         @if (ViewData["MemberPaid"]!=null  && ViewData["MemberPaid"].ToString()=="True"){<img src=/Img/greenlightSmall.png />}else{<img src=/Img/redlightSmall.png /> }
-                        <a asp-controller="Shopping" asp-action="PurchaseMembership">                       <br>Membership Paid:
+                        <a asp-controller="Shopping" asp-action="PurchaseMembership">                       <br>Membership :
                 </a>        
              </div>
                <div class="col-md-2">
 
                          @if (@ViewData["ConfirmedPhone"]!=null && @ViewData["ConfirmedPhone"].ToString()=="True" ) {<img src=/Img/greenlightSmall.png />}else{<img src=/Img/redlightSmall.png /> }
-                        <a asp-controller="Manage" asp-action="AddPhoneNumber">                        <br>Confirmed  Phone:
+                        <a asp-controller="Manage" asp-action="AddPhoneNumber">                        <br>  Phone:
                 </a>      
              </div>
                 <div class="col-md-2">
                 
                         @if (@ViewData["ConfirmedEmail"]!=null && @ViewData["ConfirmedEmail"].ToString()=="True"){<img src=/Img/greenlightSmall.png />}else{<img src=/Img/redlightSmall.png /> }
-                        <a asp-controller="Account" asp-action="Register">                       <br>Confirmed Email:
+                        <a asp-controller="Account" asp-action="Register">                       <br> Email:
                 </a>
              </div>
         </div>

@@ -18,6 +18,7 @@
 		font: inherit;
 		vertical-align: baseline;
 
+
 	}
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -1658,10 +1659,16 @@
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		color: #5385c1;
-		font-weight: 300;
+		
+		
 		line-height: 1.5;
 		margin: 0 0 1em 0;
+		 color:black;
+    text-shadow:
+    -1px -1px #fff,
+    1px -1px  #fff,
+    -1px 1px  #fff,
+    1px 1px  #fff;  
 	}
 
 		h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
@@ -3071,9 +3078,6 @@
 		}
 
 	}
-	.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
-    color:  #5385c1;
-    background-color: transparent;
-}
+
 
 

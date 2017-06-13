@@ -11,15 +11,14 @@
         
         <div class="item active"> 
 
-            <img  src="~/images/Yellow.png" alt="Dubes" class="img-responsive img-carousel"/>
+            <img id="img1" src="~/images/Page1.jpg" alt="Dubes" class="img-responsive img-carousel" opacity="0.15:" />
             <div class="carousel-caption" role="option">
                 
 
  
   <h2>Beta Opening</h2>  We are allowing a limited number of people to Sign-up now and enjoy the services we offer prior to our grand opening.   
   We are beta testing the system in a few limited scope <a href="delivery">  delivery areas </a>in greater Toronto area.  
-  If you are in the one of the beta areas and would like to try our service please <a href="/Register" > register</a> now the beta spots are limited.<br>   
-  <h1>As a beta customer you will be entitghtled to special discount pricing during the trial and a <b>lifetime 5% discount.</b>applied to all future purchases after the beta trials  </h1>
+  As a beta customer you will be entitghtled to special discount pricing during the trial and a <b>lifetime 5% discount.</b>applied to all future purchases after the beta trials  
 <p>
   <!--<img src=/images/interacsoon.png />-->
 <hr>
@@ -27,7 +26,7 @@
             </div>
         </div>
         <div class="item">
-            <img  src="~/images/Purple.png" alt="Uber Duber" class="img-responsive img-carousel"/>
+            <img  src="~/images/Page2.jpg" alt="Uber Duber" class="img-responsive img-carousel"/>
             <div class="carousel-caption" role="option">
                              <p>
                      <h2><a href="/Franchise1">Franchise Opportunities</a></h2>
@@ -44,18 +43,13 @@
             </div>
         </div>
         <div class="item">
-            <img  src="~/images/Blue.png" alt="Fields" class="img-responsive img-carousel"  0/>
+            <img  src="~/images/Page5.jpg" alt="Fields" class="img-responsive img-carousel"  0/>
             <div class="carousel-caption" role="option">
-                <p>
-                    <h2>We are a high tech company</h2>
-                       We looked at the dispencary situation and thought there has to be a better way so...  we came up with the uberduber.
-                       We use big data from our systems and the huge Internet data wharehouses for perdicting localized demand and supply patterns. Our computer learning and A.I. algorithms anticipate  
-                       to determine localized demand and supply levels and anticipate spikes and troughs in the cycles and stock accordingly.  We have relatime inventory control and management systems in place.  If you can orer it it will be at you door in minutes.
-                       We have partnered with the industry leaders.  Our growers have hundreds of years experience between them.  Our concentrates manufacturers practicly invented the industry.  
-                       We also cary local artisan fare that showcases some of the better quality products available on the market that you don't see at the store front locations.  
-                       These are from farmers who care and don't just grow for quantity artisnal quality  
-
-                        We don't think you need to line up to make your purchase.  Sit back order online and we'll be at your door in minutes.
+                <p> <h2>We want your business</h2>
+                    We guarantee astisfaction.  We process your orders through PayPal, Credit Cards and soon Interac so you know your pyurchases are covered.
+                    We send you updates throughout the order and deliver process so you know exactly where your order is.  
+                    Our systems are smart.  You can trust your order it will be delivered exactly how we say it will be.
+                   
 
                     Ready to order  
                     <a class="btn btn-default" href="Account/Register">
@@ -68,14 +62,9 @@
 
         </div>
         <div class="item">
-            <img src="~/images/Pink.png" alt="green" class="img-responsive img-carousel"/>
+            <img src="~/images/Page2.jpg" alt="green" class="img-responsive img-carousel"/>
             <div class="carousel-caption" role="option">
-                    <h2>We want your business</h2>
-                    And well go pretty far to get it and keep it.<br>
-                    Worried about order something like this online, don't be.  We guarantee astisfaction.  We process your orders through PayPal, Credit Cards and soon Interac so you know your pyurchases are covered.
-                    We know that this is new, we want to earn your trust.  Thats why we ask for your email and cell phone numbers during registration.  We send you updates throughout the order and deliver process so you know exactly where your order is.
-                    Our systems are smart they will tell you if you are order outside of a delivery area or if the area is currently closed for deliverys.   You can trust that is we take your order it will be delivered exactly how we say it will be.
-                    You are our most important people
+                @await Html.PartialAsync("_HomeButtons")
             </div>
         </div>
     </div>
