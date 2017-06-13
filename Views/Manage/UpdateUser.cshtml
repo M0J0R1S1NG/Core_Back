@@ -14,7 +14,8 @@
 
 
 <form asp-controller="Manage" asp-action="UpdateUser" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-    <h4>If you have been automatically redirected here you don't have all of your information setup in your profile.  You must have a confirmed email address, confirmed phone number, and a valid Delivery Address.  Note if you want same day delivery youmust also have a confirmed delivery address inside our delivery zone</h4>
+    <h4>If you have been automatically redirected here you don't have all of your information setup in your profile.  You must have a confirmed email address, 
+        confirmed phone number, and a valid Delivery Address.</h4>
     <hr />
   <input type="hidden" asp-for="Id" />
     <div class="form-group">
@@ -26,7 +27,13 @@
             <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
         </div>
     </div>
-    
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
     <div class="form-group">
         <label asp-for="StreetNumber" class="col-md-2 control-label"></label>
         <div class="col-md-10">
@@ -69,10 +76,11 @@
             <span asp-validation-for="Country" class="text-danger"></span>
         </div>
     </div>
+
     <div class="form-group">
         <label asp-for="DoB" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="DoB" class="form-control" />
+            <input asp-for="DoB" class="form-control" class="form-control datepicker"/>
             <span asp-validation-for="DoB" class="text-danger"></span>
         </div>
     </div>
@@ -82,12 +90,29 @@
         </div>
     </div>
 </form>
-
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
     <script  type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=LoadMap' async defer></script>
     <!--<script type='text/javascript' src='/js/deliveryzone.js'></script>-->
+
+
+
+
+
+  <script>
+   $( "#DoB" ).on('click', function() {
+    $( "#DoB" ).datepicker();
+  } );
+  </script>
+
+
+
+
+
+
+
+
 
 <script>
 

@@ -97,8 +97,8 @@
 					// checkout reference for more info
 					checkout: {
 						type: "PayPal" 
-						,email: "a2bman-facilitator@hotmail.com"
-						,sandbox: true
+						,email: "a2bman@hotmail.com"
+						,sandbox: false
 					},
 					// set the currency, see the currency
 					// reference for more info

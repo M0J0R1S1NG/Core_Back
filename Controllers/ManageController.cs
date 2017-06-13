@@ -65,7 +65,7 @@ namespace Core.Controllers
         //POST: /Manage/UpdateUser
         [HttpPost]
        
-        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB")] ApplicationUser model, string returnUrl = null)
+        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,Name,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB")] ApplicationUser model, string returnUrl = null)
         {
             var UserId=  _userManager.GetUserId(User);
             if (Id != model.Id || Id ==null || Id != UserId)
@@ -87,6 +87,8 @@ namespace Core.Controllers
                     userToUpdate.StreetName = model.StreetName;
                     userToUpdate.Province = model.Province;
                     userToUpdate.DoB = model.DoB;
+                    userToUpdate.Name = model.Name;
+                    
                      _context.Update(userToUpdate);
                     await _context.SaveChangesAsync();
                

@@ -21,12 +21,13 @@ namespace Core.Models
         
         [Display(Name = "Birth Date")]
         [DisplayFormat(ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMMdd, yyyy}")]
+        [DataType(DataType.DateTime)] 
         public DateTime DoB {get;set;}
         public int status {get;set;}
         public bool Mnp {get;set;}
         public Guid MnpGuid {get;set;}
          
-       
+       public string Name {get;set;}
     }
     
 }

@@ -79,7 +79,7 @@ namespace Core.Controllers
         public IActionResult Returns()
         {
             ViewData["Message"] = "";
-            ViewData["ContactPhoneNumber"] = "1 (647)-528-4350";
+            ViewData["ContactPhoneNumber"] = "1 (416)-802-8129";
             ViewData["EmailSupport"] = "support@dubes.com";
             
             return View();
