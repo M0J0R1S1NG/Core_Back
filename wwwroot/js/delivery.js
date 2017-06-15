@@ -200,23 +200,23 @@ function loadMapScenario() {
     var tempHolder2 = [];
     var tempHolder = [];
 
-    Microsoft.Maps.Events.addHandler(map, 'click', function (e) {;
-            //if (e.targetType == "map") {
-            var point = new Microsoft.Maps.Point(e.getX(), e.getY());
-            var loc = e.target.tryPixelToLocation(point);
-            var location = new Microsoft.Maps.Location(loc.latitude, loc.longitude);
-            top.document.getElementById("tempHolderSpan").innerHTML += "<li>new Microsoft.Maps.Location(" + loc.latitude + ",  " + loc.longitude + "),</li>";
-             tempHolder = tempHolder2.concat(location,tempHolder);
-               polygon = new Microsoft.Maps.Polygon(tempHolder, {
-                fillColor: 'rgba(0, 255, 0, 0.5)',
-                strokeColor: 'red',
-                strokeThickness: 3
-            });
-                map.entities.pop(polygon)
-                //Add the polygon to map
-                map.entities.push(polygon);
-            //}
-    });
+    // Microsoft.Maps.Events.addHandler(map, 'click', function (e) {;
+    //         //if (e.targetType == "map") {
+    //         var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+    //         var loc = e.target.tryPixelToLocation(point);
+    //         var location = new Microsoft.Maps.Location(loc.latitude, loc.longitude);
+    //         top.document.getElementById("tempHolderSpan").innerHTML += "<li>new Microsoft.Maps.Location(" + loc.latitude + ",  " + loc.longitude + "),</li>";
+    //          tempHolder = tempHolder2.concat(location,tempHolder);
+    //            polygon = new Microsoft.Maps.Polygon(tempHolder, {
+    //             fillColor: 'rgba(0, 255, 0, 0.5)',
+    //             strokeColor: 'red',
+    //             strokeThickness: 3
+    //         });
+    //             map.entities.pop(polygon)
+    //             //Add the polygon to map
+    //             map.entities.push(polygon);
+    //         //}
+    // });
 
     var center = map.getCenter();
     var polygon;
