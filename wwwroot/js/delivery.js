@@ -197,8 +197,7 @@ function loadMapScenario() {
         manager.attachAutosuggest('#searchBox', '#searchBoxContainer', selectedSuggestion);
     });
 
-    var tempHolder2 = [];
-    var tempHolder = [];
+   
 
     // Microsoft.Maps.Events.addHandler(map, 'click', function (e) {;
     //         //if (e.targetType == "map") {

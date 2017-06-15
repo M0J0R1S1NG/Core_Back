@@ -6,31 +6,60 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Core.Models;
 using Core.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Core.Models.ManageViewModels;
+using Core.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Controllers
 {
-    
+    [Authorize]
     public class DeliveryController : Controller
     {   
         private readonly ApplicationDbContext _context;
-        public DeliveryController(ApplicationDbContext context){
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly string _externalCookieScheme;
+        private readonly IEmailSender _emailSender;
+        private readonly ISmsSender _smsSender;
+        private readonly ILogger _logger;
 
-        _context = context;
+
+
+        public DeliveryController(ApplicationDbContext context,
+          UserManager<ApplicationUser> userManager,
+          SignInManager<ApplicationUser> signInManager,
+          IOptions<IdentityCookieOptions> identityCookieOptions,
+          IEmailSender emailSender,
+          ISmsSender smsSender,
+          ILoggerFactory loggerFactory)
+        {   _context = context;   
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
+            _emailSender = emailSender;
+            _smsSender = smsSender;
+            _logger = loggerFactory.CreateLogger<ManageController>();
         }
-        public IActionResult Index()
+        [AllowAnonymous]
+        public async Task <IActionResult> Index()
         {   
             ViewBag.emailAddress=ViewBag.emailAddress;
             ViewBag.searchBox=ViewBag.searchBox;
-
+           ViewBag.IsAdmin=User.IsInRole("Admin");           
             List<DeliveryArea> deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0).ToList();
             return View(deliveryareas);
         }
-        
+        [AllowAnonymous]
         public IActionResult Default()
         {
             return View();
         }
+        
          [HttpGet]
+         [AllowAnonymous]
          public ActionResult ModalAction(int Id=0,string title="No Title",string message="No Message")
         {
 
@@ -42,6 +71,7 @@ namespace Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task <IActionResult> AddEmail(string searchBox, string emailAddress)
         {
            TempData["emailAddress"] =emailAddress;
