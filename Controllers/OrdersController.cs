@@ -119,19 +119,25 @@ namespace Core.Controllers
                 _context.Add(order);
 
                 await _context.SaveChangesAsync();
-                string message = "Thank You, we got your order. We are delivering the following: "  + (char)10 +(char)13 + order.Details + (char)10 +(char)13 +  "To: " ;
-                message += order.GeocodedAddress + (char)10 + (Char)13  ;
-                message+= "-" + order.SpecialInstructions + " " + (char)10 + (Char)13;
-                message += "You can edit the delivery address up until we dispatch your order."  +  (char)10 + (Char)13;
-                message += "The total for this order is " +  order.Total.ToString() + " + tax"+  (char)10 + (Char)13;
-                message += "Your order number is " + order.ID + "-" + order.AppUser;
+                string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  order.Details +  " <br>To: " ;
+                message += order.GeocodedAddress + "<br>";
+                message+= "Special Instructions:" + order.SpecialInstructions + "<br>";
+                message += "The total for this order is " +  order.Total.ToString() + " + tax <br>";
+                message += "<p>Your order number is " + order.ID + "-" + order.AppUser + "</p>";
                 
-                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
+                string smsmessage="Thanks we got your order. We are delivering the following: " +  order.Details + (char)10 + (char)13 + "To: "  ;
+                smsmessage += order.GeocodedAddress + (char)10 + (char)13;
+                smsmessage+= "Special Instructions:" + order.SpecialInstructions + (char)10 + (char)13;
+                smsmessage += "The total for this order is " +  order.Total.ToString() + " + tax " + (char)10 + (char)13;
+                smsmessage += "Your order number is " + order.ID + "-" + order.AppUser ;
+
+
+                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), smsmessage);
                 await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user).Result + " " + order.GeocodedAddress + " " +  order.Details);
                 await _smsSender.SendSmsAsync("4168028129", _userManager.GetPhoneNumberAsync(user).Result + " " + order.GeocodedAddress + " " +  order.Details);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
-                await _emailSender.SendEmailAsync("a2bman@hotmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
-                await _emailSender.SendEmailAsync("orders@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
+                await _emailSender.SendEmailAsync("andrewmoore46@hotmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
+                //await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
                 return StatusCode(200);
             }

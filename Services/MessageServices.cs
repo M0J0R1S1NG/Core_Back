@@ -34,17 +34,17 @@ namespace Core.Services
     {
         var emailMessage = new MimeMessage();
 
-        emailMessage.From.Add(new MailboxAddress("UberDuber", "services@uberduber.biz"));
+        emailMessage.From.Add(new MailboxAddress("UberDuber Order", "orders@uberduber.com"));
         
-            emailMessage.To.Add(new MailboxAddress("Uber Delivery", emails));
+            emailMessage.To.Add(new MailboxAddress(emails, emails));
         
         emailMessage.Subject = subject;
         emailMessage.Body = new TextPart("html") { Text = body };
 
         using (var client = new SmtpClient())
         {
-            client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            client.Authenticate("andrewmoore46@gmail.com", "ganuTHa8");            // var gmailUser = Options.gmailUser;// var gmailPassword = Options.gmailPassword;
+            client.Connect("SMTP.NameBrightMail.com",587, SecureSocketOptions.None);
+            client.Authenticate("orders@uberduber.com", "M0j0R1s1ng!");            // var gmailUser = Options.gmailUser;// var gmailPassword = Options.gmailPassword;
             client.Send(emailMessage);
             client.Disconnect(true);
         }
