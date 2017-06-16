@@ -122,13 +122,13 @@ namespace Core.Controllers
                 string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  order.Details +  " <br>To: " ;
                 message += order.GeocodedAddress + "<br>";
                 message+= "Special Instructions:" + order.SpecialInstructions + "<br>";
-                message += "The total for this order is " +  order.Total.ToString() + "<br>";
+                //message += "The total for this order is " +  order.Total.ToString() + "<br>";
                 message += "<p>Your order number is " + order.ID + "-" + order.AppUser + "</p>";
                 
                 string smsmessage="Thanks we got your order. We are delivering the following: " +  order.Details + (char)10 + (char)13 + "To: "  ;
                 smsmessage += order.GeocodedAddress + (char)10 + (char)13;
                 smsmessage+= "Special Instructions:" + order.SpecialInstructions + (char)10 + (char)13;
-                smsmessage += "The total for this order is " +  order.Total.ToString() + (char)10 + (char)13;
+                //smsmessage += "The total for this order is " +  order.Total.ToString() + (char)10 + (char)13;
                 smsmessage += "Your order number is " + order.ID + "-" + order.AppUser ;
 
 
