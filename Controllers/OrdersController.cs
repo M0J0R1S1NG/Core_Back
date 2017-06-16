@@ -136,8 +136,8 @@ namespace Core.Controllers
                 await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user).Result + " " + order.GeocodedAddress + " " +  order.Details);
                 await _smsSender.SendSmsAsync("4168028129", _userManager.GetPhoneNumberAsync(user).Result + " " + order.GeocodedAddress + " " +  order.Details);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
-                await _emailSender.SendEmailAsync("andrewmoore46@hotmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
-                //await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
+                await _emailSender.SendEmailAsync("andrewmoore46@gmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
+                await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
                 return StatusCode(200);
             }
