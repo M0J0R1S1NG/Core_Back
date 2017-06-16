@@ -15,7 +15,7 @@ using Core.Services;
 
 namespace Core.Controllers
 {
-
+[Authorize(Roles="Admin")]
     public class PayPalController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

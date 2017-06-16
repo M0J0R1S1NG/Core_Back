@@ -23,7 +23,7 @@ using Core.Models.AccountViewModels;
 
 namespace Core.Controllers
 {
-    [Authorize]
+   [Authorize(Roles="Admin")]
     public class RecurringOrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
