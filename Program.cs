@@ -21,7 +21,7 @@ namespace Core
             //Environment.SetEnvironmentVariable("DEVHOST","WINDOWSONMAC");
             if (Environment.GetEnvironmentVariable("DEVHOST")==null){
                  var host = new WebHostBuilder()
-                .UseUrls("https://www.uberduber.biz")
+                .UseUrls("https://www.uberduber.com")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseKestrel()
                 .UseIISIntegration()
