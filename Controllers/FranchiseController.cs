@@ -63,6 +63,7 @@ namespace Core.Controllers
                 return RedirectToAction("Index");
             }
             return View(franchise);
+            
         }
 
         // GET: Franchise/Edit/5
