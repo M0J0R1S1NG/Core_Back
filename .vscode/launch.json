@@ -85,10 +85,10 @@
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
                 "enabled": true,
-                "args": "https://www.uberduber.biz",
+                "args": "https://www.uberduber.com",
                 "windows": {
                     "command": "cmd.exe",
-                    "args": "/C start https://www.uberduber.biz"
+                    "args": "/C start https://www.uberduber.com"
                 },
                 "osx": {
                     "command": "open"
