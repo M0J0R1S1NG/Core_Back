@@ -108,7 +108,9 @@ If you wouldlike to try your current GPS location please click here <input type=
             </tr>
             <tr>
                 <td colspan="2" class="tabcell"><button class="simpleCart_checkout">Checkout</button>
-               <button class="simpleCart_empty">Empty Cart</button></td>
+               <button class="simpleCart_empty">Empty Cart</button>
+                <button class="simpleCart_empty" onclick="DebitWayInit()">Update Debitway</button>
+               </td>
             </tr>
         </Table>
     </div>
@@ -577,7 +579,12 @@ function DebitWayInit() {
     top.document.getElementById("shipping_country").value = shipping_country;
     top.document.getElementById("item_name").value = item_name;
     top.document.getElementById("amount").value = amount;
-    top.document.getElementById("Quantity").value = quantity;
+    if (top.document.getElementById("quantity") != null){
+            top.document.getElementById("quantity").value = quantity;
+        }
+    if (top.document.getElementById("Quantity") != null){
+            top.document.getElementById("Quantity").value = quantity;
+        }
     top.document.getElementById("item_code").value = item_code;
     top.document.getElementById("custom").value = custom;
     top.document.getElementById("shipment").value = shipment;
