@@ -534,7 +534,7 @@ function DebitWayInit() {
     var state_or_province="@ViewBag.user.Province";
     var zip_or_postal_code ="@ViewBag.user.PostalCode";
     var country="@ViewBag.user.Country";
-    var email="@ViewBag.user.Email";
+    var emailadd="@ViewBag.user.Email";
     var phone="@ViewBag.user.PhoneNumber";
     var shipping_address= top.document.getElementById("StreetName").value ;
     var shipping_city=  top.document.getElementById('City').value;
@@ -557,8 +557,7 @@ function DebitWayInit() {
     
     var datevar = Date().substr(0,Date().indexOf("GMT")-4);
 
-
-    top.document.getElementById("return_url").value = "https://www.uberduber.com/DebitWay";
+    top.document.getElementById("return_url").value = "https://www.uberduber.com/DebitWay/Create";
     top.document.getElementById("language").value = language;
     top.document.getElementById("first_name").value = first_name;
     top.document.getElementById("last_name").value = last_name;
@@ -568,7 +567,7 @@ function DebitWayInit() {
     top.document.getElementById("state_or_province").value = state_or_province;
     top.document.getElementById("zip_or_postal_code").value = zip_or_postal_code;
     top.document.getElementById("country").value = country;
-    top.document.getElementById("email").value = email;
+    top.document.getElementById("email").value = emailadd;
     top.document.getElementById("phone").value = phone;
     top.document.getElementById("shipping_address").value = shipping_address;
     top.document.getElementById("shipping_city").value = shipping_city;
@@ -577,12 +576,12 @@ function DebitWayInit() {
     top.document.getElementById("shipping_country").value = shipping_country;
     top.document.getElementById("item_name").value = item_name;
     top.document.getElementById("amount").value = amount;
-    top.document.getElementById("quantity").value = quantity;
+    top.document.getElementById("Quantity").value = quantity;
     top.document.getElementById("item_code").value = item_code;
     top.document.getElementById("custom").value = custom;
     top.document.getElementById("shipment").value = shipment;
     top.document.getElementById("merchant_transaction_id").value = merchant_transaction_id;
-    top.document.getElementById("time_stamp").value = time_stamp;
+    top.document.getElementById("time_stamp").value = datevar;
     
 
 
