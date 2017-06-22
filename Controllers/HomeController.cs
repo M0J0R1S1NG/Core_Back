@@ -29,6 +29,10 @@ namespace Core.Controllers
         {
             return View();
         }
+         public IActionResult Disclaimer()
+        {
+            return View();
+        }
         public IActionResult About()
         { 
             ViewData["DomainName"]=HttpContext.Request.Host;

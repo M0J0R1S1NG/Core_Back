@@ -10,22 +10,22 @@ using Core.Models;
 
 namespace Core.Controllers
 {
-    public class AddressController : Controller
+    public class DebitWayController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AddressController(ApplicationDbContext context)
+        public DebitWayController(ApplicationDbContext context)
         {
             _context = context;    
         }
 
-        // GET: Address
+        // GET: DebitWay
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Addresses.ToListAsync());
+            return View(await _context.DebitWay.ToListAsync());
         }
 
-        // GET: Address/Details/5
+        // GET: DebitWay/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Core.Controllers
                 return NotFound();
             }
 
-            var address = await _context.Addresses
+            var debitWay = await _context.DebitWay
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (address == null)
+            if (debitWay == null)
             {
                 return NotFound();
             }
 
-            return View(address);
+            return View(debitWay);
         }
 
-        // GET: Address/Create
+        // GET: DebitWay/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Address/Create
+        // POST: DebitWay/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,CreatedUser,Geocoded,FullAddress,StreetNumber,StreetName,City,Province,PostalCode,PhoneNumber,SpecialInstructions,Status")] Address address)
+        public async Task<IActionResult> Create([Bind("ID,website_unique_id,return_url,transaction_id,merchant_transaction_id,transaction_status,transaction_result,transaction_date,transaction_type,item_name,amount,quantity,item_code,language,email,phone,custom,shipment,first_name,last_name,address,city,state_or_province,zip_or_postal_code,country,shipping_address,shipping_city,shipping_state_or_province,shipping_zip_or_postal_code,shipping_country,customer_errors_meaning,errors,issuer_name,issuer_confirmation,status,time_stamp")] DebitWay debitWay)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(address);
+                _context.Add(debitWay);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(address);
+            return View(debitWay);
         }
 
-        // GET: Address/Edit/5
+        // GET: DebitWay/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Core.Controllers
                 return NotFound();
             }
 
-            var address = await _context.Addresses.SingleOrDefaultAsync(m => m.ID == id);
-            if (address == null)
+            var debitWay = await _context.DebitWay.SingleOrDefaultAsync(m => m.ID == id);
+            if (debitWay == null)
             {
                 return NotFound();
             }
-            return View(address);
+            return View(debitWay);
         }
 
-        // POST: Address/Edit/5
+        // POST: DebitWay/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,CreatedUser,Geocoded,FullAddress,StreetNumber,StreetName,City,Province,PostalCode,PhoneNumber,SpecialInstructions,Status")] Address address)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,website_unique_id,return_url,transaction_id,merchant_transaction_id,transaction_status,transaction_result,transaction_date,transaction_type,item_name,amount,quantity,item_code,language,email,phone,custom,shipment,first_name,last_name,address,city,state_or_province,zip_or_postal_code,country,shipping_address,shipping_city,shipping_state_or_province,shipping_zip_or_postal_code,shipping_country,customer_errors_meaning,errors,issuer_name,issuer_confirmation,status,time_stamp")] DebitWay debitWay)
         {
-            if (id != address.ID)
+            if (id != debitWay.ID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Core.Controllers
             {
                 try
                 {
-                    _context.Update(address);
+                    _context.Update(debitWay);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AddressExists(address.ID))
+                    if (!DebitWayExists(debitWay.ID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Core.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(address);
+            return View(debitWay);
         }
 
-        // GET: Address/Delete/5
+        // GET: DebitWay/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace Core.Controllers
                 return NotFound();
             }
 
-            var address = await _context.Addresses
+            var debitWay = await _context.DebitWay
                 .SingleOrDefaultAsync(m => m.ID == id);
-            if (address == null)
+            if (debitWay == null)
             {
                 return NotFound();
             }
 
-            return View(address);
+            return View(debitWay);
         }
 
-        // POST: Address/Delete/5
+        // POST: DebitWay/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var address = await _context.Addresses.SingleOrDefaultAsync(m => m.ID == id);
-            _context.Addresses.Remove(address);
+            var debitWay = await _context.DebitWay.SingleOrDefaultAsync(m => m.ID == id);
+            _context.DebitWay.Remove(debitWay);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool AddressExists(int id)
+        private bool DebitWayExists(int id)
         {
-            return _context.Addresses.Any(e => e.ID == id);
+            return _context.DebitWay.Any(e => e.ID == id);
         }
     }
 }

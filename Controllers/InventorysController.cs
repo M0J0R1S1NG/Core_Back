@@ -17,6 +17,7 @@ using Core.Services;
 
 
 
+
 namespace Core.Controllers
 {
    [Authorize(Roles="Admin")]
@@ -46,7 +47,52 @@ namespace Core.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
+        
+        [Authorize(Roles="Admin")]
+        public async Task<IActionResult> ForSale()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userGuid = Guid.Parse(user.Id);
 
+            DebitWay myDebitWay = new Models.DebitWay();
+            myDebitWay.website_unique_id = "Www.uberduber.com";
+             myDebitWay.address = user.DeliveryAddress;
+             myDebitWay.city = user.City;
+             myDebitWay.state_or_province = user.Province;
+             myDebitWay.country = user.Country;
+             myDebitWay.zip_or_postal_code = user.PostalCode;
+             myDebitWay.first_name = user.FirstName;
+             myDebitWay.last_name=user.LastName;
+             myDebitWay.language= user.Language;
+             myDebitWay.merchant_transaction_id = Guid.NewGuid().ToString();
+            myDebitWay.phone=user.PhoneNumber;
+            myDebitWay.email=user.Email;
+            myDebitWay.shipping_address=user.DeliveryAddress;
+            myDebitWay.shipping_city=user.City;
+            myDebitWay.shipping_state_or_province=user.Province;
+            myDebitWay.shipping_country=user.Country;
+            myDebitWay.shipping_zip_or_postal_code=user.PostalCode;
+            myDebitWay.status="init";
+            myDebitWay.custom=userGuid.ToString();
+            myDebitWay.shipment="yes";
+            myDebitWay.transaction_date=DateTime.Now;
+            myDebitWay.transaction_id="";
+            myDebitWay.time_stamp=DateTime.Now;
+            
+            ViewBag.DebitWay=myDebitWay;
+            ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
+            ViewBag.user = user;
+            ViewBag.UserId = _userManager.GetUserId(User);
+            ViewBag.Inventory = _context.Inventorys.Where(c=> c.Status>0);
+            ViewData["DeliveryAddress"]=user.DeliveryAddress;
+            var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+            ViewBag.query2 = new SelectList(Products, "Id", "Value");
+            return View(myDebitWay);
+
+            
+        }
+        
+        
         // GET: Inventorys
         [Authorize(Roles="Admin")]
         public async Task<IActionResult> Index()

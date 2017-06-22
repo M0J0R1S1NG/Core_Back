@@ -1,0 +1,307 @@
+@model IEnumerable<Core.Models.DebitWayNotification>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.identifier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.business)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WebSiteId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.vericode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.item_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.action)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.merchant_transaction_id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.transaction_id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.transaction_status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.transaction_result)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.transaction_date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.transaction_type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.result)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.net)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.gross)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.discount_fee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.additional_fee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.processing_rate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.item_code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.custom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.shipment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.language)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.first_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.last_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.phone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.city)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.state_or_province)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.zip_or_postal_code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.country)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.shipping_address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.shipping_city)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.shipping_state_or_province)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.shipping_zip_or_postal_code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.shipping_country)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.errors)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.errors_meaning)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.customer_errors_meaning)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.issuer_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.issuer_confirmation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.time_stamp)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.identifier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.business)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WebSiteId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.vericode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.item_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.action)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.merchant_transaction_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.transaction_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.transaction_status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.transaction_result)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.transaction_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.transaction_type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.result)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.net)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gross)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.discount_fee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.additional_fee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.processing_rate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.item_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.custom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shipment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.language)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.first_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.last_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.city)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.state_or_province)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.zip_or_postal_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shipping_address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shipping_city)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shipping_state_or_province)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shipping_zip_or_postal_code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shipping_country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.errors)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.errors_meaning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.customer_errors_meaning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.issuer_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.issuer_confirmation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.time_stamp)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

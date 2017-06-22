@@ -8,9 +8,10 @@ using Core.Data;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170617202341_update16")]
+    partial class update16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -75,8 +76,6 @@ namespace Core.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<string>("Language");
-
                     b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
@@ -109,11 +108,7 @@ namespace Core.Migrations
 
                     b.Property<string>("StreetNumber");
 
-                    b.Property<bool>("TermsAndConditions");
-
                     b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UnitNumber");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
@@ -159,6 +154,8 @@ namespace Core.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("WebSiteId");
+
                     b.Property<string>("address");
 
                     b.Property<double>("amount");
@@ -172,8 +169,6 @@ namespace Core.Migrations
                     b.Property<string>("customer_errors_meaning");
 
                     b.Property<string>("email");
-
-                    b.Property<string>("errors");
 
                     b.Property<string>("first_name");
 
@@ -195,9 +190,7 @@ namespace Core.Migrations
 
                     b.Property<double>("quantity");
 
-                    b.Property<string>("return_url");
-
-                    b.Property<string>("shipment");
+                    b.Property<bool>("shipment");
 
                     b.Property<string>("shipping_address");
 
@@ -211,10 +204,6 @@ namespace Core.Migrations
 
                     b.Property<string>("state_or_province");
 
-                    b.Property<string>("status");
-
-                    b.Property<DateTime>("time_stamp");
-
                     b.Property<DateTime>("transaction_date");
 
                     b.Property<string>("transaction_id");
@@ -224,114 +213,12 @@ namespace Core.Migrations
                     b.Property<string>("transaction_status");
 
                     b.Property<string>("transaction_type");
-
-                    b.Property<string>("website_unique_id");
 
                     b.Property<string>("zip_or_postal_code");
 
                     b.HasKey("ID");
 
                     b.ToTable("DebitWay");
-                });
-
-            modelBuilder.Entity("Core.Models.DebitWayNotification", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("WebSiteId");
-
-                    b.Property<string>("action");
-
-                    b.Property<double>("additional_fee");
-
-                    b.Property<string>("address");
-
-                    b.Property<double>("amount");
-
-                    b.Property<string>("business");
-
-                    b.Property<string>("city");
-
-                    b.Property<string>("country");
-
-                    b.Property<string>("custom");
-
-                    b.Property<string>("customer_errors_meaning");
-
-                    b.Property<double>("discount_fee");
-
-                    b.Property<string>("email");
-
-                    b.Property<string>("errors");
-
-                    b.Property<string>("errors_meaning");
-
-                    b.Property<string>("first_name");
-
-                    b.Property<double>("gross");
-
-                    b.Property<string>("identifier");
-
-                    b.Property<string>("issuer_confirmation");
-
-                    b.Property<string>("issuer_name");
-
-                    b.Property<string>("item_code");
-
-                    b.Property<string>("item_name");
-
-                    b.Property<string>("language");
-
-                    b.Property<string>("last_name");
-
-                    b.Property<string>("merchant_transaction_id");
-
-                    b.Property<double>("net");
-
-                    b.Property<string>("phone");
-
-                    b.Property<string>("processing_rate");
-
-                    b.Property<double>("quantity");
-
-                    b.Property<string>("result");
-
-                    b.Property<string>("shipment");
-
-                    b.Property<string>("shipping_address");
-
-                    b.Property<string>("shipping_city");
-
-                    b.Property<string>("shipping_country");
-
-                    b.Property<string>("shipping_state_or_province");
-
-                    b.Property<string>("shipping_zip_or_postal_code");
-
-                    b.Property<string>("state_or_province");
-
-                    b.Property<string>("status");
-
-                    b.Property<DateTime>("time_stamp");
-
-                    b.Property<DateTime>("transaction_date");
-
-                    b.Property<string>("transaction_id");
-
-                    b.Property<string>("transaction_result");
-
-                    b.Property<string>("transaction_status");
-
-                    b.Property<string>("transaction_type");
-
-                    b.Property<string>("vericode");
-
-                    b.Property<string>("zip_or_postal_code");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("DebitWayNotifications");
                 });
 
             modelBuilder.Entity("Core.Models.DeliveryArea", b =>

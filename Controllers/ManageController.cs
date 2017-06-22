@@ -65,7 +65,7 @@ namespace Core.Controllers
         //POST: /Manage/UpdateUser
         [HttpPost]
        
-        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,Name,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB")] ApplicationUser model, string returnUrl = null)
+        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,FirstName,LastName,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB")] ApplicationUser model, string returnUrl = null)
         {
             var UserId=  _userManager.GetUserId(User);
             if (Id != model.Id || Id ==null || Id != UserId)
@@ -87,14 +87,15 @@ namespace Core.Controllers
                     userToUpdate.StreetName = model.StreetName;
                     userToUpdate.Province = model.Province;
                     userToUpdate.DoB = model.DoB;
-                    userToUpdate.Name = model.Name;
+                    userToUpdate.FirstName = model.FirstName;
+                    userToUpdate.LastName = model.LastName;
                     
                      _context.Update(userToUpdate);
                     await _context.SaveChangesAsync();
                
                 }
 
-                return RedirectToAction("","Shopping");
+                return RedirectToAction("","Manage");
             }else{
                 ModelState.AddModelError(string.Empty, "Failed to update your profile info.");
                 return View();

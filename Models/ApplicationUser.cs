@@ -10,6 +10,7 @@ namespace Core.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public string  UnitNumber {get;set;}
         public String StreetName {get;set;}
         public String PostalCode {get;set;}
         [Display(Name = "Unit/Apt #")]
@@ -27,7 +28,17 @@ namespace Core.Models
         public bool Mnp {get;set;}
         public Guid MnpGuid {get;set;}
          
-       public string Name {get;set;}
+         
+       [Display(Name = "First and Middle Names")]
+       public string FirstName {get;set;}
+       [Display(Name = "Last Name")]
+       public string LastName {get;set;}
+       public string Language {get;set;}
+        
+        [Display(Name = "Terms and Conditions")]
+	    [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms and conditions to continue!")]
+		public bool TermsAndConditions { get; set; }	
+
     }
     
 }

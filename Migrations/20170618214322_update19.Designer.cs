@@ -8,9 +8,10 @@ using Core.Data;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170618214322_update19")]
+    partial class update19
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -109,11 +110,7 @@ namespace Core.Migrations
 
                     b.Property<string>("StreetNumber");
 
-                    b.Property<bool>("TermsAndConditions");
-
                     b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UnitNumber");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
@@ -159,6 +156,8 @@ namespace Core.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("WebSiteId");
+
                     b.Property<string>("address");
 
                     b.Property<double>("amount");
@@ -195,8 +194,6 @@ namespace Core.Migrations
 
                     b.Property<double>("quantity");
 
-                    b.Property<string>("return_url");
-
                     b.Property<string>("shipment");
 
                     b.Property<string>("shipping_address");
@@ -224,8 +221,6 @@ namespace Core.Migrations
                     b.Property<string>("transaction_status");
 
                     b.Property<string>("transaction_type");
-
-                    b.Property<string>("website_unique_id");
 
                     b.Property<string>("zip_or_postal_code");
 

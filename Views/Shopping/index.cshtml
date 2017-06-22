@@ -37,8 +37,12 @@ If you wouldlike to try your current GPS location please click here <input type=
             </div>
         </div>
     </div>
-</div> getLocation();
-
+</div> 
+            <input id='StreetName' type='hidden' />
+            <input id='City' type="hidden" />
+            <input id='Province' type="hidden" />
+            <input id='PostalCode' type="hidden" />
+            <input id='Country' type="hidden" />
 <hr/>  
 <div class="container">    
     <div class="row">
@@ -100,9 +104,7 @@ If you wouldlike to try your current GPS location please click here <input type=
 
 <script>
 
-@foreach (var item in ViewBag.deliveryareas) {
 
-}
  function LoadMap() {
         Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', {
             callback: function () {
@@ -119,6 +121,7 @@ If you wouldlike to try your current GPS location please click here <input type=
     }
     
     function selectedSuggestion(result) {
+
         //Populate the address textbox values.
         if (top.document.getElementById('StreetName')!=null){
             top.document.getElementById('StreetName').value = result.address.addressLine;
@@ -197,7 +200,7 @@ function pointInPolygon(points,lat,lon)
   }
   return inPoly; 
 }
-var userId = '@ViewBag.UserId';
+ var userId = '@ViewBag.UserId';
  function loadDoc() {
     var xhttp = new XMLHttpRequest();
     var datevar = Date().substr(0,Date().indexOf("GMT")-4);
@@ -231,6 +234,93 @@ var userId = '@ViewBag.UserId';
     //buildStr += "DriverId=" + "1" + "&";
     //buildStr += "CustomerId=" + "1" ;
     xhttp.send(buildStr); 
+   
+}
+
+function DebitWayInit() {
+    var xhttp = new XMLHttpRequest();
+    //Required Variables for DebitWay 
+    var website_unique_id="myWebsiteID";
+    var return_url="https://www.uberduber.com/DebitWay";
+    var language="English";
+    var first_name="@ViewBag.user.FirstName";
+    var last_name="@ViewBag.user.LastName";
+    var address="@ViewBag.user.StreetName";
+    var city = "@ViewBag.user.City";
+    var state_or_province="@ViewBag.user.Province";
+    var zip_or_postal_code ="@ViewBag.user.PostalCode";
+    var country="@ViewBag.user.Country";
+    var email="@ViewBag.user.Email";
+    var phone="@ViewBag.user.PhoneNumber";
+    var shipping_address= top.document.getElementById("StreetName").value ;
+    var shipping_city=  top.document.getElementById('City').value;
+    var shipping_state_or_province=  top.document.getElementById('Province').value;
+    var shipping_zip_or_postal_code = top.document.getElementById('PostalCode').value;
+    var shipping_country=  top.document.getElementById('Country').value;
+    var item_name = "";
+    var quantity = 0;
+    for (var i in simpleCart.items()){
+        item_name +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('name') + ","
+        quantity+= simpleCart.items()[i].get('quantity');
+        
+    }
+
+    var amount = simpleCart.grandTotal();
+    var item_code = "unknown"
+    var custom=top.document.getElementById("SpecialInstructions").value
+    var shipment=true;
+    var merchant_transaction_id = "@Guid.NewGuid()";
+    
+    var datevar = Date().substr(0,Date().indexOf("GMT")-4);
+
+    xhttp.onreadystatechange = function() {
+        //alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
+        if (this.readyState == 4 && this.status == 200) {
+           
+            document.getElementById("demo").innerHTML =  "Order was posted to orders table";
+            
+        }else{
+            alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
+        }
+    };
+
+    
+    
+    xhttp.open("POST", "/DebitWay/CreateApi/", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    
+  
+     var buildStr = ""
+    buildStr += "website_unique_id='" +  website_unique_id + "'&";    //"1" + "&";  
+    buildStr += "language='" +  language + "'&"; 
+    buildStr += "first_name='" +  first_name + "'&"; 
+    buildStr += "last_name='" +  last_name + "'&"; 
+    buildStr += "address='" +  address + "'&"; 
+    buildStr += "city='" +  city + "'&"; 
+    buildStr += "state_or_province='" +  state_or_province + "'&"; 
+    buildStr += "zip_or_postal_code='" +  zip_or_postal_code + "'&"; 
+    buildStr += "country='" +  country + "'&"; 
+    
+    buildStr += "email='" +  email + "'&"; 
+    buildStr += "phone='" +  phone + "'&"; 
+    buildStr += "shipping_address='" +  shipping_address + "'&"; 
+   
+    buildStr += "shipping_city='" +  shipping_city + "'&"; 
+    buildStr += "shipping_state_or_province='" +  shipping_state_or_province + "'&"; 
+    buildStr += "shipping_zip_or_postal_code='" +  shipping_zip_or_postal_code + "'&"; 
+    buildStr += "shipping_country='" +  shipping_country + "'&"; 
+    buildStr += "item_name='" +  item_name + "'&"; 
+    buildStr += "quantity='" +  quantity + "'&"; 
+    buildStr += "amount='" +  amount + "'&"; 
+    buildStr += "item_code='" +  item_code + "'&"; 
+    buildStr += "custom='" +  custom + "'&"; 
+    buildStr += "shipment='" +  shipment + "'&"; 
+    buildStr += "merchant_transaction_id='" +  merchant_transaction_id + "'&"; 
+   
+  alert(buildStr);
+   xhttp.send(buildStr); 
+    return;
    
 }
 

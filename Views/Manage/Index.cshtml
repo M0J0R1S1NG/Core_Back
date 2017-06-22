@@ -21,6 +21,10 @@
     <h4>Change settings</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>Profile Data:</dt>
+        <dd>
+             <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Manage</a>
+        </dd>
         <dt>Password:</dt>
         <dd>
             @if (Model.HasPassword)
@@ -57,10 +61,7 @@
                     <a asp-controller="Manage" asp-action="AddPhoneNumber" class="btn-bracketed">Add</a>
                 }
         </dd>
-        <dt>Profile Data:</dt>
-        <dd>
-             <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Manage</a>
-        </dd>
+
         <!--<dt>Two-Factor Authentication:</dt>
         <dd>
             <p>

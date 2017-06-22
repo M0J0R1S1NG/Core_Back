@@ -1,5 +1,17 @@
 @model IEnumerable<Core.Models.Address>
 
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -7,7 +19,7 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.GUID)
+                    @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.CreatedUser)
@@ -49,7 +61,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.GUID)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedUser)
@@ -93,4 +105,5 @@
 }
     </tbody>
 </table>
-
+</body>
+</html>

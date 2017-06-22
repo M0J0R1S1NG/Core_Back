@@ -27,6 +27,8 @@ namespace Core.Data
          public DbSet<Comment> Comments { get; set; }
         public DbSet<DeliveryArea> DeliveryAreas { get; set; }
          public DbSet<DeliveryAreaDriver> DeliveryAreaDrivers { get; set; }
+         public DbSet<DebitWay> DebitWay { get; set; }
+         public DbSet<DebitWayNotification> DebitWayNotifications { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

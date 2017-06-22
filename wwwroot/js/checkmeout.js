@@ -77,6 +77,8 @@ simpleCart({
     function  beforeCheckout(e){
         var WaitingOnReply = true;
         loadDoc();
+        //DebitWayInit();
+        //e.preventDefault();
         // while(!WaitingOnReply==true){
         //    releaseEvents();
         // }

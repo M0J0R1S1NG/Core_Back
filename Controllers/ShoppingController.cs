@@ -88,7 +88,7 @@ namespace Core.Controllers
                     //this is how the following select list gets populated
                     //<!--<select asp-items=ViewBag.query2></select>-->
                      ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
-                    
+                     ViewBag.user = user;
                     return View();
                
             }else{
@@ -113,7 +113,7 @@ namespace Core.Controllers
         public async Task <IActionResult> PurchaseConfirmed(){
             
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            user.status = 1;
+            user.status = 2;
             _context.Update(user);
             await _context.SaveChangesAsync();
             return View();
