@@ -103,9 +103,15 @@ namespace Core
                 options.SslPort = 443;
                 
                 options.Filters.Add(new RequireHttpsAttribute());
+                
             
-            });
-            
+            }).AddJsonOptions(options =>
+               {
+                   options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+               });;
+
+           
+              
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ElevatedRights", policy =>

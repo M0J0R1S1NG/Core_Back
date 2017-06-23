@@ -53,7 +53,7 @@ namespace Core.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Create([Bind("ID,identifier,vericode,website_unique_id,return_url,transaction_id,merchant_transaction_id,transaction_status,transaction_result,transaction_date,transaction_type,item_name,amount,quantity,item_code,language,email,phone,custom,shipment,first_name,last_name,address,city,state_or_province,zip_or_postal_code,country,shipping_address,shipping_city,shipping_state_or_province,shipping_zip_or_postal_code,shipping_country,customer_errors_meaning,errors,issuer_name,issuer_confirmation,status,time_stamp")] DebitWay debitWay)
         {
             if (ModelState.IsValid)
