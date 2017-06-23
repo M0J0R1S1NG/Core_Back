@@ -19,6 +19,12 @@
     <thead>
         <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.identifier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.vericode)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.website_unique_id)
                 </th>
                 <th>
@@ -129,6 +135,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.identifier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.vericode)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.website_unique_id)
             </td>

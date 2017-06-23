@@ -19,6 +19,20 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
+            <label asp-for="identifier" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="identifier" class="form-control" />
+                <span asp-validation-for="identifier" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="vericode" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="vericode" class="form-control" />
+                <span asp-validation-for="vericode" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
             <label asp-for="website_unique_id" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="website_unique_id" class="form-control" />

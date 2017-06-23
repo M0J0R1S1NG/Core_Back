@@ -8,7 +8,8 @@ namespace Core.Models
     {
 
         public int ID { get; set; }
-        
+        public string identifier { get; set; }
+        public string vericode {get;set;}
         public string website_unique_id { get; set; }
         public string return_url {get;set;}
         public string transaction_id {get;set;}
@@ -19,6 +20,8 @@ namespace Core.Models
         public string transaction_type {get;set;}
 
         public string item_name {get;set;}
+
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="Format: {0:C}")]
         public double amount {get;set;}
         public double quantity {get;set;}
         public string item_code {get;set;}

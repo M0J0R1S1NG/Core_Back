@@ -8,9 +8,10 @@ using Core.Data;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170623123116_update22")]
+    partial class update22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -226,8 +227,6 @@ namespace Core.Migrations
                     b.Property<string>("transaction_status");
 
                     b.Property<string>("transaction_type");
-
-                    b.Property<string>("vericode");
 
                     b.Property<string>("website_unique_id");
 

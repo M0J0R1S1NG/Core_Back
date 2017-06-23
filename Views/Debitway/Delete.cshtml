@@ -20,6 +20,18 @@
     <dl class="dl-horizontal">
         <input type="hidden" asp-for="ID" />
         <dt>
+            @Html.DisplayNameFor(model => model.identifier)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.identifier)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.vericode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.vericode)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.website_unique_id)
         </dt>
         <dd>
