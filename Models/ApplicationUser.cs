@@ -35,10 +35,7 @@ namespace Core.Models
        public string LastName {get;set;}
        public string Language {get;set;}
         
-        [Display(Name = "Terms and Conditions")]
-	    [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms and conditions to continue!")]
-		public bool TermsAndConditions { get; set; }	
-
+      
     }
     
 }

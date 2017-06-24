@@ -94,7 +94,7 @@ namespace Core.Controllers
                     await _context.SaveChangesAsync();
                
                 }
-
+                ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
                 return RedirectToAction("","Manage");
             }else{
                 ModelState.AddModelError(string.Empty, "Failed to update your profile info.");
