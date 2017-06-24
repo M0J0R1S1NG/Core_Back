@@ -82,7 +82,7 @@ namespace Core.Controllers
                     ViewData["Inventory"]=_context.Inventorys;
                     var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
                     ViewBag.query2 = new SelectList(Products, "Id", "Value");
-                    ViewBag.query = _context.Inventorys.Where(c=> c.Status>0);
+                    ViewBag.query = _context.Inventorys.Where(c=> c.Status>0 && c.Quantity>0 && c.OnHand==true);
                     ViewBag.UserId = _userManager.GetUserId(User);
                     
                     //this is how the following select list gets populated

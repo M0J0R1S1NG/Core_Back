@@ -114,6 +114,7 @@ namespace Core.Controllers
              {   
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 order.AppUser= Guid.Parse(user.Id);
+                order.OrderDate = DateTime.Now;
                 if (order.GeocodedAddress==null || order.GeocodedAddress==""){order.GeocodedAddress= user.DeliveryAddress;}
                 if (order.SpecialInstructions.Contains("Must add")) {order.SpecialInstructions= "";}
                 _context.Add(order);
@@ -143,6 +144,27 @@ namespace Core.Controllers
             }
             
             return StatusCode(404);
+        }
+        [AllowAnonymous]
+        [HttpPost]        public async Task<string> Interac([Bind("Total,GeocodedAddress,Weight,PaymentType,Details,SpecialInstructions,Status,DriverId,CustomerId")] Order order)
+        {
+            if (ModelState.IsValid)
+             {   
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                order.AppUser= Guid.Parse(user.Id);
+                order.OrderDate = DateTime.Now;
+                if (order.GeocodedAddress==null || order.GeocodedAddress==""){order.GeocodedAddress= user.DeliveryAddress;}
+                if (order.SpecialInstructions.Contains("Must add")) {order.SpecialInstructions= "";}
+                _context.Add(order);
+                
+                Guid newGuid = Guid.NewGuid();
+                order.GUID=newGuid;
+                await _context.SaveChangesAsync();
+                
+                return  newGuid.ToString();
+            }
+            
+            return "error";
         }
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)

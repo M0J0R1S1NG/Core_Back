@@ -109,7 +109,7 @@ If you wouldlike to try your current GPS location please click here <input type=
 </div>
 
 </div>
-<form method="post" action="https://www.debitway.com/process/index.php" target="_new">
+<form id="debitwayform" name="debitwayform"  method="post" action="https://www.debitway.com/process/index.php">
 
       <div class="form-horizontal">
         <h4>DebitWay</h4>
@@ -174,7 +174,7 @@ If you wouldlike to try your current GPS location please click here <input type=
         <div class="form-group">
             <label asp-for="transaction_date" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="transaction_date" class="form-control" name="transaction_date" id="transaction_date"/>
+                <input asp-for="transaction_date" class="form-control" data-val="false" name="transaction_date" id="transaction_date"/>
                 <span asp-validation-for="transaction_date" class="text-danger"></span>
             </div>
         </div>
@@ -376,7 +376,7 @@ If you wouldlike to try your current GPS location please click here <input type=
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input name="debitwaySubmit" id="debitwaySubmit" type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -491,18 +491,25 @@ function pointInPolygon(points,lat,lon)
   return inPoly; 
 }
 var userId = '@ViewBag.UserId';
- function loadDoc() {
+
+
+
+ function InteracOrder() {
     var xhttp = new XMLHttpRequest();
     var datevar = Date().substr(0,Date().indexOf("GMT")-4);
     xhttp.onreadystatechange = function() {
         //alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
         if (this.readyState == 4 && this.status == 200) {
-           
+           var orderGuid=this.response;
+           top.document.getElementById("merchant_transaction_id").value = orderGuid;
             document.getElementById("demo").innerHTML =  "Order was posted to orders table";
+           top.document.getElementById("debitwayform").submit();
+            
+
             
         }
     };
-    xhttp.open("POST", "/Orders/CreateApi/", true);
+    xhttp.open("POST", "/Orders/Interac/", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     //xhttp.send("fname=Henry&lname=Ford");
     //return;
@@ -587,7 +594,7 @@ function DebitWayInit() {
     top.document.getElementById("shipping_zip_or_postal_code").value = shipping_zip_or_postal_code;
     top.document.getElementById("shipping_country").value = shipping_country;
     top.document.getElementById("item_name").value = item_name;
-    top.document.getElementById("amount").value = amount;
+    top.document.getElementById("amount").value = amount.toFixed(2);
     if (top.document.getElementById("quantity") != null){
             top.document.getElementById("quantity").value = quantityTot;
         }
@@ -658,7 +665,7 @@ function DebitWayInit() {
     buildStr += "shipment='" +  shipment + "'&"; 
     buildStr += "merchant_transaction_id='" +  merchant_transaction_id + "'&"; 
    
-  
+    InteracOrder();
     //xhttp.send(buildStr); 
    
 }
@@ -813,8 +820,8 @@ simpleCart({
     }
     function  beforeCheckout(e){
         var WaitingOnReply = true;
-        //loadDoc();
-        DebitWayInit();
+        InteracOrder();
+        //DebitWayInit();
          e.preventDefault();
         // while(!WaitingOnReply==true){
         //    releaseEvents();

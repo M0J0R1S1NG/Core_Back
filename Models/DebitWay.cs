@@ -21,7 +21,7 @@ namespace Core.Models
 
         public string item_name {get;set;}
 
-        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="Format: {0:C}")]
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:C}")]
         public double amount {get;set;}
         public double quantity {get;set;}
         public string item_code {get;set;}
