@@ -32,11 +32,17 @@ namespace Core.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+           // builder.Property(p => p.transaction_date).IsRequired().HasColumnName("transaction_date").HasColumnType("datetime2").ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("getdate()");
+           // builder.DebitWay(p => p.transaction_date).IsRequired().HasColumnName("transaction_date").HasColumnType("datetime2").ValueGeneratedOnAdd().HasDefaultValueSql("getdate()"); builder.Property(p => 
+            builder.Entity<DebitWay>().Property(p => p.transaction_date).IsRequired().HasColumnName("transaction_date").HasColumnType("datetime2").ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("getdate()");
+            
             builder.Entity<ApplicationUser>()
             .ToTable("Core_User");
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            
         }
 
         public DbSet<Core.Models.DeliveryArea> DeliveryArea { get; set; }

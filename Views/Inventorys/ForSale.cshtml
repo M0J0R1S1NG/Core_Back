@@ -568,7 +568,7 @@ function DebitWayInit() {
 
     var amount = simpleCart.grandTotal();
     var item_code = "unknown"
-    var custom=top.document.getElementById("SpecialInstructions").value
+    var custom= "{ 'UserId':'" + userid + "' , 'SpecialInstructions': '" +  top.document.getElementById("SpecialInstructions").value + "'}";
     var shipment="yes";
     var merchant_transaction_id = "@Guid.NewGuid()";
     
@@ -576,7 +576,7 @@ function DebitWayInit() {
     top.document.getElementById("identifier").value = identifier;
     top.document.getElementById("website_unique_id").value =website_unique_id;
     top.document.getElementById("return_url").value = "https://www.uberduber.com/DebitWay/Create";
-     top.document.getElementById("transaction_date").value = datevar;
+    top.document.getElementById("transaction_date").value = datevar;
     top.document.getElementById("language").value = language;
     top.document.getElementById("first_name").value = first_name;
     top.document.getElementById("last_name").value = last_name;
