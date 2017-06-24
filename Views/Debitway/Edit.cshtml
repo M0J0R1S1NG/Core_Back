@@ -83,6 +83,13 @@
             </div>
         </div>
         <div class="form-group">
+            <label asp-for="transaction_date_datetime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="transaction_date_datetime" class="form-control" />
+                <span asp-validation-for="transaction_date_datetime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
             <label asp-for="transaction_type" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="transaction_type" class="form-control" />

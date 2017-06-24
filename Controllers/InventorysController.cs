@@ -75,7 +75,7 @@ namespace Core.Controllers
             myDebitWay.status="init";
             myDebitWay.custom=userGuid.ToString();
             myDebitWay.shipment="yes";
-            myDebitWay.transaction_date=DateTime.Now;
+            myDebitWay.transaction_date=DateTime.Now.ToString();
             myDebitWay.transaction_id="";
             myDebitWay.time_stamp=DateTime.Now;
             

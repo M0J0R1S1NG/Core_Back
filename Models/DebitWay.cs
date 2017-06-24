@@ -16,7 +16,8 @@ namespace Core.Models
         public string merchant_transaction_id {get;set;}
         public string transaction_status {get;set;}
         public string transaction_result {get;set;}
-        public DateTime transaction_date {get;set;}
+        public string transaction_date {get;set;}
+        public DateTime transaction_date_datetime {get;set;}
         public string transaction_type {get;set;}
 
         public string item_name {get;set;}

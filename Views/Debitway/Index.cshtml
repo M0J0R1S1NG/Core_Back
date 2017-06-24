@@ -46,6 +46,9 @@
                     @Html.DisplayNameFor(model => model.transaction_date)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.transaction_date_datetime)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.transaction_type)
                 </th>
                 <th>
@@ -161,6 +164,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.transaction_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.transaction_date_datetime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.transaction_type)

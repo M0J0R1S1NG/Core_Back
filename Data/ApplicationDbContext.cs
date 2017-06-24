@@ -34,8 +34,9 @@ namespace Core.Data
             base.OnModelCreating(builder);
            // builder.Property(p => p.transaction_date).IsRequired().HasColumnName("transaction_date").HasColumnType("datetime2").ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("getdate()");
            // builder.DebitWay(p => p.transaction_date).IsRequired().HasColumnName("transaction_date").HasColumnType("datetime2").ValueGeneratedOnAdd().HasDefaultValueSql("getdate()"); builder.Property(p => 
-            builder.Entity<DebitWay>().Property(p => p.transaction_date).IsRequired().HasColumnName("transaction_date").HasColumnType("datetime2").ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("getdate()");
-            
+            // builder.Entity<DebitWay>().Property(p => p.transaction_date).IsRequired(false).HasColumnName("transaction_date").HasColumnType("datetime2").ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("getdate()");
+            // builder.Entity<DebitWay>().Property(p => p.transaction_date).IsRequired(false);
+
             builder.Entity<ApplicationUser>()
             .ToTable("Core_User");
             // Customize the ASP.NET Identity model and override the defaults if needed.
