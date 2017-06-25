@@ -33,6 +33,7 @@ namespace Core.Models
 
         public string LicenseProvince {get ;set;}
         public string LicenseNumber {get;set;}
+        public int PartnerId {get;set;}
         
     }
 }

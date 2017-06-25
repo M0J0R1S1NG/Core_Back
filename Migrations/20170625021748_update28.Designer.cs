@@ -8,9 +8,10 @@ using Core.Data;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170625021748_update28")]
+    partial class update28
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -360,8 +361,6 @@ namespace Core.Migrations
                     b.Property<DateTime>("OpenTime");
 
                     b.Property<Guid>("Partner");
-
-                    b.Property<int>("PartnerId");
 
                     b.Property<string>("Points");
 

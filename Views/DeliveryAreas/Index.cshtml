@@ -14,6 +14,9 @@
                     @Html.DisplayNameFor(model => model.CreatedDate)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.PartnerId)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Partner)
                 </th>
                 <th>
@@ -48,6 +51,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>@Html.DropDownListFor(modelitem=>item.PartnerId, (IEnumerable<SelectListItem>)ViewBag.partners,new {disabled="disabled"})
+               
             </td>
             <td>@Html.DropDownListFor(modelitem=>item.Partner, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
                

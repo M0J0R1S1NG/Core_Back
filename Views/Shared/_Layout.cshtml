@@ -53,7 +53,7 @@
                     <li><a asp-area="" asp-controller="Delivery" asp-action="">Delivery Area</a></li>
                     <li><a asp-area="" asp-controller="SystemStatus" asp-action="">Service Status</a></li>
                    @{if (User.IsInRole("Admin")){
-                        <li><a asp-area="" asp-controller="Inventorys" asp-action="">Admin</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Admin">Admin</a></li>
                         }
                    }
                  </ul>

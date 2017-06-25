@@ -153,7 +153,8 @@ namespace Core.Controllers
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 order.AppUser= Guid.Parse(user.Id);
                 order.OrderDate = DateTime.Now;
-                if (order.GeocodedAddress==null || order.GeocodedAddress==""){order.GeocodedAddress= user.DeliveryAddress;}
+            
+                if (order.GeocodedAddress==null || order.GeocodedAddress==""){order.GeocodedAddress= user.StreetNumber +"-"+user.DeliveryAddress;}
                 if (order.SpecialInstructions.Contains("Must add")) {order.SpecialInstructions= "";}
                 _context.Add(order);
                 

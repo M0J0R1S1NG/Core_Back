@@ -16,8 +16,6 @@ namespace Core.Models
         public int ID { get; set; }
         public Guid  GUID  { get; set; }
 
-        // [Key, ForeignKey("ApplicationUser")]
-        // public IList<ApplicationUser> UserId { get; set; }
         public int CustomerId { get; set; }
         public Guid AppUser { get; set; }
         [Display(Name = "Order Date")]

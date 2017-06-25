@@ -17,6 +17,7 @@ namespace Core.Models
         public String StreetNumber {get;set;}
         public String City {get;set;}
         public String DeliveryAddress {get; set;}
+        public int DeliveryAreaId {get;set;}
         public String Province {get;set;}
         public String Country {get;set;}
         

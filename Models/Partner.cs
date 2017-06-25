@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Models.ManageViewModels;
+using Core.Models.AccountViewModels;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models
 {
@@ -16,6 +20,7 @@ namespace Core.Models
         public string PostalCode { get; set; }
         public string PhoneNumber { get; set; }
         public string SpecialInstructions { get; set; }
+        [Display(Name = "Status set to 1 if partner has drivers set to 2 if Single Partner Dispatch set -1 to disable")]        
         public int Status { get; set; }
         public int DeliveryArea {get;set;}
         public string SMSNumber {get;set;}

@@ -28,6 +28,11 @@
         </div>
     </div>
     <div class="form-group">
+       
+            <input type="hidden"  asp-for="DeliveryAreaId" class="form-control" />
+        
+    </div>
+    <div class="form-group">
         <label asp-for="FirstName" class="col-md-2 control-label"></label>
         <div class="col-md-10">
             <input asp-for="FirstName" class="form-control" />
@@ -139,16 +144,7 @@
         });
     }
  
- var defaultRangeValidator = $.validator.methods.range;
-    $.validator.methods.range = function(value, element, param) {
-        if(element.type === 'checkbox') {
-            // if it's a checkbox return true if it is checked
-            return element.checked;
-        } else {
-            // otherwise run the default validation function
-            return defaultRangeValidator.call(this, value, element, param);
-        }
-    }
+
 
 function selectedSuggestion(result) {
         //Populate the address textbox values.
@@ -158,6 +154,7 @@ function selectedSuggestion(result) {
             top.document.getElementById('Province').value = result.address.adminDistrict;
             top.document.getElementById('PostalCode').value = result.address.postalCode;
             top.document.getElementById('Country').value = result.address.countryRegion;
+          
         }
         var exteriorRing;
         var InDeliveryArea=false;
@@ -178,6 +175,7 @@ function selectedSuggestion(result) {
             @:InDeliveryArea =  pointInPolygon(points@(item.ID),result.location.latitude,result.location.longitude) 
             @:if (InDeliveryArea==true){
             @:    InDeliveryAreaConfirmed=true; 
+            @:    var DeliveryAreaId = @item.ID
             @:    AreaOpen=@(item.Status)  
             @:        var openTime = new Date(Date.parse('@item.OpenTime'));
             @:        var closedTime = new Date(Date.parse('@item.ClosedTime'));
@@ -186,7 +184,26 @@ function selectedSuggestion(result) {
             @:        var closeStr = closedTime.getHours() + ":" + closedTime.getMinutes();
             @:        var status = @item.Status ;
             @:        var open = @item.Open.ToString().ToLower();
-         
+             @foreach (var partner in ViewBag.partners){
+               @if (partner.DeliveryArea == item.ID){
+                   @if (partner.Status ==2){
+                        @: var partnerId = @partner.Id;
+                        @: top.document.getElementById('DeliveryAreaId').value = partnerId;
+                        @: var areaSMS = @partner.SMSNumber;
+                   }else{
+                       @: var partnerId = @partner.Id;
+                       @: top.document.getElementById('DeliveryAreaId').value = partnerId;
+                       var d=0;
+                       @foreach (var driver in ViewBag.drivers){
+                            @if(driver.PartnerId==partner.Id){
+                              d+=1;
+                        @:    var DriverId@(d) = @driver.ID;
+                        @:    var SMS@(d) = @driver.PhoneNumber;
+                            }
+                       }
+                   }
+                }
+             }
             @:}
         }
    
@@ -198,11 +215,11 @@ function selectedSuggestion(result) {
            }
    
             var myAnswer = alert(title + " - " + message);
-            if (myAnswer){
-                top.document.getElementById("GeocodedAddress").value=""
-            }else{
-                top.document.getElementById("GeocodedAddress").value=""
-            }
+           // if (myAnswer){
+           //     top.document.getElementById("GeocodedAddress").value=""
+           // }else{
+           //     top.document.getElementById("GeocodedAddress").value=""
+           // }
             InDeliveryAreaConfirmed=false;
             AreaOpen=0;
     }

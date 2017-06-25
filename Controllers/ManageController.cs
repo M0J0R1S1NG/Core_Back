@@ -58,6 +58,8 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
+            ViewBag.drivers = _context.Drivers.Where(c=> c.Status>0);
+            ViewBag.partners = _context.Partners.Where(c=> c.Status>0);
             ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
             return View(users);
         }
@@ -65,7 +67,7 @@ namespace Core.Controllers
         //POST: /Manage/UpdateUser
         [HttpPost]
        
-        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,FirstName,LastName,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB")] ApplicationUser model, string returnUrl = null)
+        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,DeliveryAreaId,FirstName,LastName,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB")] ApplicationUser model, string returnUrl = null)
         {
             var UserId=  _userManager.GetUserId(User);
             if (Id != model.Id || Id ==null || Id != UserId)
@@ -89,11 +91,13 @@ namespace Core.Controllers
                     userToUpdate.DoB = model.DoB;
                     userToUpdate.FirstName = model.FirstName;
                     userToUpdate.LastName = model.LastName;
-                    
+                    userToUpdate.DeliveryAreaId = model.DeliveryAreaId;
                      _context.Update(userToUpdate);
                     await _context.SaveChangesAsync();
                
                 }
+                ViewBag.partners = _context.Partners.Where(c=> c.Status>0);
+                ViewBag.drivers = _context.Drivers.Where(c=> c.Status>0);
                 ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
                 return RedirectToAction("","Manage");
             }else{

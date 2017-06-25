@@ -22,6 +22,8 @@ namespace Core.Controllers
         // GET: Drivers
         public async Task<IActionResult> Index()
         {
+              var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+              ViewBag.partners = new SelectList(partners, "Id", "Value");
              var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
                      var vehicleGuids = _context.Vehicles.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Make });
@@ -42,7 +44,9 @@ namespace Core.Controllers
             if (driver == null)
             {
                 return NotFound();
-            }
+            }  
+            var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+              ViewBag.partners = new SelectList(partners, "Id", "Value");
                  var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
                      var vehicleGuids = _context.Vehicles.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Make });
@@ -52,8 +56,10 @@ namespace Core.Controllers
 
         // GET: Drivers/Create
         public IActionResult Create()
-        {
-             var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
+        {       var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+                var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
+                    ViewBag.partners = new SelectList(partners, "Id", "Value");
+             
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
                     var vehicleGuids = _context.Vehicles.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Make });
                     ViewBag.vehicles = new SelectList(vehicleGuids, "Id", "Value");
@@ -65,7 +71,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,GUID,UserGuid,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
+        public async Task<IActionResult> Create([Bind("ID,GUID,PartnerId,UserGuid,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
         {
             if (ModelState.IsValid)
             {
@@ -89,6 +95,8 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
+             var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+              ViewBag.partners = new SelectList(partners, "Id", "Value");
              var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
                       var vehicleGuids = _context.Vehicles.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Make });
@@ -101,7 +109,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,GUID,UserGuid,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,GUID,PartnerId,UserGuid,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
         {
             if (id != driver.ID)
             {
@@ -144,7 +152,9 @@ namespace Core.Controllers
             if (driver == null)
             {
                 return NotFound();
-            }
+            } 
+                    var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+                    ViewBag.partners = new SelectList(partners, "Id", "Value");
                     var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
                     var vehicleGuids = _context.Vehicles.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Make });

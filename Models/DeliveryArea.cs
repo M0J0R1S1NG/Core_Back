@@ -13,7 +13,10 @@ namespace Core.Models
 
         [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy}")]
         public DateTime CreatedDate { get; set; }
-        [Display(Name = "Delivery Area Partner")]
+        [Display(Name = "Partner")]
+        public int PartnerId { get; set; }
+
+        [Display(Name = "Partner User")]
         public Guid Partner { get; set; }
 
         [Display(Name = "Delivery area polygon points")]

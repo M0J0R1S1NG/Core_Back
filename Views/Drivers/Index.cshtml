@@ -9,7 +9,10 @@
 
                 <th>
                     @Html.DisplayNameFor(model => model.UserGuid)
-                </th>
+                </th
+                 <th>
+                    @Html.DisplayNameFor(model => model.PartnerId)
+                </th>>
                 <th>
                     @Html.DisplayNameFor(model => model.GeocodedAddress)
                 </th>
@@ -43,6 +46,9 @@
 
             <td>
                 @Html.DropDownListFor(modelItem=>item.UserGuid, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
+            </td>
+            <td>
+                @Html.DropDownListFor(modelItem=>item.PartnerId, (IEnumerable<SelectListItem>)ViewBag.partners,new {disabled="disabled"})
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GeocodedAddress)

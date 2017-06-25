@@ -14,30 +14,30 @@
 
 <h2>@ViewData["Title"]</h2>
 <h3>Your current delivery addresss is: @ViewData["DeliveryAddress"]</h3>
-If you would like just this order deliverd to a differnt location verify a different address for instant delivery.  The address in this box will be delivered to.
-If you wouldlike to try your current GPS location please click here <input type=button class=btn btn-default value="Use My Current Location" onclick="getLocation()"></input>  
+If you would like todays delivery to a differnt location please verify the address for instant delivery.  The address in this box will be delivered to.  Leave alone to deliver to your account address.
+You can aslo <input type=button class=btn btn-default value="Use My Current GPS Location" onclick="getLocation()"></input>  
 <hr/>
 <div class=container>
     <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-11">
             <div class="form-group">
-                <label asp-for="address" class="col-md-2 control-label"></label>
+                <label  class="col-md-2 control-label">Todays Delivery Address</label>
                 <div class="col-md-10">
                 <div id='searchBoxContainer'> 
-                    <input id='GeocodedAddress' type=text  asp-for="address" value="@ViewData["DeliveryAddress"]" class="form-control" />
+                    <input id='GeocodedAddress' type=text   value="@ViewData["DeliveryAddress"]" class="form-control" />
                 </div>
-                    <span asp-validation-for="address" class="text-danger"></span>
+                    
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-5">
-            <div class="form-group">Must add Unit/Apt number below<br>
-                <label asp-for="custom" class="col-md-2 control-label"></label>
+        <div class="col-xs-11">
+            <div class="form-group">Must add Apt/Buzz number in Special Instructions if using a new location if applicable<br>
+                <label  class="col-md-2 control-label">Special Instructions</label>
                 <div class="col-md-10">
-                    <input id='SpecialInstructions' type=text  asp-for="custom" value="" class="form-control" />
-                    <span asp-validation-for="custom" class="text-danger"></span>
+                    <input id='SpecialInstructions' type=text   value="" class="form-control" />
+                   
                 </div>
             </div>
         </div>
@@ -447,6 +447,16 @@ If you wouldlike to try your current GPS location please click here <input type=
             @:        var closeStr = closedTime.getHours() + ":" + closedTime.getMinutes();
             @:        var status = @item.Status ;
             @:        var open = @item.Open.ToString().ToLower();
+            @foreach (var partner in ViewBag.partners){
+               @if (partner.DeliveryArea == item.ID){
+                   @if (partner.Status ==2){
+                        @: var partnerId = @partner.Id;
+                        @: var areaSMS = @partner.SMSNumber;
+                   }else{
+
+                   }
+                }
+            }
          
             @:}
         }
@@ -529,6 +539,8 @@ var userId = '@ViewBag.UserId';
     buildStr += "SpecialInstructions='" + top.document.getElementById("SpecialInstructions").value + "'&";
     buildStr += "Status=" + "1" + "&";
     //buildStr += "DriverId=" + "1" + "&";
+    
+    //buildStr += "DriverId=" + "1" + "&";
     //buildStr += "CustomerId=" + "1" ;
     xhttp.send(buildStr); 
    
@@ -568,14 +580,14 @@ function DebitWayInit() {
 
     var amount = simpleCart.grandTotal();
     var item_code = "unknown"
-    var custom= "{ 'UserId':'" + userId + "' , 'SpecialInstructions': '" +  top.document.getElementById("SpecialInstructions").value + "'}";
-    var shipment="yes";
+    var custom=  userId + ' , '  +  top.document.getElementById("SpecialInstructions").value ;
+    var shipment="no";
     var merchant_transaction_id = "@Guid.NewGuid()";
     
     var datevar = Date().substr(0,Date().indexOf("GMT")-4);
     top.document.getElementById("identifier").value = identifier;
     top.document.getElementById("website_unique_id").value =website_unique_id;
-    top.document.getElementById("return_url").value = "https://www.uberduber.com/DebitWay/Create";
+    top.document.getElementById("return_url").value = "https://www.uberduber.net/DebitWay/Create";
     top.document.getElementById("transaction_date").value = datevar;
     top.document.getElementById("language").value = language;
     top.document.getElementById("first_name").value = first_name;

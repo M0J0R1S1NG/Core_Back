@@ -20,6 +20,9 @@
             @Html.DisplayNameFor(model => model.Partner)
         </dt>
         <dd>
+             @Html.DropDownListFor(model=>model.PartnerId, (IEnumerable<SelectListItem>)ViewBag.partners,new {disabled="disabled"})
+        </dd>
+        <dd>
              @Html.DropDownListFor(model=>model.Partner, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
         </dd>
         <dt>

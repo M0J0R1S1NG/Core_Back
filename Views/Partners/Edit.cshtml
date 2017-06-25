@@ -11,14 +11,14 @@
         <div class="form-group">
             <label asp-for="GUID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select disabled asp-for="GUID" asp-items=ViewBag.userGuids class="form-control" ></select>
+                <select  asp-for="GUID" asp-items=ViewBag.userGuids class="form-control" ></select>
                 <span asp-validation-for="GUID" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="DeliveryArea" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-               <select disabled asp-for="DeliveryArea" asp-items=ViewBag.deliveryAreas class="form-control" ></select>
+               <select  asp-for="DeliveryArea" asp-items=ViewBag.deliveryAreas class="form-control" ></select>
                 <span asp-validation-for="DeliveryArea" class="text-danger"></span>
             </div>
         </div>

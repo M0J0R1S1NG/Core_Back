@@ -45,7 +45,8 @@ namespace Core.Controllers
             //             select new  {  UserName = f.Name }).First()
             //     	};
             
-
+ var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+              ViewBag.partners = new SelectList(partners, "Id", "Value");
              var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
             return View(await _context.DeliveryArea.ToListAsync());
@@ -64,7 +65,8 @@ namespace Core.Controllers
             if (deliveryArea == null)
             {
                 return NotFound();
-            }
+            }        var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+              ViewBag.partners = new SelectList(partners, "Id", "Value");
                     var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
             return View(deliveryArea);
@@ -72,7 +74,8 @@ namespace Core.Controllers
 
         // GET: DeliveryAreas/Create
         public IActionResult Create()
-        {
+        {            var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+              ViewBag.partners = new SelectList(partners, "Id", "Value");
                     var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
            
@@ -87,7 +90,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,CreatedBy,CreatedDate,Partner,Points,Name,Description,OpenTime,ClosedTime,Open,Status")] DeliveryArea deliveryArea)
+        public async Task<IActionResult> Create([Bind("ID,CreatedBy,CreatedDate,PartnerId,Partner,Points,Name,Description,OpenTime,ClosedTime,Open,Status")] DeliveryArea deliveryArea)
         {
             if (ModelState.IsValid)
             {
@@ -111,6 +114,8 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
+             var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+              ViewBag.partners = new SelectList(partners, "Id", "Value");
             var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
             return View(deliveryArea);
@@ -121,7 +126,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,CreatedBy,CreatedDate,Partner,Points,Name,Description,OpenTime,ClosedTime,Open,Status")] DeliveryArea deliveryArea)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,CreatedBy,CreatedDate,PartnerId,Partner,Points,Name,Description,OpenTime,ClosedTime,Open,Status")] DeliveryArea deliveryArea)
         {
             if (id != deliveryArea.ID)
             {
@@ -165,8 +170,10 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
-var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
-                    ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
+             var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+             ViewBag.partners = new SelectList(partners, "Id", "Value");
+             var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
+             ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
             return View(deliveryArea);
         }
 

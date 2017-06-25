@@ -81,10 +81,11 @@ namespace Core.Controllers
             
             ViewBag.DebitWay=myDebitWay;
             ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
+            ViewBag.partners= _context.Partners.Where(p=> p.Status>0);
             ViewBag.user = user;
             ViewBag.UserId = _userManager.GetUserId(User);
             ViewBag.Inventory = _context.Inventorys.Where(c=> c.Status>0);
-            ViewData["DeliveryAddress"]=user.DeliveryAddress;
+            ViewData["DeliveryAddress"]=user.StreetNumber +"-"+user.DeliveryAddress;
             var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
             ViewBag.query2 = new SelectList(Products, "Id", "Value");
             return View(myDebitWay);
