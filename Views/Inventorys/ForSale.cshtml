@@ -424,6 +424,7 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
 
 <script>
     var AreaIds = []; 
+     var NotInArea=false; 
      @foreach (dynamic item in ViewBag.deliveryAreaName) {  
         @:top.document.getElementById("DeliveryAreaIdList").value=@item.ID
      }
@@ -538,8 +539,10 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
 
             InDeliveryAreaConfirmed ? message="Your all set! This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
             InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
+            InDeliveryAreaConfirmed ? NotInArea=false :NotInArea=true;
            if (AreaOpen==2){  
                message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
+                NotInArea=false; 
            }
    
             var myAnswer = alert(title + " - " + message);
@@ -563,12 +566,13 @@ function fixMenu(da){
         myClasses = document.querySelectorAll(classToShow)
         if  (myClasses.length>0){
             for (var i=0;i<=myClasses.length-1;i++){
-                 if (da==arr[index]){
+                 if (da==arr[index] || NotInArea){
                    myClasses[i].style.display ="";
                 }else{
                     myClasses[i].style.display ="none";
                 }
             }
+            NotInArea=false;
            
         }
       
@@ -801,51 +805,23 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 function checkLocation(lat,lon){
-     var exteriorRing;
-         var InDeliveryArea=false;
-        var  AreaOpen=0;
-        var InDeliveryAreaConfirmed=false;
-        @foreach (var item in ViewBag.deliveryareas){
-                @:exteriorRing = [
-                    @:@item.Points
-                @:];
-            @:polygon@(item.ID) = new Microsoft.Maps.Polygon(exteriorRing, {
-            @:fillColor: 'rgba(0, 255, 0, 0.5)',
-            @:strokeColor: 'red',
-            @:strokeThickness: 2
-            @:});
 
-        
-            @:var points@(item.ID) = polygon@(item.ID).getLocations();
-            @:InDeliveryArea =  pointInPolygon(points@(item.ID),lat,lon) 
-            @:if (InDeliveryArea==true){
-            @:    InDeliveryAreaConfirmed=true; 
-            @:    AreaOpen=@(item.Status)  
-            @:        var openTime = new Date(Date.parse('@item.OpenTime'));
-            @:        var closedTime = new Date(Date.parse('@item.ClosedTime'));
-            
-            @:        var openStr = openTime.getHours() + ":" + openTime.getMinutes();
-            @:        var closeStr = closedTime.getHours() + ":" + closedTime.getMinutes();
-            @:        var status = @item.Status ;
-            @:        var open = @item.Open.ToString().ToLower();
-         
-            @:}
-        }
-            InDeliveryAreaConfirmed ? message="Your all set! Your current GPS location is located in an area that qualifies for immediate delivery between " + openStr + " and " + closeStr  + "Do you want to use this location for this order": message="Sorry your current GPS location does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
-            InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
-           if (AreaOpen==2){  
-               message = "Your current GPS location is in an area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
-           }
-   
-            var myAnswer = confirm(title + " - " + message);
-            if (myAnswer){   //need to lookup a valid street address for this delivery location or at least a place name like "Trinity Bellwoods Park"
-                top.document.getElementById("GeocodedAddress").value=lat + " - " + lon  
-            }else{
-            //    top.document.getElementById("GeocodedAddress").value=""
-            }
-            InDeliveryAreaConfirmed=false;
-            AreaOpen=0;
-        
+
+
+
+
+            var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","adminDistrict":"","postalCode":"","countryRegion":""}]}';
+            result=JSON.parse(JsonTxt);
+            result.location.latitude=lat;
+            result.location.longitude=lon;
+            result.address.adminDistrict='';
+            result.address.locality='';
+            result.address.postalCode='';
+            result.address.countryRegion='';
+
+
+            selectedSuggestion(result);
+  
             
     }
 
