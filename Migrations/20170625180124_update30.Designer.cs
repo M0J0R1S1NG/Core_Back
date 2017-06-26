@@ -8,9 +8,10 @@ using Core.Data;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170625180124_update30")]
+    partial class update30
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -510,20 +511,6 @@ namespace Core.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Inventorys");
-                });
-
-            modelBuilder.Entity("Core.Models.InventoryGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("DeliveryAreaId");
-
-                    b.Property<int>("InventoryId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InventoryGroups");
                 });
 
             modelBuilder.Entity("Core.Models.MnpForm", b =>

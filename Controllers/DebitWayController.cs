@@ -113,11 +113,13 @@ namespace Core.Controllers
                 var user = await _userManager.FindByIdAsync(userId);
                 //var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 // thisOrder.AppUser= Guid.Parse(user.Id);
-                // thisOrder.OrderDate = DateTime.Now;
+                 thisOrder.DeliveryDate = DateTime.Now.AddHours(.5);
                 // if (thisOrder.GeocodedAddress==null || thisOrder.GeocodedAddress==""){thisOrder.GeocodedAddress= user.DeliveryAddress;}
                 // if (thisOrder.SpecialInstructions.Contains("Must add")) {thisOrder.SpecialInstructions= "";}
                 // //_context.Add(order);
-
+                thisOrder.Status=2;
+                thisOrder.CustomerId = 1;//put partnerId in here
+                thisOrder.DriverId=1;//fill in 
                 await _context.SaveChangesAsync();
                 string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  thisOrder.Details +  " <br>To: " ;
                 message += thisOrder.GeocodedAddress + "<br>";

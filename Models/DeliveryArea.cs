@@ -6,7 +6,10 @@ namespace Core.Models
 {
     public class DeliveryArea
     {
-
+       public DeliveryArea()
+        {
+                
+        }
         public int ID { get; set; }
        
         public Guid CreatedBy { get; set; }

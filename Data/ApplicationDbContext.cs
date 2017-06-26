@@ -16,6 +16,7 @@ namespace Core.Data
         }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Inventory> Inventorys { get; set; }
+         public DbSet<InventoryGroup> InventoryGroups { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Driver> Drivers { get; set; }
@@ -46,6 +47,7 @@ namespace Core.Data
             
         }
 
-        public DbSet<Core.Models.DeliveryArea> DeliveryArea { get; set; }
+        public DbSet<DeliveryArea> DeliveryArea { get; set; }
+         
     }
 }

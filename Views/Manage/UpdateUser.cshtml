@@ -22,69 +22,74 @@
         <label asp-for="DeliveryAddress" class="col-md-2 control-label"></label>
         <div class="col-md-10">
            <div id='searchBoxContainer'> 
-               <input id='DeliveryAddress' type=text  asp-for="DeliveryAddress" class="form-control" />
+               <input id='DeliveryAddress' name="DeliveryAddress"  type=text  asp-for="DeliveryAddress" class="form-control" />
            </div>This address will be varified against our delivery zone
             <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group">
-       
-            <input type="hidden"  asp-for="DeliveryAreaId" class="form-control" />
-        
+        <div class="form-group">
+            <input type="hidden"  id="DeliveryAreaId" name="DeliveryAreaId"  asp-for="DeliveryAreaId" class="form-control" ></input>
     </div>
+     <div class="form-group">
+        <label  class="col-md-2 control-label">Your Delivery Area</label>
+        <div class="col-md-10">
+            <select  id="DeliveryAreaIdList" name="DeliveryAreaIdList"  asp-items=ViewBag.deliveryAreasForSelect  asp-for="DeliveryAreaId" disabled  class="form-control" ></select>
+         </div>
+    </div>
+
     <div class="form-group">
         <label asp-for="FirstName" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="FirstName" class="form-control" />
+            <input  id="FirstName" name="FirstName"  asp-for="FirstName" class="form-control" />
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="LastName" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="LastName" class="form-control" />
+            <input  id="LastName" name="LastName"  asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="StreetNumber" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="StreetNumber" class="form-control" />
+            <input  id="StreetNumber" name="StreetNumber"  asp-for="StreetNumber" class="form-control" />
             <span asp-validation-for="StreetNumber" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="StreetName" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="StreetName" class="form-control" />
+            <input  id="StreetName" name="StreetName"  asp-for="StreetName" class="form-control" />
             <span asp-validation-for="StreetName" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="PostalCode" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="PostalCode" class="form-control" />
+            <input  id="PostalCode" name="PostalCode"  asp-for="PostalCode" class="form-control" />
             <span asp-validation-for="PostalCode" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="City" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="City" class="form-control" />
+            <input id="City" name="City" asp-for="City" class="form-control" />
             <span asp-validation-for="City" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Province" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Province" class="form-control" />
+            <input  id="Province" name="Province"  asp-for="Province" class="form-control" />
             <span asp-validation-for="Province" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Country" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Country" class="form-control" />
+            <input  id="Country" name="Country" asp-for="Country" class="form-control" />
             <span asp-validation-for="Country" class="text-danger"></span>
         </div>
     </div>
@@ -93,7 +98,7 @@
         <label asp-for="DoB" class="col-md-2 control-label"></label>
         <div class="col-md-10">
             <input asp-for="DoB" class="form-control" class="form-control datepicker"/>
-            <span asp-validation-for="DoB" class="text-danger"></span>
+            <span id="DoB" name="DoB" asp-validation-for="DoB" class="text-danger"></span>
         </div>
     </div>
 
@@ -188,11 +193,14 @@ function selectedSuggestion(result) {
                @if (partner.DeliveryArea == item.ID){
                    @if (partner.Status ==2){
                         @: var partnerId = @partner.Id;
-                        @: top.document.getElementById('DeliveryAreaId').value = partnerId;
+                        @: top.document.getElementById('DeliveryAreaId').value = @item.ID;
+                         @: top.document.getElementById('DeliveryAreaIdList').value = @item.ID;
                         @: var areaSMS = @partner.SMSNumber;
                    }else{
                        @: var partnerId = @partner.Id;
-                       @: top.document.getElementById('DeliveryAreaId').value = partnerId;
+                       @: top.document.getElementById('DeliveryAreaId').value = @item.ID;
+                        @: top.document.getElementById('DeliveryAreaIdList').value = @item.ID;
+                       
                        var d=0;
                        @foreach (var driver in ViewBag.drivers){
                             @if(driver.PartnerId==partner.Id){

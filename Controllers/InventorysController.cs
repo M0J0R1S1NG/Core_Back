@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Core.Models.AccountViewModels;
 using Core.Services;
+using Newtonsoft.Json.Linq;
 
 
 
@@ -80,14 +81,45 @@ namespace Core.Controllers
             myDebitWay.time_stamp=DateTime.Now;
             
             ViewBag.DebitWay=myDebitWay;
-            ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
-            ViewBag.partners= _context.Partners.Where(p=> p.Status>0);
+           
+    
             ViewBag.user = user;
             ViewBag.UserId = _userManager.GetUserId(User);
-            ViewBag.Inventory = _context.Inventorys.Where(c=> c.Status>0);
+            
+            
+           
+
             ViewData["DeliveryAddress"]=user.StreetNumber +"-"+user.DeliveryAddress;
             var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+            var  UserAreaId = _context.Users.Where(x=> x.Id==userGuid.ToString()).OrderBy(c => c.LastName).Select(x => new {x.DeliveryAreaId }).Single();
             ViewBag.query2 = new SelectList(Products, "Id", "Value");
+            ViewBag.Inventory = _context.Inventorys.Where(c=> c.Status>0);
+            ViewBag.drivers = _context.Drivers.Where(c=> c.Status>0);
+            ViewBag.partners= _context.Partners.Where(c=> c.Status>0);
+            ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
+            dynamic deliveryAreaName = from da in  _context.DeliveryAreas where da.ID==UserAreaId.DeliveryAreaId select  new DeliveryArea { Name= da.Name,ID=da.ID };
+            ViewBag.deliveryAreaName =deliveryAreaName;
+            ViewBag.inventorygroups = _context.InventoryGroups;
+            
+            
+            var deliveryareaGuids = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
+            ViewBag.deliveryAreasForSelect = new SelectList(deliveryareaGuids, "Id", "Value");
+            
+            dynamic  InventoryByAreaVar = from d in _context.Inventorys
+                                        join ig in _context.InventoryGroups on  d.ID equals    ig.InventoryId      // first join
+                                        join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
+                                        //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
+                                        
+                                        //where da.ID == UserAreaId.DeliveryAreaId
+                                        orderby da.Name
+                                        select  new InventoryByArea
+                                        {
+                                           Label=d.Label, Name=da.Name,ID=da.ID,Quantity= d.Quantity,Price=d.Price,ImageFilePath=d.ImageFilePath 
+                                        };
+
+
+                                        ViewBag.InventoryByArea = InventoryByAreaVar;
+
             return View(myDebitWay);
 
             
@@ -122,7 +154,9 @@ namespace Core.Controllers
         // GET: Inventorys/Create
         public async Task<IActionResult> Create()
         {
-          
+           string[] myvar2 = {"Concentrates","Flowers","Edibales","Topicals","Hashish","Oils","Paraphanalia"};
+            ViewBag.MyList2=  myvar2.Select(m => new SelectListItem { Text = m, Value = m });
+           
             return View();
         }
 
@@ -158,7 +192,7 @@ namespace Core.Controllers
             List<string> domains = new List<string>();
             domains.Add("DomainA");
             domains.Add("DomainB");
-            string[] myvar2 = {"Concentrates","Flowers","Edibales"};
+            string[] myvar2 = {"Concentrates","Flowers","Edibales","Topicals","Hashish","Oils","Paraphanalia"};
 
             domains.Select(m => new SelectListItem { Text = m, Value = m });
 

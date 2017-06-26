@@ -50,7 +50,7 @@
                 @Html.DropDownListFor(modelitem=>item.CreatedBy, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
+                @Html.DisplayFor(modelitem => item.CreatedDate)
             </td>
             <td>@Html.DropDownListFor(modelitem=>item.PartnerId, (IEnumerable<SelectListItem>)ViewBag.partners,new {disabled="disabled"})
                

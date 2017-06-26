@@ -6,7 +6,8 @@
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
 @using Core.Models
-
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 
 @{
     ViewData["Title"] = "Shopping";
@@ -14,12 +15,28 @@
 
 <h2>@ViewData["Title"]</h2>
 <h3>Your current delivery addresss is: @ViewData["DeliveryAddress"]</h3>
-If you would like todays delivery to a differnt location please verify the address for instant delivery.  The address in this box will be delivered to.  Leave alone to deliver to your account address.
-You can aslo <input type=button class=btn btn-default value="Use My Current GPS Location" onclick="getLocation()"></input>  
+If you want todays delivery sent somewhere other than your address on file you must confirm below.  The address in this box will be delivered to.  Leave alone to deliver to your account address.
+You can also<br> <input type=button class=btn btn-default value="Use My Current GPS Location" onclick="getLocation()"></input>  
 <hr/>
+
+    The inventory is based on your delivery area and is live.  If you can order it we will deliver it.
+        <div class="form-group">
+            <input type="hidden"  id="DeliveryAreaId" name="DeliveryAreaId"   class="form-control" ></input>
+    </div>
+     <div class="form-group">
+        <label  class="col-md-2 control-label">Todays Delivery Area</label>
+        <div class="col-md-10">
+            <select   id="DeliveryAreaIdList" name="DeliveryAreaIdList"  asp-items=ViewBag.deliveryAreasForSelect   disabled  class="form-control" ></select>
+         </div>
+    </div>
+
+
+
+
 <div class=container>
     <div class="row">
         <div class="col-xs-11">
+            If you change this address and it changes your delivery area you will get a new menu based on the new delivery areas inventory
             <div class="form-group">
                 <label  class="col-md-2 control-label">Todays Delivery Address</label>
                 <div class="col-md-10">
@@ -43,31 +60,46 @@ You can aslo <input type=button class=btn btn-default value="Use My Current GPS 
         </div>
     </div>
 </div> 
-            <input id='StreetName' type='hidden' />
-            <input id='City' type="hidden" />
-            <input id='Province' type="hidden" />
-            <input id='PostalCode' type="hidden" />
-            <input id='Country' type="hidden" />
+            <input id='orderStreetName' type='hidden' />
+            <input id='orderCity' type="hidden" />
+            <input id='orderProvince' type="hidden" />
+            <input id='orderPostalCode' type="hidden" />
+            <input id='orderCountry' type="hidden" />
+            <input id='orderDeliveryAreaId' type="hidden" />
+            <input id='orderPartnerId' type="hidden" />
+            <input id='orderDriverId' type="hidden" />
+            <input id='orderSMSNumber' type="hidden" />
+            
 <hr/>  
 
 
 
 <div class="container">    
-    <div class="row">
- @{var i=0;
-    @foreach (var item in ViewBag.Inventory) {
-        i+=1;        
+    <div id="cartRow" name="cartRow" class="row">
 
-    <div class="col-md-2">
-        <div class="simpleCart_shelfItem col-md-12">
-            <img class="item_add" src="@item.ImageFilePath" height="75px" width="75px" />
-            <h4 class="item_name">@item.Label</h4>
-            <input type="text" value="1" class="item_Quantity">
-            <span class="item_price">$35.00</span>
-            <a class="item_add" href="javascript:;"> Add to Cart </a>
+
+
+
+
+
+@{var j=0;
+    @foreach (dynamic item in ViewBag.InventoryByArea) {
+ 
+        j+=1;        
+   
+        <div id="cartArea" class="cartItemArea@(item.ID)" style="display:none">
+            <div class="col-md-3">
+                <span id="QuantitiyAvailable">Quantity Available: @item.Quantity Grams</span>
+                <div class="simpleCart_shelfItem col-md-12">
+                    <img class="item_add" src="@item.ImageFilePath" height="75px" width="75px" />
+                    <h4 class="item_name">@item.Label</h4>
+                    <input type="text" value="1" class="item_Quantity">
+                    <span class="item_price">$@item.Price</span>
+                    <a class="item_add" href="javascript:;"> Add to Cart </a>
+                </div>
+            </div>
         </div>
-    </div>
-
+   
    }   
  
 }
@@ -109,7 +141,7 @@ You can aslo <input type=button class=btn btn-default value="Use My Current GPS 
 </div>
 
 </div>
-<form id="debitwayform" name="debitwayform"  method="post" action="https://www.debitway.com/process/index.php">
+<form hidden id="debitwayform" name="debitwayform"  method="post" action="https://www.debitway.com/process/index.php">
 
       <div class="form-horizontal">
         <h4>DebitWay</h4>
@@ -391,9 +423,12 @@ You can aslo <input type=button class=btn btn-default value="Use My Current GPS 
 
 
 <script>
-
-@foreach (var item in ViewBag.deliveryareas) {
-
+    var AreaIds = []; 
+     @foreach (dynamic item in ViewBag.deliveryAreaName) {  
+        @:top.document.getElementById("DeliveryAreaIdList").value=@item.ID
+     }
+@foreach (dynamic item in ViewBag.deliveryareas) {
+   
 }
  function LoadMap() {
         Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', {
@@ -411,21 +446,29 @@ You can aslo <input type=button class=btn btn-default value="Use My Current GPS 
     }
     
     function selectedSuggestion(result) {
-
         //Populate the address textbox values.
-        if (top.document.getElementById('StreetName')!=null){
-            top.document.getElementById('StreetName').value = result.address.addressLine;
-            top.document.getElementById('City').value = result.address.locality;
-            top.document.getElementById('Province').value = result.address.adminDistrict;
-            top.document.getElementById('PostalCode').value = result.address.postalCode;
-            top.document.getElementById('Country').value = result.address.countryRegion;
+        if (top.document.getElementById('orderStreetName')!=null){
+            top.document.getElementById('orderStreetName').value = result.address.addressLine;
+            top.document.getElementById('orderCity').value = result.address.locality;
+            top.document.getElementById('orderProvince').value = result.address.adminDistrict;
+            top.document.getElementById('orderPostalCode').value = result.address.postalCode;
+            top.document.getElementById('orderCountry').value = result.address.countryRegion;
+            
         }
         var exteriorRing;
         var InDeliveryArea=false;
-        var  AreaOpen=0;
+        var AreaOpen=0;
+        var AreaName="";
+        var AreaId=0;
+        var AreaCount=0;
         var InDeliveryAreaConfirmed=false;
+        AreaIds=[];
+        
+        @{var AreaCount=0;}
         @foreach (var item in ViewBag.deliveryareas){
- 
+                AreaCount+=1;
+                @:AreaIds.push(@item.ID);
+
                 @:exteriorRing = [
                     @:@item.Points
                 @:];
@@ -439,7 +482,9 @@ You can aslo <input type=button class=btn btn-default value="Use My Current GPS 
             @:InDeliveryArea =  pointInPolygon(points@(item.ID),result.location.latitude,result.location.longitude) 
             @:if (InDeliveryArea==true){
             @:    InDeliveryAreaConfirmed=true; 
-            @:    AreaOpen=@(item.Status)  
+            @:    AreaOpen=@(item.Status);  
+            @:    AreaName="@item.Name";
+            @:    AreaId=@item.ID;
             @:        var openTime = new Date(Date.parse('@item.OpenTime'));
             @:        var closedTime = new Date(Date.parse('@item.ClosedTime'));
             
@@ -447,20 +492,49 @@ You can aslo <input type=button class=btn btn-default value="Use My Current GPS 
             @:        var closeStr = closedTime.getHours() + ":" + closedTime.getMinutes();
             @:        var status = @item.Status ;
             @:        var open = @item.Open.ToString().ToLower();
-            @foreach (var partner in ViewBag.partners){
-               @if (partner.DeliveryArea == item.ID){
-                   @if (partner.Status ==2){
-                        @: var partnerId = @partner.Id;
-                        @: var areaSMS = @partner.SMSNumber;
-                   }else{
+            @:        top.document.getElementById('orderDeliveryAreaId').value = @item.ID;
+            @:        top.document.getElementById('DeliveryAreaIdList').value = @item.ID;
 
+            @foreach (var partner in ViewBag.partners){
+
+               @if (partner.DeliveryArea == item.ID){
+                        @: var partnerId = @partner.Id;
+                        @: var areaSMS = "@partner.SMSNumber";
+                        @: var partnerName ="@partner.Name";
+                        
+                        @: top.document.getElementById('orderPartnerId').value = @partner.Id;
+                   @if (partner.Status ==2){
+                        //@: var partnerId = @partner.Id;
+                        //@: var areaSMS = @partner.SMSNumber;
+                   }else{
+                       
+                        var DriverIdStr = "";
+                        var SMSStr = "";
+                        var d=0;
+                        @foreach (var driver in ViewBag.drivers){
+                            @if(driver.PartnerId==partner.Id){
+                              d+=1;
+                              DriverIdStr+="DriverId"+d+":"+driver.ID+",";
+                              SMSStr+="SMS"+d+":"+driver.PhoneNumber+",";
+                        @:    var DriverId@(d) = @driver.ID;
+                        @:    var SMS@(d) = "@driver.PhoneNumber";
+
+                            }
+                        @: var DriverIdStr="@DriverIdStr";
+                        @: var SMSStr="@SMSStr";    
+                        @: top.document.getElementById('orderDriverId').value = "@DriverIdStr";
+                        @: top.document.getElementById('orderSMSNumber').value = "@SMSStr";
+
+                         
+                       }
                    }
                 }
             }
          
             @:}
         }
-   
+           
+
 
             InDeliveryAreaConfirmed ? message="Your all set! This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
             InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
@@ -476,7 +550,33 @@ You can aslo <input type=button class=btn btn-default value="Use My Current GPS 
             }
             InDeliveryAreaConfirmed=false;
             AreaOpen=0;
+            fixMenu(AreaId);
     }
+
+function fixMenu(da){
+
+
+    AreaIds.forEach(function (item,index,arr){
+        classToShow=".cartItemArea" + arr[index];
+      
+      
+        myClasses = document.querySelectorAll(classToShow)
+        if  (myClasses.length>0){
+            for (var i=0;i<=myClasses.length-1;i++){
+                 if (da==arr[index]){
+                   myClasses[i].style.display ="";
+                }else{
+                    myClasses[i].style.display ="none";
+                }
+            }
+           
+        }
+      
+    });
+
+
+    
+}
 
 function pointInPolygon(points,lat,lon) 
 {
@@ -565,11 +665,11 @@ function DebitWayInit() {
     var country="@ViewBag.user.Country";
     var emailadd="@ViewBag.user.Email";
     var phone="@ViewBag.user.PhoneNumber";
-    var shipping_address= top.document.getElementById("StreetName").value ;
-    var shipping_city=  top.document.getElementById('City').value;
-    var shipping_state_or_province=  top.document.getElementById('Province').value;
-    var shipping_zip_or_postal_code = top.document.getElementById('PostalCode').value;
-    var shipping_country=  top.document.getElementById('Country').value;
+    var shipping_address= top.document.getElementById("orderStreetName").value ;
+    var shipping_city=  top.document.getElementById('orderCity').value;
+    var shipping_state_or_province=  top.document.getElementById('orderProvince').value;
+    var shipping_zip_or_postal_code = top.document.getElementById('orderPostalCode').value;
+    var shipping_country=  top.document.getElementById('orderCountry').value;
     var item_name = "";
     var quantityTot = 0;
     for (var i in simpleCart.items()){
@@ -580,7 +680,7 @@ function DebitWayInit() {
 
     var amount = simpleCart.grandTotal();
     var item_code = "unknown"
-    var custom=  userId + ' , '  +  top.document.getElementById("SpecialInstructions").value ;
+    var custom=  userId + ' , '  +  top.document.getElementById("SpecialInstructions").value+","+top.document.getElementById("orderSMSNumber").value+","+top.document.getElementById("orderPartnerId").value +","+top.document.getElementById("orderDriverId").value  ;
     var shipment="no";
     var merchant_transaction_id = "@Guid.NewGuid()";
     
@@ -731,15 +831,15 @@ function checkLocation(lat,lon){
          
             @:}
         }
-            InDeliveryAreaConfirmed ? message="Your current GPS location is located in an area that qualifies for immediate delivery between " + openStr + " and " + closeStr  + "Do you want to use this location for this order": message="Sorry your current GPS location does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
+            InDeliveryAreaConfirmed ? message="Your all set! Your current GPS location is located in an area that qualifies for immediate delivery between " + openStr + " and " + closeStr  + "Do you want to use this location for this order": message="Sorry your current GPS location does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
             InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
            if (AreaOpen==2){  
-               message = "Your current GPS location is in area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
+               message = "Your current GPS location is in an area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
            }
    
             var myAnswer = confirm(title + " - " + message);
-            if (myAnswer){
-                top.document.getElementById("GeocodedAddress").value=lat + " - " + lon
+            if (myAnswer){   //need to lookup a valid street address for this delivery location or at least a place name like "Trinity Bellwoods Park"
+                top.document.getElementById("GeocodedAddress").value=lat + " - " + lon  
             }else{
             //    top.document.getElementById("GeocodedAddress").value=""
             }
@@ -760,9 +860,9 @@ simpleCart({
         { view: "remove", text: "X", label: "Remove" },
         { attr: "name", label: "Items" },
         { view: "currency", attr: "price", label: "Price"},
-        //{ view: "decrement", label: false},
+        { view: "decrement", label: false},
         { attr: "quantity", label: "Qty"},
-        //{ view: "increment", label: false},
+        { view: "increment", label: false},
         { view: "currency", attr: "total", label: "SubTotal" }
        
     ],

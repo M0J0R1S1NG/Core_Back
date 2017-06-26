@@ -12,6 +12,9 @@ using Core.Models.ManageViewModels;
 using Core.Services;
 using Core.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+
 
 namespace Core.Controllers
 {
@@ -61,6 +64,8 @@ namespace Core.Controllers
             ViewBag.drivers = _context.Drivers.Where(c=> c.Status>0);
             ViewBag.partners = _context.Partners.Where(c=> c.Status>0);
             ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
+            var deliveryareaGuids = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
+            ViewBag.deliveryAreasForSelect = new SelectList(deliveryareaGuids, "Id", "Value");
             return View(users);
         }
         //

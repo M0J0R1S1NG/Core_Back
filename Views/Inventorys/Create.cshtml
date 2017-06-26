@@ -178,7 +178,7 @@
         <div class="form-group">
             <label asp-for="catagory" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="catagory" class="form-control" />
+                <select asp-for="catagory" asp-items=ViewBag.MyList2 class="form-control" ></select>
                 <span asp-validation-for="catagory" class="text-danger"></span>
             </div>
         </div>
