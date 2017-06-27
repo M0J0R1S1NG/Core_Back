@@ -76,7 +76,7 @@ namespace Core.Controllers
                 //     } 
                 if (  user.status==0)
                     {
-                        return RedirectToAction("PurchaseMembership","Shopping");
+                        //return RedirectToAction("PurchaseMembership","Shopping");
                     } 
 
                     ViewData["Inventory"]=_context.Inventorys;
