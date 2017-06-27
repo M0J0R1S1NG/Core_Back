@@ -91,7 +91,7 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
             <div class="col-md-12">
                 <span id="QuantitiyAvailable">Quantity Available: @item.Quantity Grams</span>
                 <div class="simpleCart_shelfItem col-md-123">
-                    <img class="item_add" src="@item.ImageFilePath" height="75px" width="75px" />
+                    <img class="item_add" src="@item.ImageFilePath" height="100px" width="100px" />
                     <h4 class="item_name">@item.Label</h4>
                     <input type="text" value="1" class="item_Quantity">
                     <span class="item_price">$@item.Price</span>
@@ -425,8 +425,10 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
 <script>
     var AreaIds = []; 
      var NotInArea=false; 
+    
      @foreach (dynamic item in ViewBag.deliveryAreaName) {  
         @:top.document.getElementById("DeliveryAreaIdList").value=@item.ID
+         @:AreaIds.push(@item.ID);
      }
 @foreach (dynamic item in ViewBag.deliveryareas) {
    
@@ -468,7 +470,7 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
         @{var AreaCount=0;}
         @foreach (var item in ViewBag.deliveryareas){
                 AreaCount+=1;
-                @:AreaIds.push(@item.ID);
+               
 
                 @:exteriorRing = [
                     @:@item.Points
@@ -799,7 +801,7 @@ function showPosition(position) {
     checkLocation(position.coords.latitude ,position.coords.longitude);
 }
 window.addEventListener("DOMContentLoaded", function() {
-     
+      fixMenu(top.document.getElementById("DeliveryAreaIdList").value);
 
     }, false);
 
