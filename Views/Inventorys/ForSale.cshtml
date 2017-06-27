@@ -87,10 +87,10 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
  
         j+=1;        
    
-        <div id="cartArea" class="cartItemArea@(item.ID)" style="display:none">
-            <div class="col-md-3">
+        <div id="cartArea" class="cartItemArea@(item.ID) col-md-3" style="display:none">
+            <div class="col-md-12">
                 <span id="QuantitiyAvailable">Quantity Available: @item.Quantity Grams</span>
-                <div class="simpleCart_shelfItem col-md-12">
+                <div class="simpleCart_shelfItem col-md-123">
                     <img class="item_add" src="@item.ImageFilePath" height="75px" width="75px" />
                     <h4 class="item_name">@item.Label</h4>
                     <input type="text" value="1" class="item_Quantity">
@@ -691,7 +691,7 @@ function DebitWayInit() {
     var datevar = Date().substr(0,Date().indexOf("GMT")-4);
     top.document.getElementById("identifier").value = identifier;
     top.document.getElementById("website_unique_id").value =website_unique_id;
-    top.document.getElementById("return_url").value = "https://www.uberduber.com/DebitWay/Create";
+    top.document.getElementById("return_url").value = "https://www.uberduber.net/DebitWay/Create";
     top.document.getElementById("transaction_date").value = datevar;
     top.document.getElementById("language").value = language;
     top.document.getElementById("first_name").value = first_name;
