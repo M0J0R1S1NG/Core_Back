@@ -22,10 +22,10 @@ namespace Core.Controllers
 
         // GET: InventoryGroups
         public async Task<IActionResult> Index()
-        { var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+        { var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label  + " " + x.Supplier});
             ViewBag.inventorys = new SelectList(InventoryIds, "Id", "Value");
 
-            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
+            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name + " " + x.Description });
             ViewBag.deliveryAreas = new SelectList(deliveryareaIds, "Id", "Value");
             return View(await _context.InventoryGroups.ToListAsync());
         }
@@ -44,10 +44,10 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
-            var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+            var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label + " " + x.Supplier });
             ViewBag.inventorys = new SelectList(InventoryIds, "Id", "Value");
 
-            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
+            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name + " " + x.Description });
             ViewBag.deliveryAreas = new SelectList(deliveryareaIds, "Id", "Value");
             return View(inventoryGroup);
         }
@@ -55,10 +55,10 @@ namespace Core.Controllers
         // GET: InventoryGroups/Create
         public IActionResult Create()
         {
-            var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+            var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label + " " + x.Supplier });
             ViewBag.inventorys = new SelectList(InventoryIds, "Id", "Value");
 
-            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
+            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name  + " " + x.Description});
             ViewBag.deliveryAreas = new SelectList(deliveryareaIds, "Id", "Value");
             return View();
         }
@@ -92,10 +92,10 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
-             var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+             var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label  + " " + x.Supplier});
             ViewBag.inventorys = new SelectList(InventoryIds, "Id", "Value");
 
-            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
+            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name + " " + x.Description });
             ViewBag.deliveryAreas = new SelectList(deliveryareaIds, "Id", "Value");
             return View(inventoryGroup);
         }
@@ -149,10 +149,10 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
-             var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+             var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label  + " " + x.Supplier});
             ViewBag.inventorys = new SelectList(InventoryIds, "Id", "Value");
 
-            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
+            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name + " " + x.Description });
             ViewBag.deliveryAreas = new SelectList(deliveryareaIds, "Id", "Value");
             return View(inventoryGroup);
         }
