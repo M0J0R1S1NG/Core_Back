@@ -114,7 +114,7 @@ namespace Core.Controllers
                                         orderby da.Name
                                         select  new InventoryByArea
                                         {
-                                           Label=d.Label, Name=da.Name,ID=da.ID,Quantity= d.Quantity,Price=d.Price,ImageFilePath=d.ImageFilePath 
+                                           Label=d.Label, Name=da.Name,ID=da.ID,Quantity= d.Quantity,Price=d.Price,ImageFilePath=d.ImageFilePath, InventoryId=d.ID
                                         };
 
 

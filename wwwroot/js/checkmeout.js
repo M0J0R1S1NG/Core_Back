@@ -10,8 +10,8 @@ simpleCart({
         //{ view: "decrement", label: false},
         { attr: "quantity", label: "Qty"},
         //{ view: "increment", label: false},
-        { view: "currency", attr: "total", label: "SubTotal" }
-       
+        { view: "currency", attr: "total", label: "SubTotal" },
+        { view: "", attr: "id" , label: false } 
     ],
     // "div" or "table" - builds the cart as a
     // table or collection of divs

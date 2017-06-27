@@ -95,6 +95,7 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
                     <h4 class="item_name">@item.Label</h4>
                     <input type="text" value="1" class="item_Quantity">
                     <span class="item_price">$@item.Price</span>
+                    <span style="display:none" class="item_id">@item.InventoryId</span>
                     <a class="item_add" href="javascript:;"> Add to Cart </a>
                 </div>
             </div>
@@ -630,8 +631,10 @@ var userId = '@ViewBag.UserId';
     //xhttp.send("fname=Henry&lname=Ford");
     //return;
     var buildstr2 = "";
+    var item_code="";
     for (var i in simpleCart.items()){
         buildstr2 +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('name') + " at: $" + simpleCart.items()[i].get('price') + " for a total of: $" +  simpleCart.items()[i].get('total') +  '  \n\r';
+        item_code+=simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('id') + ","
     }
     buildstr2 += "<br>Grand Total: $" + simpleCart.grandTotal();
      var buildStr = ""
@@ -643,6 +646,7 @@ var userId = '@ViewBag.UserId';
     buildStr += "PaymentType=" + "1" + "&";
     buildStr += "Details='" +  buildstr2 + "'&";   // "test details" + "'&";   
     buildStr += "SpecialInstructions='" + top.document.getElementById("SpecialInstructions").value + "'&";
+    buildStr += "PhoneNumber='"+ item_code + "'&";
     buildStr += "Status=" + "1" + "&";
     //buildStr += "DriverId=" + "1" + "&";
     
@@ -678,14 +682,17 @@ function DebitWayInit() {
     var shipping_country=  top.document.getElementById('orderCountry').value;
     var item_name = "";
     var quantityTot = 0;
+    var item_code = "";
     for (var i in simpleCart.items()){
         item_name +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('name') + ","
+        item_code +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('id') + ","
+        
         quantityTot+= simpleCart.items()[i].get('quantity');
         
     }
 
     var amount = simpleCart.grandTotal();
-    var item_code = "unknown"
+    
     var custom=  userId + ' , '  +  top.document.getElementById("SpecialInstructions").value+","+top.document.getElementById("orderSMSNumber").value+","+top.document.getElementById("orderPartnerId").value +","+top.document.getElementById("orderDriverId").value  ;
     var shipment="no";
     var merchant_transaction_id = "@Guid.NewGuid()";
@@ -841,8 +848,8 @@ simpleCart({
         { view: "decrement", label: false},
         { attr: "quantity", label: "Qty"},
         { view: "increment", label: false},
-        { view: "currency", attr: "total", label: "SubTotal" }
-       
+        { view: "currency", attr: "total", label: "SubTotal" },
+        { view: "", attr: "id" , label: false } 
     ],
     // "div" or "table" - builds the cart as a
     // table or collection of divs

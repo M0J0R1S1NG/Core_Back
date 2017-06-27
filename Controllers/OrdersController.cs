@@ -108,7 +108,7 @@ namespace Core.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreateApi([Bind("Total,GeocodedAddress,Weight,PaymentType,Details,SpecialInstructions,Status,DriverId,CustomerId")] Order order)
+        public async Task<IActionResult> CreateApi([Bind("Total,GeocodedAddress,Weight,PaymentType,Details,PhoneNumber,SpecialInstructions,Status,DriverId,CustomerId")] Order order)
         {
             if (ModelState.IsValid)
              {   
@@ -120,6 +120,7 @@ namespace Core.Controllers
                 _context.Add(order);
 
                 await _context.SaveChangesAsync();
+
                 string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  order.Details +  " <br>To: " ;
                 message += order.GeocodedAddress + "<br>";
                 message+= "Special Instructions:" + order.SpecialInstructions + "<br>";
@@ -140,6 +141,17 @@ namespace Core.Controllers
                 await _emailSender.SendEmailAsync("andrewmoore46@gmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
+                string[] item_codes = order.PhoneNumber.Split(',');
+                for (var i=0 ;i<item_codes.Length-1;i++){
+                    var itemQ = item_codes[i].Split('x');
+                    var quantity = itemQ[0].Replace("'","");
+
+                    var InventoryId = itemQ[1];
+                    Inventory thisInventory=_context.Inventorys.Where(z=> z.ID==Int32.Parse(InventoryId)).Single();
+                    thisInventory.Quantity=thisInventory.Quantity-Int32.Parse(quantity);
+                    _context.Update(thisInventory);
+                    await  _context.SaveChangesAsync();     
+                }
                 return StatusCode(200);
             }
             

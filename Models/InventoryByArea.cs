@@ -12,7 +12,7 @@ namespace Core.Models
         {
                 
         }
-        
+        public int InventoryId {get;set;}
          public string Label {get;set;}
           public string Name {get;set;}
           public int ID {get;set;}

@@ -107,8 +107,7 @@ namespace Core.Controllers
                  string userId=customString[0].Trim();
                  string SpecialInstructions=customString[1];
                 
-
-      
+               
                  Order thisOrder = _context.Orders.Where(o=> o.GUID == Guid.Parse(debitWay.merchant_transaction_id)).First();
                 var user = await _userManager.FindByIdAsync(userId);
                 //var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -121,6 +120,7 @@ namespace Core.Controllers
                 thisOrder.CustomerId = 1;//put partnerId in here
                 thisOrder.DriverId=1;//fill in 
                 await _context.SaveChangesAsync();
+
                 string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  thisOrder.Details +  " <br>To: " ;
                 message += thisOrder.GeocodedAddress + "<br>";
                 message+= "Special Instructions:" + thisOrder.SpecialInstructions + "<br>";
@@ -142,19 +142,17 @@ namespace Core.Controllers
                 await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+                string[] item_codes = debitWay.item_code.Split(',');
+                for (var i=0 ;i<item_codes.Length-1;i++){
+                    var itemQ = item_codes[i].Split('x');
+                    var quantity = itemQ[0];
+                    var InventoryId = itemQ[1];
+                    Inventory thisInventory=_context.Inventorys.Where(z=> z.ID==Int32.Parse(InventoryId)).Single();
+                    thisInventory.Quantity=thisInventory.Quantity-Int32.Parse(quantity);
+                    _context.Update(thisInventory);
+                    await  _context.SaveChangesAsync();     
+                }
+               
                 
                 return RedirectToAction("Index","orders");
             }
