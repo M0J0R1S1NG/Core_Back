@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Core.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class DriversController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -71,7 +73,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,GUID,PartnerId,UserGuid,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
+        public async Task<IActionResult> Create([Bind("ID,GUID,PartnerId,UserGuid,EmailAddress,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +111,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,GUID,PartnerId,UserGuid,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,GUID,PartnerId,UserGuid,EmailAddress,GeocodedAddress,Address1,PostalCode,Details,SpecialInstructions,Status,PhoneNumber,VehicleGuid")] Driver driver)
         {
             if (id != driver.ID)
             {

@@ -71,7 +71,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,GUID,StreetAddress,City,Province,PostalCode,PhoneNumber,SpecialInstructions,Status,DeliveryArea,SMSNumber,ShippingAddress,Name,Company,TaxId")] Partner partner)
+        public async Task<IActionResult> Create([Bind("Id,GUID,StreetAddress,EmailAddress,City,Province,PostalCode,PhoneNumber,SpecialInstructions,Status,DeliveryArea,SMSNumber,ShippingAddress,Name,Company,TaxId")] Partner partner)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +108,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,GUID,StreetAddress,City,Province,PostalCode,PhoneNumber,SpecialInstructions,Status,DeliveryArea,SMSNumber,ShippingAddress,Name,Company,TaxId")] Partner partner)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,GUID,StreetAddress,EmailAddress,City,Province,PostalCode,PhoneNumber,SpecialInstructions,Status,DeliveryArea,SMSNumber,ShippingAddress,Name,Company,TaxId")] Partner partner)
         {
             if (id != partner.Id)
             {

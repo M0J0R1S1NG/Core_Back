@@ -14,7 +14,7 @@
 }
 
 <h2>@ViewData["Title"]</h2>
-<h3>Your current delivery addresss is: @ViewData["DeliveryAddress"]</h3>
+<h3>Your current delivery addresss is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]</h3>
 If you want todays delivery sent somewhere other than your address on file you must confirm below.  The address in this box will be delivered to.  Leave alone to deliver to your account address.
 You can also<br> <input type=button class=btn btn-default value="Use My Current GPS Location" onclick="getLocation()"></input>  
 <hr/>
@@ -53,13 +53,13 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
             <div class="form-group">Must add Apt/Buzz number in Special Instructions if using a new location if applicable<br>
                 <label  class="col-md-2 control-label">Special Instructions</label>
                 <div class="col-md-10">
-                    <input id='SpecialInstructions' type=text   value="" class="form-control" />
+                    <input id='SpecialInstructions' type=text value="@ViewData["StreetNumber"]"  value="" class="form-control" />
                    
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>      <input id='orderAptNumber' type='hidden' />
             <input id='orderStreetName' type='hidden' />
             <input id='orderCity' type="hidden" />
             <input id='orderProvince' type="hidden" />
@@ -69,6 +69,8 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
             <input id='orderPartnerId' type="hidden" />
             <input id='orderDriverId' type="hidden" />
             <input id='orderSMSNumber' type="hidden" />
+             <input id='lat' type="hidden" />
+            <input id='lon' type="hidden" />
             
 <hr/>  
 
@@ -426,19 +428,24 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
 <script>
     var AreaIds = []; 
      var NotInArea=false; 
-    
-     @foreach (dynamic item in ViewBag.deliveryAreaName) {  
-        @:top.document.getElementById("DeliveryAreaIdList").value=@item.ID
+    var userHomeDeliveryAreaId=-1;
+    var currentDeliveryAreaId=-1;
+     @foreach (dynamic item in ViewBag.deliveryAreaName) {  // there should be only one returned in this loop otherwise it will fuck up
+        @:top.document.getElementById("DeliveryAreaIdList").value=@item.ID;
          @:AreaIds.push(@item.ID);
+         @:userHomeDeliveryAreaId=@item.ID;
+         @:currentDeliveryAreaId=@item.ID;
      }
 @foreach (dynamic item in ViewBag.deliveryareas) {
    
 }
  function LoadMap() {
+   
         Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', {
             callback: function () {
                 var manager = new Microsoft.Maps.AutosuggestManager({
-                    placeSuggestions: false
+                    placeSuggestions: true,
+                   
                 });
                 manager.attachAutosuggest('#GeocodedAddress', '#searchBoxContainer', selectedSuggestion);
             },
@@ -447,6 +454,8 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
             },
             credentials: 'AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA' 
         });
+          getLocation();
+    
     }
     
     function selectedSuggestion(result) {
@@ -457,6 +466,8 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
             top.document.getElementById('orderProvince').value = result.address.adminDistrict;
             top.document.getElementById('orderPostalCode').value = result.address.postalCode;
             top.document.getElementById('orderCountry').value = result.address.countryRegion;
+            top.document.getElementById('orderAptNumber').value = top.document.getElementById('SpecialInstructions').value;
+            
             
         }
         var exteriorRing;
@@ -500,12 +511,12 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
             @:        top.document.getElementById('DeliveryAreaIdList').value = @item.ID;
 
             @foreach (var partner in ViewBag.partners){
-
-               @if (partner.DeliveryArea == item.ID){
+               @if (partner.Id == item.PartnerId){
+               //@if (partner.DeliveryArea == item.ID){
                         @: var partnerId = @partner.Id;
                         @: var areaSMS = "@partner.SMSNumber";
                         @: var partnerName ="@partner.Name";
-                        
+                         @: var partnerDeliveryArea ="@partner.DeliveryArea";
                         @: top.document.getElementById('orderPartnerId').value = @partner.Id;
                    @if (partner.Status ==2){
                         //@: var partnerId = @partner.Id;
@@ -536,27 +547,38 @@ You can also<br> <input type=button class=btn btn-default value="Use My Current 
             }
          
             @:}
+        
         }
            
 
+            if (AreaId==currentDeliveryAreaId){
 
-            InDeliveryAreaConfirmed ? message="Your all set! This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
-            InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
-            InDeliveryAreaConfirmed ? NotInArea=false :NotInArea=true;
-           if (AreaOpen==2){  
-               message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
-                NotInArea=false; 
-           }
-   
-            var myAnswer = alert(title + " - " + message);
-            if (myAnswer){
-                top.document.getElementById("GeocodedAddress").value=""
             }else{
-                top.document.getElementById("GeocodedAddress").value=""
+                alert("area changed");
+                currentDeliveryAreaId=AreaId;
+
+            
+
+                InDeliveryAreaConfirmed ? message="Your all set! This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
+                InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
+                InDeliveryAreaConfirmed ? NotInArea=false :NotInArea=true;
+                if (AreaOpen==2){  
+                    message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
+                    NotInArea=false; 
+                }
+    
+                var myAnswer = alert(title + " - " + message);
+                if (myAnswer){
+                    
+                }else{
+                    top.document.getElementById("GeocodedAddress").value= top.document.getElementById("orderStreetName").value;
+                }
+
             }
             InDeliveryAreaConfirmed=false;
             AreaOpen=0;
             fixMenu(AreaId);
+            startup=false;
     }
 
 function fixMenu(da){
@@ -576,7 +598,7 @@ function fixMenu(da){
                 }
             }
             NotInArea=false;
-           
+            
         }
       
     });
@@ -619,17 +641,11 @@ var userId = '@ViewBag.UserId';
         if (this.readyState == 4 && this.status == 200) {
            var orderGuid=this.response;
            top.document.getElementById("merchant_transaction_id").value = orderGuid;
-            document.getElementById("demo").innerHTML =  "Order was posted to orders table";
            top.document.getElementById("debitwayform").submit();
-            
-
-            
         }
     };
     xhttp.open("POST", "/Orders/Interac/", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //xhttp.send("fname=Henry&lname=Ford");
-    //return;
     var buildstr2 = "";
     var item_code="";
     for (var i in simpleCart.items()){
@@ -648,12 +664,7 @@ var userId = '@ViewBag.UserId';
     buildStr += "SpecialInstructions='" + top.document.getElementById("SpecialInstructions").value + "'&";
     buildStr += "PhoneNumber='"+ item_code + "'&";
     buildStr += "Status=" + "1" + "&";
-    //buildStr += "DriverId=" + "1" + "&";
-    
-    //buildStr += "DriverId=" + "1" + "&";
-    //buildStr += "CustomerId=" + "1" ;
     xhttp.send(buildStr); 
-   
 }
 
 function DebitWayInit() {
@@ -662,8 +673,7 @@ function DebitWayInit() {
     var website_unique_id="spJx8tqQJYjKRw24";
     var identifier="ERP1721663ro022";
     var vericode = "VeriPzqgepJQIC";
-    
-    var return_url="https://www.uberduber.com/DebitWay";
+    var return_url="https://www.uberduber.net/DebitWay";
     var language="en";
     var first_name="@ViewBag.user.FirstName";
     var last_name="@ViewBag.user.LastName";
@@ -686,17 +696,12 @@ function DebitWayInit() {
     for (var i in simpleCart.items()){
         item_name +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('name') + ","
         item_code +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('id') + ","
-        
         quantityTot+= simpleCart.items()[i].get('quantity');
-        
     }
-
     var amount = simpleCart.grandTotal();
-    
-    var custom=  userId + ' , '  +  top.document.getElementById("SpecialInstructions").value+","+top.document.getElementById("orderSMSNumber").value+","+top.document.getElementById("orderPartnerId").value +","+top.document.getElementById("orderDriverId").value  ;
+    var custom=  userId + ' , '  +  top.document.getElementById("SpecialInstructions").value+","+top.document.getElementById("orderPartnerId").value +","+top.document.getElementById("orderSMSNumber").value+","+top.document.getElementById("orderDriverId").value  ;
     var shipment="no";
     var merchant_transaction_id = "@Guid.NewGuid()";
-    
     var datevar = Date().substr(0,Date().indexOf("GMT")-4);
     top.document.getElementById("identifier").value = identifier;
     top.document.getElementById("website_unique_id").value =website_unique_id;
@@ -720,35 +725,13 @@ function DebitWayInit() {
     top.document.getElementById("shipping_country").value = shipping_country;
     top.document.getElementById("item_name").value = item_name;
     top.document.getElementById("amount").value = amount.toFixed(2);
-    if (top.document.getElementById("quantity") != null){
-            top.document.getElementById("quantity").value = quantityTot;
-        }
-    if (top.document.getElementById("Quantity") != null){
-            top.document.getElementById("Quantity").value = quantityTot;
-            top.document.getElementById("Quantity").id = "quantity";
-            
-        }
+    top.document.getElementById("quantity").value = quantityTot;
     top.document.getElementById("item_code").value = item_code;
     top.document.getElementById("custom").value = custom;
     top.document.getElementById("shipment").value = shipment;
     top.document.getElementById("merchant_transaction_id").value = merchant_transaction_id;
     top.document.getElementById("time_stamp").value = datevar;
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
     xhttp.onreadystatechange = function() {
         //alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
         if (this.readyState == 4 && this.status == 200) {
@@ -759,11 +742,7 @@ function DebitWayInit() {
     };
     xhttp.open("POST", "/Orders/CreateApi/", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //xhttp.send("fname=Henry&lname=Ford");
-    //return;
-    
-  
-     var buildStr = ""
+    var buildStr = ""
     buildStr += "website_unique_id='" +  website_unique_id + "'&";    //"1" + "&";  
     buildStr += "language='" +  language + "'&"; 
     buildStr += "first_name='" +  first_name + "'&"; 
@@ -773,11 +752,9 @@ function DebitWayInit() {
     buildStr += "state_or_province='" +  state_or_province + "'&"; 
     buildStr += "zip_or_postal_code='" +  zip_or_postal_code + "'&"; 
     buildStr += "country='" +  country + "'&"; 
-    
     buildStr += "email='" +  email + "'&"; 
     buildStr += "phone='" +  phone + "'&"; 
     buildStr += "shipping_address='" +  shipping_address + "'&"; 
-   
     buildStr += "shipping_city='" +  shipping_city + "'&"; 
     buildStr += "shipping_state_or_province='" +  shipping_state_or_province + "'&"; 
     buildStr += "shipping_zip_or_postal_code='" +  shipping_zip_or_postal_code + "'&"; 
@@ -794,48 +771,43 @@ function DebitWayInit() {
     //xhttp.send(buildStr); 
    
 }
+var startup=true;
 var x = top.document.getElementById("GeocodedAddress");
 function getLocation() {
+    
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        //(starting==false) ? startup=false:startup=true;
+        navigator.geolocation.getCurrentPosition(checkPosition);
     } else { 
         alert("Geolocation is not supported by this browser.");
     }
 }
+    
 
-function showPosition(position) {
-  
-    checkLocation(position.coords.latitude ,position.coords.longitude);
-}
-window.addEventListener("DOMContentLoaded", function() {
-      fixMenu(top.document.getElementById("DeliveryAreaIdList").value);
-
-    }, false);
-
-
-function checkLocation(lat,lon){
-
-
-
-
-
-            var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","adminDistrict":"","postalCode":"","countryRegion":""}]}';
+function checkPosition(position) {
+    var curlat=position.coords.latitude;
+    var curlon=position.coords.longitude;
+    
+    top.document.getElementById("lat").value=curlat;
+    top.document.getElementById("lon").value=curlon;
+    var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
             result=JSON.parse(JsonTxt);
-            result.location.latitude=lat;
-            result.location.longitude=lon;
+            result.location.latitude=curlat;
+            result.location.longitude=curlon;
             result.address.adminDistrict='';
             result.address.locality='';
             result.address.postalCode='';
             result.address.countryRegion='';
-
+            result.address.addressLine="Latitude: " + curlat + " - Longitude: " + curlon;
 
             selectedSuggestion(result);
   
-            
-    }
+}
 
-
-
+window.addEventListener("DOMContentLoaded", function() {
+        fixMenu(top.document.getElementById("DeliveryAreaIdList").value);
+        
+    }, false);
 
 simpleCart({
     // array representing the format and columns of the cart,

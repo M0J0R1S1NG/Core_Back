@@ -28,6 +28,8 @@ namespace Core.Models
         public string Name {get; set;}
         public string Company {get;set;}
         public string TaxId {get;set;}
+        public string EmailAddress {get;set;}
+
         
     }
 }

@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.PlatformAbstractions;
-
-
-
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Core.Controllers
@@ -25,6 +23,7 @@ namespace Core.Controllers
            
             return View();
         }
+        [Authorize(Roles="Admin")]
         public IActionResult Admin()
         {
            

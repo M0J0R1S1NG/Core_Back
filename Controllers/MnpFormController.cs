@@ -18,7 +18,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.Controllers
 {
-    
+   
+
+    [Authorize]
     public class MnpFormController : Controller
     {   private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;

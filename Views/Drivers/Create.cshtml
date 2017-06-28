@@ -22,7 +22,13 @@
                 <span asp-validation-for="PartnerId" class="text-danger"></span>
             </div>
         </div>
-
+         <div class="form-group">
+            <label asp-for="EmailAddress" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="GeocodedAddress" class="col-md-2 control-label"></label>
             <div class="col-md-10">

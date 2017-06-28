@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Core.Controllers
-{[Authorize(Roles="Admin")]
+{
     public class DebitWayNotificationsController : Controller
     {
         private readonly ApplicationDbContext _context;

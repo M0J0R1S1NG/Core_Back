@@ -16,6 +16,12 @@
             @Html.DropDownListFor(model=>model.PartnerId, (IEnumerable<SelectListItem>)ViewBag.partners,new {disabled="disabled"})
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmailAddress)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.GeocodedAddress)
         </dt>
         <dd>

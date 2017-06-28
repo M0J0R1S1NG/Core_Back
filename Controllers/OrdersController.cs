@@ -58,8 +58,31 @@ namespace Core.Controllers
             return View(order);
         }
 
-        // GET: Orders/Details/5
-        
+
+        [HttpGet]
+        // GET: Orders/Accept
+        public async Task<IActionResult> Accept(int ID, [Bind(" DriverId")] Order order)
+        {
+                if (ModelState.IsValid)
+                {
+
+                
+                var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
+
+                if (order == null)
+                {
+                    return NotFound();
+                }
+                thisOrder.Status=5;
+                thisOrder.DeliveryDate=DateTime.Now.AddMinutes(30);
+                thisOrder.DriverId = order.DriverId;
+                _context.Update(thisOrder);
+                await _context.SaveChangesAsync();
+                return StatusCode(200);
+             
+            }
+            return NotFound();
+        }
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -121,6 +144,7 @@ namespace Core.Controllers
 
                 await _context.SaveChangesAsync();
 
+
                 string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  order.Details +  " <br>To: " ;
                 message += order.GeocodedAddress + "<br>";
                 message+= "Special Instructions:" + order.SpecialInstructions + "<br>";
@@ -141,6 +165,9 @@ namespace Core.Controllers
                 await _emailSender.SendEmailAsync("andrewmoore46@gmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
+                
+                
+                
                 string[] item_codes = order.PhoneNumber.Split(',');
                 for (var i=0 ;i<item_codes.Length-1;i++){
                     var itemQ = item_codes[i].Split('x');

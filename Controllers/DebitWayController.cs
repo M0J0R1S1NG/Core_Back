@@ -107,8 +107,19 @@ namespace Core.Controllers
                  string userId=customString[0].Trim();
                  string SpecialInstructions=customString[1];
                 
-               
-                 Order thisOrder = _context.Orders.Where(o=> o.GUID == Guid.Parse(debitWay.merchant_transaction_id)).First();
+                string newPartnerId=customString[2];
+                
+                string newSMSNumber=customString[3];
+                string[] newDriverIds=customString[5].Split(':');
+                string thisDriver = newDriverIds[1];
+                Partner  areaPartner=await _context.Partners.Where(x=> x.Id==Int32.Parse(newPartnerId)).SingleAsync();
+                IQueryable<Driver> areaDrivers =  _context.Drivers.Where(x=> x.PartnerId==Int32.Parse(newPartnerId)).OrderBy(x=> x.Status).Select(x => new Driver {EmailAddress=x.EmailAddress,PhoneNumber=x.PhoneNumber });
+                
+             
+                
+                
+                
+                Order thisOrder = _context.Orders.Where(o=> o.GUID == Guid.Parse(debitWay.merchant_transaction_id)).First();
                 var user = await _userManager.FindByIdAsync(userId);
                 //var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 // thisOrder.AppUser= Guid.Parse(user.Id);
@@ -117,8 +128,10 @@ namespace Core.Controllers
                 // if (thisOrder.SpecialInstructions.Contains("Must add")) {thisOrder.SpecialInstructions= "";}
                 // //_context.Add(order);
                 thisOrder.Status=2;
-                thisOrder.CustomerId = 1;//put partnerId in here
-                thisOrder.DriverId=1;//fill in 
+                thisOrder.CustomerId = Int32.Parse(newPartnerId);//put partnerId in here
+                thisOrder.DriverId=Int32.Parse(thisDriver);//fill in 
+                thisOrder.PhoneNumber=newSMSNumber;
+                _context.Update(thisOrder);
                 await _context.SaveChangesAsync();
 
                 string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  thisOrder.Details +  " <br>To: " ;
@@ -135,13 +148,27 @@ namespace Core.Controllers
 
 
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), smsmessage);
-                //await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
-                await _smsSender.SendSmsAsync("4168028129", _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
+                //await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
+
+              
+                await _smsSender.SendSmsAsync(areaPartner.SMSNumber, _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
+                await _emailSender.SendEmailAsync(areaPartner.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
+               
+                foreach (var myDrivers in areaDrivers){
+                    string acceptOrderLink = "https://www.uberduber.net/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
+                    string driverSMS =acceptOrderLink+"  " + _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details;
+                    await _smsSender.SendSmsAsync(myDrivers.PhoneNumber, driverSMS);
+                    await _emailSender.SendEmailAsync(myDrivers.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", driverSMS);
+                 }
+                //await _smsSender.SendSmsAsync("4168028129", _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
+                
                 //await _emailSender.SendEmailAsync("andrewmoore46@gmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
-                await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
+                //await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                 //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
 
+
+                //deduct from inventory
                 string[] item_codes = debitWay.item_code.Split(',');
                 for (var i=0 ;i<item_codes.Length-1;i++){
                     var itemQ = item_codes[i].Split('x');

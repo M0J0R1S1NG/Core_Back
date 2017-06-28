@@ -13,6 +13,12 @@
             @Html.DropDownListFor(model=>model.GUID, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmailAddress)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.StreetAddress)
         </dt>
         <dd>

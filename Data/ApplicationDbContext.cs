@@ -48,6 +48,8 @@ namespace Core.Data
         }
 
         public DbSet<DeliveryArea> DeliveryArea { get; set; }
+
+        public DbSet<Core.Models.ApplicationUser> ApplicationUser { get; set; }
          
     }
 }

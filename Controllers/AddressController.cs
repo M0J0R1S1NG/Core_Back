@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Core.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class AddressController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -53,6 +55,7 @@ namespace Core.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,CreatedUser,Geocoded,FullAddress,StreetNumber,StreetName,City,Province,PostalCode,PhoneNumber,SpecialInstructions,Status")] Address address)
         {

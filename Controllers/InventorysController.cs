@@ -49,7 +49,9 @@ namespace Core.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
         
-        [Authorize(Roles="Admin")]
+        [Authorize]
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ForSale()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -87,9 +89,15 @@ namespace Core.Controllers
             ViewBag.UserId = _userManager.GetUserId(User);
             
             
-           
+           ViewBag.thisUser=user;
+             ViewData["StreetNumber"]=user.StreetNumber;
+             ViewData["DeliveryAddress"]=user.DeliveryAddress;
+             ViewData["StreetName"]=user.StreetName;
+             ViewData["City"]=user.City;
+             ViewData["Country"]=user.Country;
+             ViewData["PostalCode"]=user.PostalCode;
+             ViewData["Province"]=user.Province;
 
-            ViewData["DeliveryAddress"]=user.StreetNumber +"-"+user.DeliveryAddress;
             var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
             var  UserAreaId = _context.Users.Where(x=> x.Id==userGuid.ToString()).OrderBy(c => c.LastName).Select(x => new {x.DeliveryAreaId }).Single();
             ViewBag.query2 = new SelectList(Products, "Id", "Value");
