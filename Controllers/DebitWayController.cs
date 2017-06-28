@@ -156,7 +156,7 @@ namespace Core.Controllers
                 await _emailSender.SendEmailAsync(areaPartner.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                
                 foreach (var myDrivers in areaDrivers){
-                    string acceptOrderLink = "https://www.uberduber.net/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
+                    string acceptOrderLink = "https://www.uberduber.com/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
                     string driverSMS =acceptOrderLink+"  " + _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details;
                     await _smsSender.SendSmsAsync(myDrivers.PhoneNumber, driverSMS);
                     await _emailSender.SendEmailAsync(myDrivers.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", driverSMS);
