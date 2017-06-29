@@ -146,7 +146,8 @@ namespace Core.Controllers
                              
                 await _smsSender.SendSmsAsync(areaPartner.SMSNumber, _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
                 await _emailSender.SendEmailAsync(areaPartner.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
-               
+              
+
                 foreach (var myDrivers in areaDrivers){
                     string acceptOrderLink =acceptUrl + "/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
                     string driverSMS =acceptOrderLink+"  " + _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details;

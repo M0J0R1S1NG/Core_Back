@@ -145,7 +145,7 @@
                 <button class="btn btn-default simpleCart_empty">Empty Cart</button>
                 <button class="btn btn-default" onclick="DebitWayInit('interac')">Interac Checkout</button>
                 <button class="btn btn-default simpleCart_checkout" >Credit Cards and Paypal</button>
-                 <button class="btn btn-default" onclick="ReverseGeocode(43.65009,-79.42266)">Credit Cards and Paypal</button>
+               
                
                </td>
             </tr>
@@ -707,7 +707,7 @@ function DebitWayInit(type) {
     var website_unique_id="spJx8tqQJYjKRw24";
     var identifier="ERP1721663ro022";
     var vericode = "VeriPzqgepJQIC";
-    var return_url="https://www.uberduber.net/DebitWay/Create";
+    var return_url="https://www.uberduber.com/DebitWay/Create";
     var language="en";
     var first_name="@ViewBag.user.FirstName";
     var last_name="@ViewBag.user.LastName";
@@ -867,7 +867,7 @@ function GeocodeCallback(result)
         
  
  
-var myAnswer =confirm("We Found your location at : " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon + ". If you would like to use this location instead of your home delivery address please press the ok button otherwise cancel to use your home address");
+        var myAnswer =confirm("We Found your location at : " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon + ". If you would like to use this location instead of your home delivery address please press the ok button otherwise cancel to use your home address");
                 if (myAnswer){
                     var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
                     outresult=JSON.parse(JsonTxt);
@@ -957,7 +957,7 @@ simpleCart({
     // custom function to add shipping cost
     shippingCustom: null,
     // flat rate shipping option
-    shippingFlatRate: 5,
+    shippingFlatRate: 3,
     // added shipping based on this value
     // multiplied by the cart quantity
     shippingQuantityRate: 0,
@@ -1000,7 +1000,7 @@ simpleCart({
         var WaitingOnReply = true;
         //InteracOrder();
         //DebitWayInit();
-         e.preventDefault();
+        // e.preventDefault();
         // while(!WaitingOnReply==true){
         //    releaseEvents();
         // }
