@@ -94,7 +94,7 @@ namespace Core.Controllers
                 
 
                 string acceptUrl="";
-                acceptUrl= debitWay.return_url.Substring(0, 19);
+                acceptUrl= debitWay.return_url.Substring(0, 25);
                 debitWay.transaction_date_datetime=DateTime.Now;
                 _context.Add(debitWay);
                 await _context.SaveChangesAsync();
