@@ -813,7 +813,7 @@ function getLocation() {
         //(starting==false) ? startup=false:startup=true;
         navigator.geolocation.getCurrentPosition(checkPosition);
     } else { 
-        alert("Geolocation is not supported by this browser.");
+        alert("We can't determine you current location. Geolocation is not supported by this browser.  You can change your delivery address manually if you are not at your default address");
     }
 }
     
@@ -866,20 +866,26 @@ function GeocodeCallback(result)
         
         
  
-        alert("Found location: " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon);
-            var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
-            outresult=JSON.parse(JsonTxt);
-            outresult.location.latitude=addressLat;
-            outresult.location.longitude=addressLon;
-            outresult.address.formattedAddress=formattedAddress;
-            outresult.address.adminDistrict=adminDistrict;
-            outresult.address.adminDistrict2=adminDistrict2;
-            outresult.address.locality=locality;
-            outresult.address.postalCode=postalCode;
-            outresult.address.countryRegion=countryRegion;
-            outresult.address.addressLine=addressName + "Latitude: " + addressLat + " - Longitude: " + addressLon;
+ 
+var myAnswer =confirm("We Found your location at : " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon + ". If you would like to use this location instead of your home delivery address please press the ok button otherwise cancel to use your home address");
+                if (myAnswer){
+                    var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
+                    outresult=JSON.parse(JsonTxt);
+                    outresult.location.latitude=addressLat;
+                    outresult.location.longitude=addressLon;
+                    outresult.address.formattedAddress=formattedAddress;
+                    outresult.address.adminDistrict=adminDistrict;
+                    outresult.address.adminDistrict2=adminDistrict2;
+                    outresult.address.locality=locality;
+                    outresult.address.postalCode=postalCode;
+                    outresult.address.countryRegion=countryRegion;
+                    outresult.address.addressLine=addressName + "Latitude: " + addressLat + " - Longitude: " + addressLon;
 
-            selectedSuggestion(outresult);
+                    selectedSuggestion(outresult);
+                  
+                }
+
+            
     }
   
 }
