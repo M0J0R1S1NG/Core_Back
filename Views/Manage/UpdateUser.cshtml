@@ -147,6 +147,7 @@
             },
             credentials: 'AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA' 
         });
+        getLocation();
     }
  
 
@@ -256,6 +257,97 @@ function pointInPolygon(points,lat,lon)
   return inPoly; 
 }
 
+function checkPosition(position) {
+    var curlat=position.coords.latitude;
+    var curlon=position.coords.longitude;
+    ReverseGeocode(curlat,curlon)
+return;
 
+}
+
+function getLocation() {
+    
+    if (navigator.geolocation) {
+        //(starting==false) ? startup=false:startup=true;
+        navigator.geolocation.getCurrentPosition(checkPosition);
+    } else { 
+        alert("We can't determine you current location. Geolocation is not supported by this browser.  You can change your delivery address manually and we will try and find you");
+    }
+} 
+
+function GeocodeCallback(result) 
+{  
+    if (result.resourceSets[0].estimatedTotal>0){
+
+        
+
+        var addressName=result.resourceSets[0].resources[0].name;
+
+        var addressLat= result.resourceSets[0].resources[0].point.coordinates[0];
+        var addressLon= result.resourceSets[0].resources[0].point.coordinates[1];
+
+        var formattedAddress=result.resourceSets[0].resources[0].address.formattedAddress;
+        var postalCode= result.resourceSets[0].resources[0].address.postalCode;
+        var adminDistrict = result.resourceSets[0].resources[0].address.adminDistrict
+        var adminDistrict2 = result.resourceSets[0].resources[0].address.adminDistrict2
+        var countryRegion = result.resourceSets[0].resources[0].address.countryRegion
+        var locality = result.resourceSets[0].resources[0].address.locality;
+        var neighbourhood = result.resourceSets[0].resources[0].address.neighbourhood;
+        var addressLine = result.resourceSets[0].resources[0].address.addressLine;
+        
+        
+        
+        
+        
+ 
+ 
+var myAnswer =confirm("We Found your location at : " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon + ". Would you like us to fillout the form based on this location?");
+                if (myAnswer){
+                    var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
+                    outresult=JSON.parse(JsonTxt);
+                    outresult.location.latitude=addressLat;
+                    outresult.location.longitude=addressLon;
+                    outresult.address.formattedAddress=formattedAddress;
+                    outresult.address.adminDistrict=adminDistrict;
+                    outresult.address.adminDistrict2=adminDistrict2;
+                    outresult.address.locality=locality;
+                    outresult.address.postalCode=postalCode;
+                    outresult.address.countryRegion=countryRegion;
+                    outresult.address.addressLine=addressName + "Latitude: " + addressLat + " - Longitude: " + addressLon;
+
+                    selectedSuggestion(outresult);
+                  
+                }
+
+            
+    }
+  
+}
+
+function CallRestService(request) {
+    var script = document.createElement("script");
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("src", request);
+    document.body.appendChild(script);
+}
+
+function ReverseGeocode(lat,lon) {
+    geocodeRequest = 'https://dev.virtualearth.net/REST/v1/Locations/';
+    geocodeRequest+=lat;
+    geocodeRequest+=',';
+    geocodeRequest+=lon;
+    geocodeRequest+='?';
+    var identityTypes='&includeEntityTypes=Address,Neighborhood,PopulatedPlace,Postcode1,AdminDivision1,AdminDivision2,CountryRegion';
+    geocodeRequest+= identityTypes ;
+    geocodeRequest+= "&includeNeighborhood=true";
+    geocodeRequest+= "&jsonp=GeocodeCallback" 
+    //geocodeRequest += + ""
+    geocodeRequest += "&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
+    CallRestService( encodeURI(geocodeRequest));
+
+    return;
+
+
+}
 
 </script>
