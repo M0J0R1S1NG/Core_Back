@@ -145,7 +145,7 @@
                 <button class="btn btn-default simpleCart_empty">Empty Cart</button>
                 <button class="btn btn-default" onclick="DebitWayInit('interac')">Interac Checkout</button>
                 <button class="btn btn-default simpleCart_checkout" >Credit Cards and Paypal</button>
-                 <button class="btn btn-default" onclick="ReverseGeocode()">Credit Cards and Paypal</button>
+                 <button class="btn btn-default" onclick="ReverseGeocode(43.65009,-79.42266)">Credit Cards and Paypal</button>
                
                </td>
             </tr>
@@ -568,7 +568,7 @@
                 alert("area changed");
                 currentDeliveryAreaId=AreaId;
 
-            
+            }
 
                 InDeliveryAreaConfirmed ? message="Your all set! This address qualifies for immediate delivery between " + openStr + " and " + closeStr : message="Sorry this address does not qualify for immediate delivery, your items will be mailed. Please add your email and submit the form behind this message and we will notify you when the area opens "
                 InDeliveryAreaConfirmed ? title="Dispatched Delivery" : title="Postal Delivery"
@@ -585,7 +585,7 @@
                     top.document.getElementById("GeocodedAddress").value= top.document.getElementById("orderStreetName").value;
                 }
 
-            }
+            
             InDeliveryAreaConfirmed=false;
             AreaOpen=0;
             fixMenu(AreaId);
@@ -659,39 +659,8 @@ function pointInPolygon(points,lat,lon)
   return inPoly; 
 }
 var userId = '@ViewBag.UserId';
+var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent("[Location to geocode]") + "&jsonp=GeocodeCallback&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
 
-function ReverseGeocode() {
-    var xhttp = new XMLHttpRequest();
-    var datevar = Date().substr(0,Date().indexOf("GMT")-4);
-    xhttp.onreadystatechange = function() {
-        //alert("got return from xhttp readyState:" + this.readyState + " status:" + this.status + " text:" + this.responseText);
-        if (this.readyState == 4 && this.status == 200) {
-          alert("gothere");
-        }
-    };
-    
-    bingkey="AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
-    bingaddress="https://dev.virtualearth.net/REST/v1/Locations"   //?key=" + bingkey + "&query="
-
-    xhttp.open("POST", bingaddress, true);
-    xhttp.setRequestHeader("Content-type", "text/jsonp");
-    xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
-    xhttp.withCredentials = false;
-    var buildstr2 = "";
-    var item_code="";
-    for (var i in simpleCart.items()){
-        buildstr2 +=  simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('name') + " at: $" + simpleCart.items()[i].get('price') + " for a total of: $" +  simpleCart.items()[i].get('total') +  '  \n\r';
-        item_code+=simpleCart.items()[i].get('quantity') + "x" + simpleCart.items()[i].get('id') + ","
-    }
-    buildstr2 += "<br>Grand Total: $" + simpleCart.grandTotal();
-     var buildStr = ""
-    //buildStr += "OrderDate='" + datevar + "'&";
-    //buildStr += "DeliveryDate='" + datevar + "'&";
-    buildStr += "key='"+ bingkey + "'&";
-    buildStr += "query='" + top.document.getElementById("GeocodedAddress").value + "'&";
-    buildStr+= "callback=?"
-    xhttp.send(buildStr); 
-}
 
  function InteracOrder(type) {
     var xhttp = new XMLHttpRequest();
@@ -852,9 +821,13 @@ function getLocation() {
 function checkPosition(position) {
     var curlat=position.coords.latitude;
     var curlon=position.coords.longitude;
-    
+    ReverseGeocode(curlat,curlon)
+return;
+
+
     top.document.getElementById("lat").value=curlat;
     top.document.getElementById("lon").value=curlon;
+    
     var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
             result=JSON.parse(JsonTxt);
             result.location.latitude=curlat;
@@ -868,7 +841,72 @@ function checkPosition(position) {
             selectedSuggestion(result);
   
 }
+function GeocodeCallback(result) 
+{  
+    if (result.resourceSets[0].estimatedTotal>0){
 
+        
+
+        var addressName=result.resourceSets[0].resources[0].name;
+
+        var addressLat= result.resourceSets[0].resources[0].point.coordinates[0];
+        var addressLon= result.resourceSets[0].resources[0].point.coordinates[1];
+
+        var formattedAddress=result.resourceSets[0].resources[0].address.formattedAddress;
+        var postalCode= result.resourceSets[0].resources[0].address.postalCode;
+        var adminDistrict = result.resourceSets[0].resources[0].address.adminDistrict
+        var adminDistrict2 = result.resourceSets[0].resources[0].address.adminDistrict2
+        var countryRegion = result.resourceSets[0].resources[0].address.countryRegion
+        var locality = result.resourceSets[0].resources[0].address.locality;
+        var neighbourhood = result.resourceSets[0].resources[0].address.neighbourhood;
+        var addressLine = result.resourceSets[0].resources[0].address.addressLine;
+        
+        
+        
+        
+        
+ 
+        alert("Found location: " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon);
+            var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
+            outresult=JSON.parse(JsonTxt);
+            outresult.location.latitude=addressLat;
+            outresult.location.longitude=addressLon;
+            outresult.address.formattedAddress=formattedAddress;
+            outresult.address.adminDistrict=adminDistrict;
+            outresult.address.adminDistrict2=adminDistrict2;
+            outresult.address.locality=locality;
+            outresult.address.postalCode=postalCode;
+            outresult.address.countryRegion=countryRegion;
+            outresult.address.addressLine=addressName + "Latitude: " + addressLat + " - Longitude: " + addressLon;
+
+            selectedSuggestion(outresult);
+    }
+  
+}
+
+function CallRestService(request) {
+    var script = document.createElement("script");
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("src", request);
+    document.body.appendChild(script);
+}
+
+function ReverseGeocode(lat,lon) {
+    geocodeRequest = 'https://dev.virtualearth.net/REST/v1/Locations/';
+    geocodeRequest+=lat;
+    geocodeRequest+=',';
+    geocodeRequest+=lon;
+    geocodeRequest+='?';
+    var identityTypes='&includeEntityTypes=Address,Neighborhood,PopulatedPlace,Postcode1,AdminDivision1,AdminDivision2,CountryRegion';
+    geocodeRequest+= identityTypes ;
+    geocodeRequest+= "&includeNeighborhood=true";
+    geocodeRequest+= "&jsonp=GeocodeCallback&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
+    CallRestService( encodeURI(geocodeRequest));
+
+    return;
+
+
+}
 window.addEventListener("DOMContentLoaded", function() {
         fixMenu(top.document.getElementById("DeliveryAreaIdList").value);
         
