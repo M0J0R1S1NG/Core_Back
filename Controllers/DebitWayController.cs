@@ -91,14 +91,10 @@ namespace Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (debitWay.transaction_result!="success"){
-                    ViewData["message"]="Failed Transaction";
+                
 
-                    return RedirectToAction("forsale","Inventorys");
-
-                }
-
-
+                string acceptUrl="";
+                acceptUrl= debitWay.return_url.Substring(0, 19);
                 debitWay.transaction_date_datetime=DateTime.Now;
                 _context.Add(debitWay);
                 await _context.SaveChangesAsync();
@@ -137,26 +133,22 @@ namespace Core.Controllers
                 string message = "<p>Thank You, we got your order.</p>We are delivering the following: " +  thisOrder.Details +  " <br>To: " ;
                 message += thisOrder.GeocodedAddress + "<br>";
                 message+= "Special Instructions:" + thisOrder.SpecialInstructions + "<br>";
-                //message += "The total for this order is " +  order.Total.ToString() + "<br>";
                 message += "<p>Your order number is " + thisOrder.ID + "-" + thisOrder.AppUser + "</p>";
                 
                 string smsmessage="Thanks we got your order. We are delivering the following: " +  thisOrder.Details + (char)10 + (char)13 + "To: "  ;
                 smsmessage += thisOrder.GeocodedAddress + (char)10 + (char)13;
                 smsmessage+= "Special Instructions:" + thisOrder.SpecialInstructions + (char)10 + (char)13;
-                //smsmessage += "The total for this order is " +  order.Total.ToString() + (char)10 + (char)13;
                 smsmessage += "Your order number is " + thisOrder.ID + "-" + thisOrder.AppUser ;
 
 
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), smsmessage);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
-                //await _smsSender.SendSmsAsync("6475284350", _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
-
-              
+                             
                 await _smsSender.SendSmsAsync(areaPartner.SMSNumber, _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
                 await _emailSender.SendEmailAsync(areaPartner.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
                
                 foreach (var myDrivers in areaDrivers){
-                    string acceptOrderLink = "https://www.uberduber.com/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
+                    string acceptOrderLink =acceptUrl + "/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
                     string driverSMS =acceptOrderLink+"  " + _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details;
                     await _smsSender.SendSmsAsync(myDrivers.PhoneNumber, driverSMS);
                     await _emailSender.SendEmailAsync(myDrivers.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", driverSMS);
@@ -180,7 +172,12 @@ namespace Core.Controllers
                     await  _context.SaveChangesAsync();     
                 }
                
-                
+                if (debitWay.transaction_result!="success"){
+                    ViewData["message"]="Failed Transaction";
+
+                    return RedirectToAction("forsale","Inventorys");
+
+                }
                 return RedirectToAction("Index","orders");
             }
             return View(debitWay);

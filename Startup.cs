@@ -110,7 +110,7 @@ namespace Core
                    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                });;
 
-           
+          
               
             services.AddAuthorization(options =>
             {

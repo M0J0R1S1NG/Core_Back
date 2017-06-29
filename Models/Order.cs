@@ -19,11 +19,11 @@ namespace Core.Models
         public int CustomerId { get; set; }
         public Guid AppUser { get; set; }
         [Display(Name = "Order Date")]
-        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy}")]
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy hh:mm}")]
         public DateTime OrderDate { get; set; }
 
         [Display(Name = "ETA / Delivery Date")]
-        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy}")]
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy hh:mm}")]
         public DateTime DeliveryDate { get; set; }
         [Display(Name = "Delivery Address")]
         public string GeocodedAddress { get; set; }   
