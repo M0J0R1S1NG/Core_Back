@@ -89,7 +89,8 @@ namespace Core.Controllers
                     //<!--<select asp-items=ViewBag.query2></select>-->
                      ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
                      ViewBag.user = user;
-                    return View();
+                    return RedirectToAction("forsale","Inventorys");
+                    //return View();
                
             }else{
                 return RedirectToAction("Register","Account");

@@ -681,7 +681,15 @@ var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + e
                alert("Big error don't know how you want to pay");
                return;
            }
-           top.document.getElementById("debitwayform").submit();
+           var confirmMsg="You have selected a cash checkout.  You total for this order is: "
+           confirmMsg+= simpleCart.grandTotal();
+           confirmMsg+=".  If possible please have exact change for the delivery person.";
+
+           confirmMsg+= "  By clicking OK you are agreeing to the delivery terms and conditions on our website.  If you do not wnat this order please press cancel, otherwise we will see you in a about 20 minutess"
+           var confirmPurchase=confirm( confirmMsg);
+           if (confirmPurchase){
+                top.document.getElementById("debitwayform").submit();
+           }
         }
     };
     xhttp.open("POST", "/Orders/Interac/", true);
@@ -713,6 +721,10 @@ var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + e
 }
 
 function DebitWayInit(type) {
+    if ( simpleCart.grandTotal()<39){
+        alert("The minimum order amount is $40.00 after taxes and delivery charges.  Please select more items to continue.  Thank You ")
+        return;
+    }
     var xhttp = new XMLHttpRequest();
    
    var debitWayStatus =type;
