@@ -57,29 +57,79 @@ namespace Core.Controllers
             var order =  (_context.Orders).Where(m => m.AppUser == userGuid );
             return View(order);
         }
-
-
         [HttpGet]
+        //[ValidateAntiForgeryToken]
         // GET: Orders/Accept
-        public async Task<IActionResult> Accept(int ID, [Bind(" DriverId")] Order order)
+        public async Task<IActionResult> Delivered(int ID,string code, [Bind(" DriverId")] Order order)
         {
                 if (ModelState.IsValid)
                 {
+                     var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
 
+                    if (order == null || code==null || thisOrder.Status==10)
+                    {
+                        return NotFound();
+                    }
+                        if (thisOrder.AppUser ==Guid.Parse(code)){
+                            thisOrder.Status=10;
+                            _context.Update(thisOrder);
+                            await _context.SaveChangesAsync();
+                            return StatusCode(200);
+                    }
+                }
+                return NotFound();
+        }
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        // GET: Orders/Accept
+        public async Task<IActionResult> Accept(int ID,string code, [Bind(" DriverId")] Order order)
+        {
+                if (ModelState.IsValid)
+                {
+                       
+                        
+          
                 
                 var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
 
-                if (order == null)
+                if (order == null || code==null || thisOrder.Status==5)
                 {
                     return NotFound();
                 }
-                thisOrder.Status=5;
-                thisOrder.DeliveryDate=DateTime.Now.AddMinutes(30);
-                thisOrder.DriverId = order.DriverId;
-                _context.Update(thisOrder);
-                await _context.SaveChangesAsync();
-                return StatusCode(200);
-             
+                if (thisOrder.AppUser ==Guid.Parse(code)){
+
+                    thisOrder.Status=5;
+                    thisOrder.DeliveryDate=DateTime.Now.AddMinutes(30);
+                    thisOrder.DriverId = order.DriverId;
+                    _context.Update(thisOrder);
+                    await _context.SaveChangesAsync();
+                    var thisDriver= await _context.Drivers.SingleAsync(m=> m.ID == order.DriverId );
+                    var thisDriverUser= await _context.Users.SingleAsync(m=> Guid.Parse(m.Id) == thisDriver.UserGuid );
+                    var user = await _context.Users.SingleAsync(m=>  Guid.Parse(m.Id)== thisOrder.AppUser);
+
+                    string smsmessage="Your order has been dispatched." + (char)10 + (char)13 + "Your delivery person is " + thisDriverUser.FirstName + (char)10 + (char)13 + "You can contact them by phone or text at: " + thisDriver.PhoneNumber  + (char)10 + (char)13+ "Your order is expected to be delivered by " + thisOrder.DeliveryDate.Hour + ":" + thisOrder.DeliveryDate.Minute;
+                    string DriverSMS="Order Number:" + thisOrder.ID  + (char)10 + (char)13;
+                     DriverSMS+= "Phone Number:" + await _userManager.GetPhoneNumberAsync(user)  + (char)10 + (char)13;
+                     DriverSMS+= "Expected Delivery is at:" +  thisOrder.DeliveryDate.Hour + ":" + thisOrder.DeliveryDate.Minute;
+                     DriverSMS+= "Click link when delivered:";
+                     string acceptUrl="Https://" + Request.Host;
+                     string acceptOrderLink =acceptUrl + "/Orders/Delivered?DriverId=" + thisDriver.ID +"&ID=" + thisOrder.ID  ;
+                     acceptOrderLink +=  "&code=" + thisOrder.AppUser;
+                    DriverSMS+= acceptOrderLink;
+
+                    var item_codeSplit=thisOrder.PhoneNumber.Split(',');
+                    var OrderCustomerPhone = item_codeSplit[0];
+                    
+
+                    await _smsSender.SendSmsAsync(OrderCustomerPhone, smsmessage);
+                    await _smsSender.SendSmsAsync(thisDriver.PhoneNumber, DriverSMS);
+
+
+
+
+
+                    return StatusCode(200);
+                }
             }
             return NotFound();
         }
@@ -131,6 +181,7 @@ namespace Core.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateApi([Bind("Total,GeocodedAddress,Weight,PaymentType,Details,PhoneNumber,SpecialInstructions,Status,DriverId,CustomerId")] Order order)
         {
             if (ModelState.IsValid)
@@ -185,14 +236,16 @@ namespace Core.Controllers
             return StatusCode(404);
         }
         [AllowAnonymous]
-        [HttpPost]        public async Task<string> Interac([Bind("Total,GeocodedAddress,Weight,PaymentType,Details,SpecialInstructions,Status,DriverId,CustomerId")] Order order)
+        [HttpPost]      
+        //[ValidateAntiForgeryToken]  
+        public async Task<string> Interac([Bind("Total,PhoneNumber,GeocodedAddress,Weight,PaymentType,Details,SpecialInstructions,Status,DriverId,CustomerId")] Order order)
         {
             if (ModelState.IsValid)
              {   
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 order.AppUser= Guid.Parse(user.Id);
                 order.OrderDate = DateTime.Now;
-            
+                
                 if (order.GeocodedAddress==null || order.GeocodedAddress==""){order.GeocodedAddress= user.StreetNumber +"-"+user.DeliveryAddress;}
                 if (order.SpecialInstructions.Contains("Must add")) {order.SpecialInstructions= "";}
                 _context.Add(order);

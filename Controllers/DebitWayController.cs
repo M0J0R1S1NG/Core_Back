@@ -97,7 +97,9 @@ namespace Core.Controllers
                 
                 int strlength =debitWay.return_url.Length;
                     //as long as return url is same legth as DebitWay/Create or 15
-                acceptUrl= debitWay.return_url.Substring(0,strlength-15);
+                    //Https://" + Request.Host  + "/DebitWay/Create";
+                //acceptUrl= debitWay.return_url.Substring(0,strlength-15);
+                acceptUrl="Https://" + Request.Host;
                 debitWay.transaction_date_datetime=DateTime.Now;
                 if (debitWay.status=="cash"){
                     debitWay.transaction_result="success";
@@ -115,7 +117,7 @@ namespace Core.Controllers
                 string[] newDriverIds=customString[5].Split(':');
                 string thisDriver = newDriverIds[1];
                 Partner  areaPartner=await _context.Partners.Where(x=> x.Id==Int32.Parse(newPartnerId)).SingleAsync();
-                IQueryable<Driver> areaDrivers =  _context.Drivers.Where(x=> x.PartnerId==Int32.Parse(newPartnerId)).OrderBy(x=> x.Status).Select(x => new Driver {EmailAddress=x.EmailAddress,PhoneNumber=x.PhoneNumber });
+                IQueryable<Driver> areaDrivers =  _context.Drivers.Where(x=> x.PartnerId==Int32.Parse(newPartnerId)).OrderBy(x=> x.Status).Select(x => new Driver {EmailAddress=x.EmailAddress,PhoneNumber=x.PhoneNumber,ID=x.ID });
                 
              
                 
@@ -132,7 +134,7 @@ namespace Core.Controllers
                 thisOrder.Status=2;
                 thisOrder.CustomerId = Int32.Parse(newPartnerId);//put partnerId in here
                 thisOrder.DriverId=Int32.Parse(thisDriver);//fill in 
-                thisOrder.PhoneNumber=newSMSNumber;
+                thisOrder.PhoneNumber=await _userManager.GetPhoneNumberAsync(user) + "," +  newSMSNumber;
                 _context.Update(thisOrder);
                 await _context.SaveChangesAsync();
 
@@ -145,7 +147,13 @@ namespace Core.Controllers
                 smsmessage += thisOrder.GeocodedAddress + (char)10 + (char)13;
                 smsmessage+= "Special Instructions:" + thisOrder.SpecialInstructions + (char)10 + (char)13;
                 smsmessage += "Your order number is " + thisOrder.ID + "-" + thisOrder.AppUser ;
-
+            
+            
+            
+            
+           
+           
+            
 
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), smsmessage);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
@@ -155,8 +163,11 @@ namespace Core.Controllers
               
 
                 foreach (var myDrivers in areaDrivers){
-                    string acceptOrderLink =acceptUrl + "Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
+                    string acceptOrderLink =acceptUrl + "/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID  ;
+                     acceptOrderLink +=  "&code=" + thisOrder.AppUser;
                     string driverSMS =acceptOrderLink+"  " + _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details;
+                     
+                    
                     await _smsSender.SendSmsAsync(myDrivers.PhoneNumber, driverSMS);
                     await _emailSender.SendEmailAsync(myDrivers.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", driverSMS);
                  }
