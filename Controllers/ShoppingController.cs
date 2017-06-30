@@ -52,7 +52,7 @@ namespace Core.Controllers
         public async Task <IActionResult> Index()
         
         {
-            if (HttpContext.Request.Host.Host.Contains("dubes.ca")){
+            if (!HttpContext.Request.Host.Host.Contains("uberduber")){
                return RedirectPermanent("https://www.uberduber.com");
            }
             var user = await _userManager.FindByNameAsync(User.Identity.Name);

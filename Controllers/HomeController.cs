@@ -20,9 +20,9 @@ namespace Core.Controllers
         }
         public IActionResult Index()
         {
-           if (HttpContext.Request.Host.Host.Contains("dubes.ca")){
-               return RedirectPermanent("http://www.uberduber.com");
-           }
+            if (!HttpContext.Request.Host.Host.Contains("uberduber")){
+                return RedirectPermanent("https://www.uberduber.com");
+            }
             return View();
         }
         [Authorize(Roles="Admin")]
