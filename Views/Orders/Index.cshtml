@@ -5,10 +5,10 @@
 }
 
 <p>
-    <a asp-controller="Shopping" asp-action="">Create New Order</a>
+    <a asp-controller="Inventorys"asp-action="forsale">Create New Order</a>
 </p>
 
-You can change certain details of your order up until its status changes to dispatched. Once an order is dispatched it cannot be changed.  If you have any problems with your orders please call our support line.
+If you have any problems with your orders please call or text our support line at 418-802-8129.
 <table class="table">
     <thead>
         <tr>
@@ -59,22 +59,24 @@ You can change certain details of your order up until its status changes to disp
                 @Html.DisplayFor(modelItem => item.SpecialInstructions)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            
-            <td>
-                @{if (item.Status==5){
+               @{if (item.Status==5){
                         <span>On Route</span>
-                        <!--<a asp-action=Edit asp-route-id=@item.ID>Edit</a> -->
+                      
                     }else if(item.Status==10){ 
                         <span>Delivered</span>
                     }else{
-                        <span>Sending...</span>
+                        <span>Dispatching</span>
                     }
                     
                 }
-
+            </td>
+            
+            <td>
+                
+                @if (User.IsInRole("Admin")){<a asp-action=Edit asp-route-id=@item.ID>Edit</a>
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> 
+                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a> 
+                 }
                 <a asp-action="" asp-controller="MapDelivery" asp-route-id="@item.ID">Map</a>
             </td>
         </tr>

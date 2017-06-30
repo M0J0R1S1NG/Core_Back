@@ -54,7 +54,7 @@ namespace Core.Controllers
         public async Task<IActionResult> Index()
         {var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var userGuid = Guid.Parse(user.Id);
-            var order =  (_context.Orders).Where(m => m.AppUser == userGuid );
+            var order =  (_context.Orders).Where(m => m.AppUser == userGuid ).OrderByDescending(z=> z.OrderDate);
             return View(order);
         }
         [HttpGet]

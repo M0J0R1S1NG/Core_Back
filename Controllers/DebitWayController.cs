@@ -95,7 +95,7 @@ namespace Core.Controllers
 
                 string acceptUrl="";
                 
-                int strlength =debitWay.return_url.Length;
+                //int strlength =debitWay.return_url.Length;
                     //as long as return url is same legth as DebitWay/Create or 15
                     //Https://" + Request.Host  + "/DebitWay/Create";
                 //acceptUrl= debitWay.return_url.Substring(0,strlength-15);
@@ -103,10 +103,19 @@ namespace Core.Controllers
                 debitWay.transaction_date_datetime=DateTime.Now;
                 if (debitWay.status=="cash"){
                     debitWay.transaction_result="success";
+                    debitWay.transaction_type=debitWay.status;
+                }else if (debitWay.status=="paypal"){
+                     debitWay.transaction_result="success";
+                     debitWay.transaction_type=debitWay.status;
                 }
+                 TempData["transaction_result"]=debitWay.transaction_result;
+                 TempData["error"]=debitWay.customer_errors_meaning;
                 _context.Add(debitWay);
                 await _context.SaveChangesAsync();
-                
+                if (debitWay.transaction_result!="success"){
+                   return RedirectToAction("forsale","Inventorys");
+                   
+                }
                  string[] customString = debitWay.custom.Split(',');
                  string userId=customString[0].Trim();
                  string SpecialInstructions=customString[1];
