@@ -50,7 +50,12 @@ namespace Core.Controllers
 
         // GET:Shopping
         public async Task <IActionResult> Index()
-        {   var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        
+        {
+            if (HttpContext.Request.Host.Host.Contains("dubes.ca")){
+               return RedirectPermanent("https://www.uberduber.com");
+           }
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user != null){
                 if (user.DeliveryAddress == null){
                     return RedirectToAction("UpdateUser","Manage");
