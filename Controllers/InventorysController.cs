@@ -120,6 +120,7 @@ namespace Core.Controllers
                                         //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
                                         
                                         //where da.ID == UserAreaId.DeliveryAreaId
+                                        where d.Quantity > 0
                                         orderby da.Name
                                         select  new InventoryByArea
                                         {
