@@ -14,8 +14,8 @@
 }
 
 <h2>@ViewData["Title"]</h2>
-@if (ViewData["message"]=="Failed Transaction"){
- <script>   alert("Sorry Something went wrong would you like to try a different payment method");</script>
+@if(ViewData["message"]=="Failed Transaction"){
+ <script>   alert("Sorry Something went wrong please try again or try a different payment method");</script>
 }
 <h3>Your current delivery addresss is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]<div onclick="showDeliveryAreaDiv()" class="btn btn-danger">Change</div></h3>
 <div style="display:none" class="container deliveryAddressDiv">
@@ -703,11 +703,14 @@ var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + e
 
 function DebitWayInit(type) {
     var xhttp = new XMLHttpRequest();
+   
+   var debitWayStatus =type;
+    
     //Required Variables for DebitWay 
     var website_unique_id="spJx8tqQJYjKRw24";
     var identifier="ERP1721663ro022";
     var vericode = "VeriPzqgepJQIC";
-    var return_url="Https://@Context.Request.Host/"          //  "https://www.uberduber.com/DebitWay/Create";
+    var return_url="Https://@Context.Request.Host/DebitWay/Create"          //  "https://www.uberduber.com/DebitWay/Create";
     var language="en";
     var first_name="@ViewBag.user.FirstName";
     var last_name="@ViewBag.user.LastName";
@@ -764,6 +767,7 @@ function DebitWayInit(type) {
     top.document.getElementById("custom").value = custom;
     top.document.getElementById("shipment").value = shipment;
     top.document.getElementById("merchant_transaction_id").value = merchant_transaction_id;
+    top.document.getElementById("status").value = debitWayStatus;
     top.document.getElementById("time_stamp").value = datevar;
  
     xhttp.onreadystatechange = function() {
@@ -825,21 +829,35 @@ function checkPosition(position) {
 return;
 
 
-    top.document.getElementById("lat").value=curlat;
-    top.document.getElementById("lon").value=curlon;
-    
-    var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
-            result=JSON.parse(JsonTxt);
-            result.location.latitude=curlat;
-            result.location.longitude=curlon;
-            result.address.adminDistrict='';
-            result.address.locality='';
-            result.address.postalCode='';
-            result.address.countryRegion='';
-            result.address.addressLine="Latitude: " + curlat + " - Longitude: " + curlon;
-
-            selectedSuggestion(result);
   
+}
+function GeocodeCallbackGeo(result){
+        var addressName=result.resourceSets[0].resources[0].name;
+
+        var addressLat= result.resourceSets[0].resources[0].point.coordinates[0];
+        var addressLon= result.resourceSets[0].resources[0].point.coordinates[1];
+
+        var formattedAddress=result.resourceSets[0].resources[0].address.formattedAddress;
+        var postalCode= result.resourceSets[0].resources[0].address.postalCode;
+        var adminDistrict = result.resourceSets[0].resources[0].address.adminDistrict
+        var adminDistrict2 = result.resourceSets[0].resources[0].address.adminDistrict2
+        var countryRegion = result.resourceSets[0].resources[0].address.countryRegion
+        var locality = result.resourceSets[0].resources[0].address.locality;
+        var neighbourhood = result.resourceSets[0].resources[0].address.neighbourhood;
+        var addressLine = result.resourceSets[0].resources[0].address.addressLine;
+           var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
+        var outresult=JSON.parse(JsonTxt);
+
+            outresult.location.latitude=addressLat;
+            outresult.location.longitude=addressLon;
+            outresult.address.formattedAddress=formattedAddress;
+            outresult.address.adminDistrict=adminDistrict;
+            outresult.address.locality=locality;
+            outresult.address.postalCode=postalCode;
+            outresult.address.countryRegion=countryRegion;
+            outresult.address.addressLine=addressName;
+            selectedSuggestion(outresult);
+
 }
 function GeocodeCallback(result) 
 {  
@@ -860,35 +878,48 @@ function GeocodeCallback(result)
         var locality = result.resourceSets[0].resources[0].address.locality;
         var neighbourhood = result.resourceSets[0].resources[0].address.neighbourhood;
         var addressLine = result.resourceSets[0].resources[0].address.addressLine;
-        
-        
-        
-        
-        
- 
- 
-        var myAnswer =confirm("We Found your location at : " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon + ". If you would like to use this location instead of your home delivery address please press the ok button otherwise cancel to use your home address");
-                if (myAnswer){
-                    var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
-                    outresult=JSON.parse(JsonTxt);
-                    outresult.location.latitude=addressLat;
-                    outresult.location.longitude=addressLon;
-                    outresult.address.formattedAddress=formattedAddress;
-                    outresult.address.adminDistrict=adminDistrict;
-                    outresult.address.adminDistrict2=adminDistrict2;
-                    outresult.address.locality=locality;
-                    outresult.address.postalCode=postalCode;
-                    outresult.address.countryRegion=countryRegion;
-                    outresult.address.addressLine=addressName + "Latitude: " + addressLat + " - Longitude: " + addressLon;
 
-                    selectedSuggestion(outresult);
-                  
-                }
 
+        var useGPSLocation =confirm("We Found your location at : " + addressName+ "  Lat:" +addressLat + "  Lon:" + addressLon + ". If you would like to use this location instead of your home delivery address please press the ok button otherwise cancel to use your home address");
+        var JsonTxt  = '{ "location":[{"latitude":"","longitude":""}],"address":[{"locality":"","formattedAddress":"","adminDistrict2":"","adminDistrict":"","addressLine":"","postalCode":"","countryRegion":""}]}';
+        var outresult=JSON.parse(JsonTxt);
+        if (useGPSLocation){
+           
+            outresult.location.latitude=addressLat;
+            outresult.location.longitude=addressLon;
+            outresult.address.formattedAddress=formattedAddress;
+            outresult.address.adminDistrict=adminDistrict;
+            outresult.address.adminDistrict2=adminDistrict2;
+            outresult.address.locality=locality;
+            outresult.address.postalCode=postalCode;
+            outresult.address.countryRegion=countryRegion;
+            outresult.address.addressLine=addressName + "Latitude: " + addressLat + " - Longitude: " + addressLon;
+            selectedSuggestion(outresult);
             
+            
+        }else{
+
+          geocode();
+
+        }
+        
+           
     }
   
 }
+
+function geocode(){
+    geocodeRequest = 'https://dev.virtualearth.net/REST/v1/Locations?query=';
+    geocodeRequest+=top.document.getElementById("GeocodedAddress").value;
+    //var identityTypes='&includeEntityTypes=Address,Neighborhood,PopulatedPlace,Postcode1,AdminDivision1,AdminDivision2,CountryRegion';
+    //geocodeRequest+= identityTypes ;
+    geocodeRequest+= "&includeNeighborhood=true";
+    geocodeRequest+= "&jsonp=GeocodeCallbackGeo&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
+    CallRestService( encodeURI(geocodeRequest));
+
+    return;
+}
+
 
 function CallRestService(request) {
     var script = document.createElement("script");
@@ -930,7 +961,7 @@ simpleCart({
         { attr: "quantity", label: "Qty"},
         { view: "increment", label: false},
         { view: "currency", attr: "total", label: "SubTotal" },
-        { view: "", attr: "id" , label: false } 
+        { attr: "id" , label: "Inventory#" } 
     ],
     // "div" or "table" - builds the cart as a
     // table or collection of divs

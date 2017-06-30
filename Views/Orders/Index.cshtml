@@ -63,11 +63,14 @@ You can change certain details of your order up until its status changes to disp
             </td>
             
             <td>
-                @{if (item.Status<2)
+                @{if (item.Status!=5)
                     {
-                        <a asp-action=Edit asp-route-id=@item.ID>Edit</a> 
-                    }                       
-                }
+                    <a asp-action=Edit asp-route-id=@item.ID>Edit</a> 
+                    }else
+                {
+                    <span>Dispatched For Deliver</span>
+                }}
+
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> 
                 <a asp-action="" asp-controller="MapDelivery" asp-route-id="@item.ID">Map</a>
             </td>

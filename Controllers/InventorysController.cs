@@ -15,7 +15,7 @@ using Microsoft.Extensions.Options;
 using Core.Models.AccountViewModels;
 using Core.Services;
 using Newtonsoft.Json.Linq;
-
+using Microsoft.AspNetCore.Mvc.Abstractions;
 
 
 
@@ -58,7 +58,7 @@ namespace Core.Controllers
             var userGuid = Guid.Parse(user.Id);
 
             DebitWay myDebitWay = new Models.DebitWay();
-            myDebitWay.website_unique_id = "Www.uberduber.com";
+            myDebitWay.website_unique_id = "spJx8tqQJYjKRw24";
              myDebitWay.address = user.DeliveryAddress;
              myDebitWay.city = user.City;
              myDebitWay.state_or_province = user.Province;
@@ -81,6 +81,7 @@ namespace Core.Controllers
             myDebitWay.transaction_date=DateTime.Now.ToString();
             myDebitWay.transaction_id="";
             myDebitWay.time_stamp=DateTime.Now;
+            myDebitWay.return_url="Https://" +Request.Host  + "/DebitWay/Create";
             
             ViewBag.DebitWay=myDebitWay;
            

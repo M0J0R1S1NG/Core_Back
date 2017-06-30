@@ -91,11 +91,17 @@ namespace Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                //Https://@Context.Request.Host/DebitWay/Create
 
                 string acceptUrl="";
-                acceptUrl= debitWay.return_url.Substring(0, 25);
+                
+                int strlength =debitWay.return_url.Length;
+                    //as long as return url is same legth as DebitWay/Create or 15
+                acceptUrl= debitWay.return_url.Substring(0,strlength-15);
                 debitWay.transaction_date_datetime=DateTime.Now;
+                if (debitWay.status=="cash"){
+                    debitWay.transaction_result="success";
+                }
                 _context.Add(debitWay);
                 await _context.SaveChangesAsync();
                 
@@ -144,12 +150,12 @@ namespace Core.Controllers
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), smsmessage);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
                              
-                await _smsSender.SendSmsAsync(areaPartner.SMSNumber, _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
-                await _emailSender.SendEmailAsync(areaPartner.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
+                await _smsSender.SendSmsAsync(areaPartner.SMSNumber,acceptUrl + " " +  _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
+                await _emailSender.SendEmailAsync(areaPartner.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order",   message);
               
 
                 foreach (var myDrivers in areaDrivers){
-                    string acceptOrderLink =acceptUrl + "/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
+                    string acceptOrderLink =acceptUrl + "Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID + "  "  ;
                     string driverSMS =acceptOrderLink+"  " + _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details;
                     await _smsSender.SendSmsAsync(myDrivers.PhoneNumber, driverSMS);
                     await _emailSender.SendEmailAsync(myDrivers.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", driverSMS);
