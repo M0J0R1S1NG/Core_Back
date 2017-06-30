@@ -125,12 +125,9 @@ namespace Core.Controllers
                 
                 Order thisOrder = _context.Orders.Where(o=> o.GUID == Guid.Parse(debitWay.merchant_transaction_id)).First();
                 var user = await _userManager.FindByIdAsync(userId);
-                //var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                // thisOrder.AppUser= Guid.Parse(user.Id);
-                 thisOrder.DeliveryDate = DateTime.Now.AddHours(.5);
+                thisOrder.DeliveryDate = DateTime.Now.AddMinutes(30);
                 // if (thisOrder.GeocodedAddress==null || thisOrder.GeocodedAddress==""){thisOrder.GeocodedAddress= user.DeliveryAddress;}
                 // if (thisOrder.SpecialInstructions.Contains("Must add")) {thisOrder.SpecialInstructions= "";}
-                // //_context.Add(order);
                 thisOrder.Status=2;
                 thisOrder.CustomerId = Int32.Parse(newPartnerId);//put partnerId in here
                 thisOrder.DriverId=Int32.Parse(thisDriver);//fill in 
@@ -147,14 +144,6 @@ namespace Core.Controllers
                 smsmessage += thisOrder.GeocodedAddress + (char)10 + (char)13;
                 smsmessage+= "Special Instructions:" + thisOrder.SpecialInstructions + (char)10 + (char)13;
                 smsmessage += "Your order number is " + thisOrder.ID + "-" + thisOrder.AppUser ;
-            
-            
-            
-            
-           
-           
-            
-
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), smsmessage);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
                              

@@ -9,7 +9,7 @@
 
                 <th>
                     @Html.DisplayNameFor(model => model.UserGuid)
-                </th
+                </th>
                  <th>
                     @Html.DisplayNameFor(model => model.PartnerId)
                 </th>
@@ -40,7 +40,8 @@
                 <th>
                     @Html.DisplayNameFor(model => model.VehicleId)
                 </th>
-            <th></th>
+      <th>
+                </th>
         </tr>
     </thead>
     <tbody>
@@ -78,7 +79,7 @@
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
-                @Html.DropDownListFor(modelItem=>item.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicles,new {disabled="disabled"})
+                @Html.DropDownListFor(modelItem=>item.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicles)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

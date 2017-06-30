@@ -107,7 +107,7 @@ namespace Core.Controllers
                     var thisDriverUser= await _context.Users.SingleAsync(m=> Guid.Parse(m.Id) == thisDriver.UserGuid );
                     var user = await _context.Users.SingleAsync(m=>  Guid.Parse(m.Id)== thisOrder.AppUser);
 
-                    string smsmessage="Your order has been dispatched." + (char)10 + (char)13 + "Your delivery person is " + thisDriverUser.FirstName + (char)10 + (char)13 + "You can contact them by phone or text at: " + thisDriver.PhoneNumber  + (char)10 + (char)13+ "Your order is expected to be delivered by " + thisOrder.DeliveryDate.Hour + ":" + thisOrder.DeliveryDate.Minute;
+                    string smsmessage="Your order has been dispatched." + (char)10 + (char)13 + "Your delivery person is " + thisDriverUser.FirstName + (char)10 + (char)13 + "You can contact them by phone or text at: " + thisDriver.PhoneNumber  + (char)10 + (char)13+ "Your order is expected to be delivered by " + thisOrder.DeliveryDate.ToLocalTime();
                     string DriverSMS="Order Number:" + thisOrder.ID  + (char)10 + (char)13;
                      DriverSMS+= "Phone Number:" + await _userManager.GetPhoneNumberAsync(user)  + (char)10 + (char)13;
                      DriverSMS+= "Expected Delivery is at:" +  thisOrder.DeliveryDate.Hour + ":" + thisOrder.DeliveryDate.Minute;
