@@ -440,13 +440,14 @@
     var userHomeDeliveryAreaId=-1;
     var currentDeliveryAreaId=-1;
      @foreach (dynamic item in ViewBag.deliveryAreaName) {  // there should be only one returned in this loop otherwise it will fuck up
+       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         @:top.document.getElementById("DeliveryAreaIdList").value=@item.ID;
-         @:AreaIds.push(@item.ID);
+        
          @:userHomeDeliveryAreaId=@item.ID;
          @:currentDeliveryAreaId=@item.ID;
      }
 @foreach (dynamic item in ViewBag.deliveryareas) {
-   
+    @:AreaIds.push(@item.ID);
 }
  function LoadMap() {
    

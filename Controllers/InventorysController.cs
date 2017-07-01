@@ -117,7 +117,8 @@ namespace Core.Controllers
             dynamic  InventoryByAreaVar = from d in _context.Inventorys
                                         join ig in _context.InventoryGroups on  d.ID equals    ig.InventoryId      // first join
                                         join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
-                                        //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
+                                        //join pa in _context.Partners on da.ID equals pa.Id  
+                                        //join us in _context.Users on pa.GUID equals us.Id
                                         
                                         //where da.ID == UserAreaId.DeliveryAreaId
                                         where d.Quantity > 0
@@ -241,8 +242,7 @@ namespace Core.Controllers
                                         join ig in _context.InventoryGroups on  d.ID equals    ig.InventoryId      // first join
                                         join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
                                         join pa in _context.Partners on da.PartnerId equals pa.Id
-                                        //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
-                                        
+                                        join us in _context.Users on pa.GUID equals Guid.Parse(us.Id)  //grap the user stuff
                                         where pa.Id == thisPartner.Id
                                         
                                         orderby da.Name
