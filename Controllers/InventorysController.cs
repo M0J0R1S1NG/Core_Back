@@ -106,7 +106,10 @@ namespace Core.Controllers
             ViewBag.drivers = _context.Drivers.Where(c=> c.Status>0);
             ViewBag.partners= _context.Partners.Where(c=> c.Status>0);
             ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
-            dynamic deliveryAreaName = from da in  _context.DeliveryAreas where da.ID==UserAreaId.DeliveryAreaId select  new DeliveryArea { Name= da.Name,ID=da.ID };
+            dynamic deliveryAreaName = from da in  _context.DeliveryAreas where da.ID==UserAreaId.DeliveryAreaId select  new DeliveryArea { Name= da.Name,ID=da.ID,OpenTime=da.OpenTime,ClosedTime=da.ClosedTime };
+            ViewData["DeliverAreaOpenTime                                                                                                                                                                                                      nnmlkui"]=deliveryAreaName.OpenTime;
+            ViewData["DeliverAreaOpenTime"]=deliveryAreaName.ClosedTime;
+            
             ViewBag.deliveryAreaName =deliveryAreaName;
             ViewBag.inventorygroups = _context.InventoryGroups;
             

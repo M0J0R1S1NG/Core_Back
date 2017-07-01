@@ -15,20 +15,34 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<h3>Your current delivery addresss is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]<div onclick="showDeliveryAreaDiv()" class="btn btn-danger">Change</div></h3>
+<h3>Your home delivery addresss is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]<div onclick="showDeliveryAreaDiv()" class="btn btn-danger">Change</div></h3>
 <div style="display:none" class="container deliveryAddressDiv">
             If you want todays delivery sent somewhere other than your address on file you must confirm below.  The address in this box will be delivered to.  Leave alone to deliver to your account address.
             You can also<br> <input type=button class=btn btn-default value="Use My Current GPS Location" onclick="getLocation()"></input>  
     <hr/>
 
     The inventory is based on your delivery area and is live.  If you can order it we will deliver it.
-    <div class="form-group">
-       <input type="hidden"  id="DeliveryAreaId" name="DeliveryAreaId"   class="form-control" ></input>
-    </div>
-    <div class="form-group">
-        <label  class="col-md-2 control-label">Todays Delivery Area</label>
-        <div class="col-md-10">
-            <select id="DeliveryAreaIdList" name="DeliveryAreaIdList" asp-items=ViewBag.deliveryAreasForSelect disabled class="form-control"></select>
+    <div class="container col-md-2">
+        <div class="form-group">
+        <input type="hidden"  id="DeliveryAreaId" name="DeliveryAreaId"   class="form-control" ></input>
+        </div>
+        <div class="form-group">
+            <label  class="col-md-3 control-label">Todays Delivery Area, Hours, and Menu</label>
+            <div class="col-md-3">
+                <select id="DeliveryAreaIdList" name="DeliveryAreaIdList" asp-items=ViewBag.deliveryAreasForSelect disabled class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+        
+            <div class="col-md-3">
+                <input  id="DeliveryAreaOpenTime" name="DeliveryAreaOpenTime"   class="form-control btn btn-info"></input>
+            </div>
+        </div>
+        <div class="form-group">
+          
+            <div class="col-md-3">
+                <input id="DeliveryAreaClosedTime" name="DeliveryAreaClosedTime"   class="form-control btn btn-info "></input>
+            </div>
         </div>
     </div>
 </div>
@@ -70,6 +84,10 @@
             <input id='orderPostalCode' type="hidden" />
             <input id='orderCountry' type="hidden" />
             <input id='orderDeliveryAreaId' type="hidden" />
+            <input id='orderDeliveryAreaName' type="hidden" />
+            <input id='orderDeliveryAreaOpenHours' type="hidden" />
+            <input id='orderDeliveryAreaClosedHours' type="hidden" />
+            
             <input id='orderPartnerId' type="hidden" />
             <input id='orderDriverId' type="hidden" />
             <input id='orderSMSNumber' type="hidden" />
@@ -426,14 +444,6 @@
     </div>
 </form>
 
-
-
-
-
-
-
-
-
 <script>
     var AreaIds = []; 
      var NotInArea=false; 
@@ -442,9 +452,11 @@
      @foreach (dynamic item in ViewBag.deliveryAreaName) {  // there should be only one returned in this loop otherwise it will fuck up
        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         @:top.document.getElementById("DeliveryAreaIdList").value=@item.ID;
+         @:top.document.getElementById("DeliveryAreaOpenTime").value="@item.OpenTime";
+          @:top.document.getElementById("DeliveryAreaClosedTime").value="@item.ClosedTime";
         
-         @:userHomeDeliveryAreaId=@item.ID;
-         @:currentDeliveryAreaId=@item.ID;
+        @:userHomeDeliveryAreaId=@item.ID;
+        @:currentDeliveryAreaId=@item.ID;
      }
 @foreach (dynamic item in ViewBag.deliveryareas) {
     @:AreaIds.push(@item.ID);
@@ -520,6 +532,8 @@
             @:        var open = @item.Open.ToString().ToLower();
             @:        top.document.getElementById('orderDeliveryAreaId').value = @item.ID;
             @:        top.document.getElementById('DeliveryAreaIdList').value = @item.ID;
+            @:        top.document.getElementById('DeliveryAreaOpenTime').value = "@item.OpenTime";
+            @:        top.document.getElementById('DeliveryAreaClosedTime').value = "@item.ClosedTime";
 
             @foreach (var partner in ViewBag.partners){
                @if (partner.Id == item.PartnerId){
