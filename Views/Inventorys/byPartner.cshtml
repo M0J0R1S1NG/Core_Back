@@ -1,0 +1,185 @@
+@model IEnumerable<Core.Models.Inventory>
+@using System.Linq;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Core.Models
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    
+                    @Html.DisplayNameFor(model => model.Label)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                 
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OnHand)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BestBefore)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cost)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Supplier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Photo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.THCContent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CBDContent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Likes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImageFilePath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PricePerGram)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PricePerQuarter)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PricePerhalf)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PricePerOz)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CostPerGram)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Discount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UPC)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Qualities)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.catagory)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Label)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnHand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BestBefore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Photo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.THCContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CBDContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Likes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageFilePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerGram)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerQuarter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerhalf)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerOz)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CostPerGram)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td><textarea>
+                @Html.DisplayFor(modelItem => item.UPC)
+                </textarea>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qualities)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.catagory)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

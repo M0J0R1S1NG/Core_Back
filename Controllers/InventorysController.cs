@@ -228,6 +228,49 @@ namespace Core.Controllers
             return View(inventory);
         }
 
+         public async Task<IActionResult> byPartner(int? id)
+        {
+        Partner thisPartner=await _context.Partners.Where(z=> z.Id==id).SingleAsync();
+        int PartnerManagedAreaId=thisPartner.DeliveryArea;
+        
+            if (id == null)
+            {
+                return NotFound();
+            }
+            IQueryable<Core.Models.Inventory> inventory =   from d in _context.Inventorys
+                                        join ig in _context.InventoryGroups on  d.ID equals    ig.InventoryId      // first join
+                                        join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
+                                        join pa in _context.Partners on da.PartnerId equals pa.Id
+                                        //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
+                                        
+                                        where pa.Id == thisPartner.Id
+                                        
+                                        orderby da.Name
+                                        select  new Inventory
+                                        {
+                                           Label=d.Label,ID=d.ID,Quantity= d.Quantity,Price=d.Price,ImageFilePath=d.ImageFilePath,Status=d.Status,OnHand=d.OnHand,BestBefore=d.BestBefore,OrderDate=d.OrderDate,Cost=d.Cost,Supplier=d.Supplier,Notes=d.Notes,Photo=d.Photo,THCContent=d.THCContent,CBDContent=d.CBDContent,Likes=d.Likes,PricePerGram=d.PricePerGram,PricePerQuarter=d.PricePerQuarter,PricePerhalf=d.PricePerhalf,PricePerOz=d.PricePerOz,CostPerGram=d.CostPerGram,Discount=d.Discount,UPC=d.UPC,Qualities=d.Qualities,catagory=d.catagory,PartnerId=d.PartnerId
+                                        };
+
+
+                                        ViewBag.InventoryByArea = inventory;
+            //var inventory = await _context.Inventorys.SingleOrDefaultAsync(m => m.ID == id);
+            if (inventory == null)
+            {
+                return NotFound();
+            }  
+         
+
+            string[] myvar2 = {"Concentrates","Flowers","Edibales","Topicals","Hashish","Oils","Paraphanalia"};
+
+            ViewBag.query = _context.Inventorys.Where(c=> c.Status==1);
+            var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
+
+            var mylist2 = myvar2.Select(m => new SelectListItem { Text = m, Value = m });
+             
+            ViewBag.MyList2=mylist2;
+
+            return View(inventory);
+        }
         // POST: Inventorys/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

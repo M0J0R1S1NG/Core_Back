@@ -21,15 +21,42 @@ namespace Core.Controllers
         }
 
         // GET: InventoryGroups
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Admin()
         { var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label  + " " + x.Supplier});
             ViewBag.inventorys = new SelectList(InventoryIds, "Id", "Value");
-
             var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name + " " + x.Description });
             ViewBag.deliveryAreas = new SelectList(deliveryareaIds, "Id", "Value");
+            
+            
+           
+             dynamic  InventoryByAreaVar = from i in _context.Inventorys
+                                        join ig in _context.InventoryGroups on  i.ID equals    ig.InventoryId      // first join
+                                        join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
+                                        //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
+                                        
+                                        //where da.ID == UserAreaId.DeliveryAreaId
+                                        //where d.Quantity > 0
+                                        orderby da.Name
+                                        select  new InventoryByArea
+                                        {
+                                           DeliveryAreaName=da.Name,Label=i.Label, InventoryCatagory=i.catagory, InventoryDescription=i.Description,DeliveryAreaID=da.ID,Quantity= i.Quantity,Price=i.Price,ImageFilePath=i.ImageFilePath, InventoryId=i.ID
+                                        };
+
+
+                                        ViewBag.InventoryByArea = InventoryByAreaVar;
+            
+            
             return View(await _context.InventoryGroups.ToListAsync());
         }
+public async Task<IActionResult> Index()
+        { var InventoryIds = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label  + " " + x.Supplier});
+            ViewBag.inventorys = new SelectList(InventoryIds, "Id", "Value");
+            var deliveryareaIds = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name + " " + x.Description });
+            ViewBag.deliveryAreas = new SelectList(deliveryareaIds, "Id", "Value");
 
+        
+          return View(await _context.InventoryGroups.ToListAsync());
+        }
         // GET: InventoryGroups/Details/5
         public async Task<IActionResult> Details(int? id)
         {

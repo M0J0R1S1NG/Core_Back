@@ -1,0 +1,94 @@
+@model IEnumerable<Core.Models.InventoryGroup>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                  Delivery Area Name
+                </th>
+                <th>
+                    Inventory Catagory
+                </th>
+                <th>
+                   Inventory Label
+                </th>
+                <th>
+                  Price
+                </th>
+                <th>
+                   Quantity
+                </th>
+                <th>
+                   Delivery Areas
+                </th>
+                 <th>
+                   Image
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in ViewBag.InventoryByArea) {
+    <tr>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-10"> 
+                        <select value=@item.DeliveryAreaID  asp-items=@ViewBag.deliveryAreas  class="form-control" ></select>
+                        <span>@item.DeliveryAreaName</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <select asp-items=@ViewBag.inventorys class="form-control" ></select>
+                    <span>@item.InventoryCatagory</span>    
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-10">
+                       
+                       <span>@item.Label</span>
+                    </div>
+                </div>
+            </td>
+                        <td>
+                <div class="form-group">
+                    <div class="col-md-10">
+                       
+                    <span>@item.Price</span>  
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-10">
+                       
+                       <span>@item.Quantity</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <img width=400px height=400px  src="@item.ImageFilePath"/img>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DeliveryAreaID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DeliveryAreaID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DeliveryAreaID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>
+        
