@@ -160,6 +160,7 @@ function selectedSuggestion(result) {
             top.document.getElementById('Province').value = result.address.adminDistrict;
             top.document.getElementById('PostalCode').value = result.address.postalCode;
             top.document.getElementById('Country').value = result.address.countryRegion;
+            top.document.getElementById('DeliveryAddress').value = result.address.formattedAddress;
           
         }
         var exteriorRing;
