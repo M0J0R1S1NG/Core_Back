@@ -72,7 +72,17 @@ namespace Core.Controllers
                     }
                         if (thisOrder.AppUser ==Guid.Parse(code)){
                             thisOrder.Status=10;
-                            _context.Update(thisOrder);
+                            var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.Status>0 && x.DriverId==order.DriverId).Max(n => n.ID);
+                            var latestBalance= _context.DriverBalances.Where(x=>x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
+                            
+                            var thisBalance = _context.DriverBalances.Where(z=> z.DriverId== thisOrder.DriverId && z.merchant_transaction_id==thisOrder.GUID);
+                           foreach (var balanceItems in thisBalance){
+                                balanceItems.Status=1;
+                                balanceItems.DriverId=order.DriverId;
+                                balanceItems.RunningBalance=latestBalance.SingleOrDefault();
+                                _context.Update(balanceItems);
+                            }
+                           _context.Update(thisOrder);
                             await _context.SaveChangesAsync();
                             return StatusCode(200);
                     }

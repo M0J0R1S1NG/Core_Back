@@ -8,9 +8,10 @@ using Core.Data;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170702141616_update34")]
+    partial class update34
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -451,7 +452,7 @@ namespace Core.Migrations
 
                     b.Property<bool>("CreditOrDebit");
 
-                    b.Property<Guid>("CustomerGuid");
+                    b.Property<int>("CustomerId");
 
                     b.Property<DateTime>("DeliveryDate")
                         .ValueGeneratedOnAdd()

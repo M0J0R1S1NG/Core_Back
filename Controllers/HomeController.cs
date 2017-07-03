@@ -31,6 +31,11 @@ namespace Core.Controllers
            
             return View();
         }
+        [Authorize(Roles="Admin,Investor,Partner")]
+        public IActionResult Investors()
+        {
+           return View();
+        }
         public IActionResult Default()
         {
             return View();

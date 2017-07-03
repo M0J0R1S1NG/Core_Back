@@ -1,0 +1,174 @@
+@model Core.Models.DriverBalance
+
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>DriverBalance</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ID" />
+        <div class="form-group">
+            <label asp-for="merchant_transaction_id" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="merchant_transaction_id" class="form-control" value=@Guid.NewGuid()/>
+                <span asp-validation-for="merchant_transaction_id" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DriverId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <Select asp-for="DriverId" asp-items="@ViewBag.drivers" class="form-control" ></select>
+                <span asp-validation-for="DriverId" class="text-danger"></span>
+            </div>
+        </div>
+                <div class="form-group">
+            <label asp-for="PartnerId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="PartnerId" asp-items="ViewBag.partners" class="form-control" ></select>
+                <span asp-validation-for="PartnerId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="InventoryId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="InventoryId" asp-items="ViewBag.inventorys" class="form-control" ></select>
+                <span asp-validation-for="InventoryId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CustomerGuid" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="CustomerGuid" asp-items=ViewBag.userGuids class="form-control" ></select>
+                <span asp-validation-for="CustomerGuid" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DriverPercentageRate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DriverPercentageRate" class="form-control" />
+                <span asp-validation-for="DriverPercentageRate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DriverFlatRate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DriverFlatRate" class="form-control" />
+                <span asp-validation-for="DriverFlatRate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="quantity" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="quantity" class="form-control" />
+                <span asp-validation-for="quantity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Taxes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Taxes" class="form-control" />
+                <span asp-validation-for="Taxes" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TotalAmount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TotalAmount" class="form-control" />
+                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NetAmount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NetAmount" class="form-control" />
+                <span asp-validation-for="NetAmount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RunningBalance" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RunningBalance" class="form-control" />
+                <span asp-validation-for="RunningBalance" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryFeeCustomer" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryFeeCustomer" class="form-control" value=0/>
+                <span asp-validation-for="DeliveryFeeCustomer" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeliveryFeeSupplier" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryFeeSupplier" class="form-control" value=0/>
+                <span asp-validation-for="DeliveryFeeSupplier" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Status" class="form-control" value=1/>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input checked asp-for="CreditOrDebit" />
+                    <label asp-for="CreditOrDebit"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Notes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Notes" class="form-control" />
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TransactionType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TransactionType" value=1 class="form-control" />
+                <span asp-validation-for="TransactionType" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="DeliveryDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DeliveryDate" class="form-control" value=@DateTime.Now/>
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastChangeDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LastChangeDate" class="form-control" value=@DateTime.Now/>
+                <span asp-validation-for="LastChangeDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastChangeBy" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input type=hidden asp-for="LastChangeBy" value=@ViewBag.UserId  class="form-control" />
+                <span asp-validation-for="LastChangeBy" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>

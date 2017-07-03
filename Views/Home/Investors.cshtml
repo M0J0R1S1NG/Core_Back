@@ -1,0 +1,82 @@
+@model Core.Models.DebitWay
+@using System.Linq;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Core.Models
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+
+@{
+    ViewData["Title"] = "Investor Real-time Compnay Information";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h4>Welcome, this area is for Green Islands investors.  </h4>
+<p>We are providing this as service to our investor's.  We want all of our investors to have the same access to all the information we can provide without you having to ask us for it. 
+        We are adding more tools and dynamic information as the company grows.  We are considering allowing people to purchase shares in the private company or top up your existing holdings online.  
+        .
+        All investors all access to realtime relevant  the status of and parameters of the current fund raising campaign (Friends and Family) 
+   
+
+   Current fund raising campaign
+
+        <div class=container>
+                <div class=row>
+                        <div class=col-md-3>
+                                Funds raised to date
+                        </div>
+                        <div class=col-md-3>
+                                Number of investors
+                        </div>
+                        
+                        <div class=col-md-3>
+                               Minimum investment package
+                        </div>
+                        <div class=col-md-3>
+                               Remaining minimum packages
+                        </div>
+                        <div class=col-md-3>
+                              Standard investment package
+                        </div>
+                        <div class=col-md-3>
+                              Current Price per unit
+                        </div>
+                        <div class=col-md-3>
+                              Units and Warrants
+                        </div>
+
+                </div>
+                <div class=row>
+                        <div class=col-md-3>
+                                $112,500.00
+                        </div>
+                        <div class=col-md-3>
+                                5
+                        </div>
+                        
+                        <div class=col-md-3>
+                               $5000.00
+                        </div>
+                        <div class=col-md-3>
+                              4
+                        </div>
+                        <div class=col-md-3>
+                              $10,000.00
+                        </div>
+                        <div class=col-md-3>
+                             $0.50
+                        </div>
+                        <div class=col-md-3>
+                               Units are comprised of 1 share and 1 Full Shares purchase Warrants
+                        </div>
+
+                </div>
+        </div>
+
+   
+

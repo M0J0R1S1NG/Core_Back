@@ -112,17 +112,41 @@ namespace Core.Controllers
                  TempData["error"]=debitWay.customer_errors_meaning;
                 _context.Add(debitWay);
                 await _context.SaveChangesAsync();
+                
+                
                 if (debitWay.transaction_result!="success"){
                    return RedirectToAction("forsale","Inventorys");
                    
                 }
-                 string[] customString = debitWay.custom.Split(',');
-                 string userId=customString[0].Trim();
-                 string SpecialInstructions=customString[1];
-                
+                string[] customString = debitWay.custom.Split(',');
+               customString.ToList().Add("hjsdkah");                
+               int numvars=customString.Length;
+                int numDrivers = (numvars-3)/2;
+
+                string userId=customString[0].Trim();
+                string SpecialInstructions=customString[1];
                 string newPartnerId=customString[2];
+               string[]  thisOrdersSMS = new string[numDrivers];
+            string[]  thisOrdersDriverIds = new string[numDrivers]; 
+               List<string> newSMSNumbers;
+               List<string> newDriversIds;
+
+
+                for (var j=0;j <=numDrivers-1; j++ ){
+                     newSMSNumbers=customString[j+3].Split(':').ToList();
+                     thisOrdersSMS.Append(newSMSNumbers[1]);
+                     thisOrdersSMS[j]=newSMSNumbers[1];
+                }
+                for (var j=0;j <=numDrivers-1; j++ ){
+                    newDriversIds=customString[j+3+numDrivers].Split(':').ToList();
+                    thisOrdersDriverIds.Append(newDriversIds[1]);
+                     thisOrdersDriverIds[j]=newDriversIds[1];
+                }
+
                 
-                string newSMSNumber=customString[3];
+                string newSMSNumber=thisOrdersSMS[0];
+               
+
                 string[] newDriverIds=customString[5].Split(':');
                 string thisDriver = newDriverIds[1];
                 Partner  areaPartner=await _context.Partners.Where(x=> x.Id==Int32.Parse(newPartnerId)).SingleAsync();
@@ -140,7 +164,8 @@ namespace Core.Controllers
                 thisOrder.Status=2;
                 thisOrder.CustomerId = Int32.Parse(newPartnerId);//put partnerId in here
                 thisOrder.DriverId=Int32.Parse(thisDriver);//fill in 
-                thisOrder.PhoneNumber=await _userManager.GetPhoneNumberAsync(user) + "," +  newSMSNumber;
+                thisOrder.PhoneNumber=await _userManager.GetPhoneNumberAsync(user); //+ "," +  newSMSNumber;
+                var thisOrderDeliveryFlatFee=thisOrder.Weight;
                 _context.Update(thisOrder);
                 await _context.SaveChangesAsync();
 
@@ -178,16 +203,57 @@ namespace Core.Controllers
 
                 //deduct from inventory
                 string[] item_codes = debitWay.item_code.Split(',');
-                for (var i=0 ;i<item_codes.Length-1;i++){
-                    var itemQ = item_codes[i].Split('x');
-                    var quantity = itemQ[0];
-                    var InventoryId = itemQ[1];
-                    Inventory thisInventory=_context.Inventorys.Where(z=> z.ID==Int32.Parse(InventoryId)).Single();
-                    thisInventory.Quantity=thisInventory.Quantity-Int32.Parse(quantity);
-                    _context.Update(thisInventory);
-                    await  _context.SaveChangesAsync();     
+                    var itemQ= item_codes[0].Split('x');;
+                    var quantity= itemQ[0];
+                    var InventoryId=itemQ[1];
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    var newbal=0;
+                    var newtot=0.0;
+                    var newcost=0.0;
+                    //var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.DriverId==Int32.Parse("0")).Max(n => n.ID);
+                    //var latestBalance= _context.DriverBalances.Where(x=> x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
+                    
+                    DriverBalance newBalance = new DriverBalance();
+                    for (var i=0 ;i<item_codes.Length-1;i++){
+                            itemQ = item_codes[i].Split('x');
+                            quantity = itemQ[0];
+                            InventoryId = itemQ[1];
+                            newBalance.DeliveryFeeCustomer=0;
+                            newBalance.DeliveryFeeSupplier=0;
+                            newBalance.DriverFlatRate=0;
+                            newBalance.DriverPercentageRate=0;
+                            newBalance.DeliveryDate=DateTime.Now;
+                            newBalance.CreatedDate =DateTime.Now;
+                            //newBalance.DriverId=Int32.Parse(thisDriver);
+                            newBalance.DriverId=0;
+                            newBalance.PartnerId=Int32.Parse(newPartnerId);
+                            newBalance.quantity=Int32.Parse(quantity);
+                            newBalance.InventoryId=Int32.Parse(InventoryId);
+                            newBalance.merchant_transaction_id=Guid.Parse(debitWay.merchant_transaction_id);
+                            //Status pending initial insert must change t valid status after delivery confirmed
+                            newBalance.Status=0;
+                            newBalance.CreditOrDebit=false;
+                            newBalance.CustomerGuid=Guid.Parse(userId);   
+                            Inventory thisInventory=_context.Inventorys.Where(z=> z.ID==Int32.Parse(InventoryId)).Single();
+                            thisInventory.Quantity=thisInventory.Quantity-Int32.Parse(quantity);
+                            newcost+=thisInventory.Cost * Int32.Parse(quantity);
+                            newtot+=thisInventory.Price * Int32.Parse(quantity);
+                            //newBalance.RunningBalance-=thisInventory.Cost;
+                            newBalance.NetAmount=newcost;
+                            newBalance.TotalAmount=newtot;
+                            newBalance.TransactionType=4;
+                            newBalance.DeliveryFeeCustomer=Decimal.ToSingle(thisOrderDeliveryFlatFee);
+                            newBalance.Taxes=debitWay.amount - newtot -Decimal.ToSingle(thisOrderDeliveryFlatFee);
+                            newBalance.LastChangeBy=userId;
+                            newBalance.LastChangeDate=DateTime.Now;
+                            _context.Update(thisInventory);
+                            await _context.AddAsync(newBalance);
+                            await  _context.SaveChangesAsync();     
                 }
                
+                
+
+
                 if (debitWay.transaction_result!="success"){
                     ViewData["message"]="Failed Transaction";
 

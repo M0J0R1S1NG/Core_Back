@@ -1,0 +1,164 @@
+@model IEnumerable<Core.Models.DriverBalance>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.merchant_transaction_id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DriverId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InventoryId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DriverPercentageRate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DriverFlatRate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Taxes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NetAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RunningBalance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveryFeeCustomer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveryFeeSupplier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreditOrDebit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PartnerId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerGuid)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveryDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastChangeDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastChangeBy)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.merchant_transaction_id)
+            </td>
+            <td>
+                 @Html.DropDownListFor(modelItem=>item.DriverId, (IEnumerable<SelectListItem>) ViewBag.drivers, new {disabled="disabled"})
+
+            </td>
+            <td>
+               @Html.DropDownListFor(modelItem=>item.InventoryId, (IEnumerable<SelectListItem>) ViewBag.inventorys, new {disabled="disabled"})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverPercentageRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverFlatRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Taxes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NetAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunningBalance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryFeeCustomer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryFeeSupplier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreditOrDebit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionType)
+            </td>
+            <td>
+               @Html.DropDownListFor(modelItem=>item.PartnerId, (IEnumerable<SelectListItem>) ViewBag.partners, new {disabled="disabled"})
+            </td>
+            <td>
+                @Html.DropDownListFor(modelItem=>item.CustomerGuid, (IEnumerable<SelectListItem>) ViewBag.userGuids, new {disabled="disabled"})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastChangeDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastChangeBy)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

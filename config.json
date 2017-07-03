@@ -8,7 +8,7 @@
 
         "AadInstance": "https://login.microsoftonline.com/{0}", // This is the public instance of Azure AD
 
-        "PostLogoutRedirectUri": "https://localhost/"
+        "PostLogoutRedirectUri": "https://www.uberduber.com/"
 
     },
 
@@ -38,7 +38,7 @@
   "AzureAd:ClientId": "11a11df8-c318-4984-912e-87a52be9a6b6",
   "AzureAd:Tenant": "a2bmanhotmail.onmicrosoft.com]",
   "AzureAd:AadInstance": "https://login.microsoftonline.com/{0}", 
-  "AzureAd:PostLogoutRedirectUri": "https://localhost/",
+  "AzureAd:PostLogoutRedirectUri": "https://www.uberduber.com/",
  "PayPal:ClienSecretD": "EE_Ahhw1PAqaEyNrg_5vuuTtw17n8ll4r4BgBx5rAJKK_SC7f4GjoZL-jgVolE1Yu87Ke3IxUhElyHqw",
  "PayPal:ClientID":"Ad8iVR8gF9NUD4bijXXLqMHo4dy9XQ8NtXgPsdz5AGbqcpQ6ZQrwpr6Z6FSe44nPI8pwFNFdZG73JUlS"
 }
