@@ -96,8 +96,8 @@ namespace Core.Controllers
                 if (ModelState.IsValid)
                 {
                      var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
-
-                    if (order == null || code==null || thisOrder.Status==7)
+                                                     //allready NoShowed      //already Delivered
+                    if (order == null || code==null || thisOrder.Status==7 || thisOrder.Status==10)
                     {
                         return NotFound();
                     }
@@ -158,8 +158,9 @@ namespace Core.Controllers
                 if (ModelState.IsValid)
                 {
                      var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
-
-                    if (order == null || code==null || thisOrder.Status==10)
+                    
+                                                    //allready NoShowed      //already Delivered
+                    if (order == null || code==null || thisOrder.Status==7 || thisOrder.Status==10)
                     {
                         return NotFound();
                     }
