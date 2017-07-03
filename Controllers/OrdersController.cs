@@ -128,10 +128,6 @@ namespace Core.Controllers
         {
                 if (ModelState.IsValid)
                 {
-                       
-                        
-          
-                
                 var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
 
                 if (order == null || code==null || thisOrder.Status==5)
