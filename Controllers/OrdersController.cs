@@ -52,9 +52,40 @@ namespace Core.Controllers
 
         // GET: Orders
         public async Task<IActionResult> Index()
-        {var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        {
+            ViewBag.UserId=_userManager.GetUserId(User);
+          
+                        var  driverids =   from d in _context.Drivers
+                                        join us in _context.Users on d.UserGuid equals    Guid.Parse(us.Id) 
+                                        join pa in _context.Partners on d.PartnerId equals pa.Id     // first join
+                                                
+                                        orderby us.LastName
+                                        select  new 
+                                        {
+                                           Id=d.ID,Value=us.FirstName + " Partner: " +  pa.Name
+                                        };
+
+
+                                        ViewBag.drivers = new SelectList(driverids, "Id", "Value");
+     IQueryable<InventoryByArea>  InventoryByAreaVar = from i in _context.Inventorys
+                                        join ig in _context.InventoryGroups on  i.ID equals    ig.InventoryId      // first join
+                                        join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
+                                        //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
+                                        
+                                        //where da.ID == UserAreaId.DeliveryAreaId
+                                        //where d.Quantity > 0
+                                        orderby da.Name
+                                        select  new InventoryByArea
+                                        {
+                                           DeliveryAreaName=da.Name,Label=i.Label, InventoryCatagory=i.catagory, InventoryDescription=i.Description,DeliveryAreaID=da.ID,Quantity= i.Quantity,Price=i.Price,ImageFilePath=i.ImageFilePath, InventoryId=i.ID
+                                        };
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var userGuid = Guid.Parse(user.Id);
             var order =  (_context.Orders).Where(m => m.AppUser == userGuid ).OrderByDescending(z=> z.OrderDate);
+             var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+            ViewBag.partners = new SelectList(partners, "Id", "Value");
+             var inventorys = InventoryByAreaVar.OrderBy(c => c.DeliveryAreaName).Select(x => new {Id = x.InventoryId, Value = x.Label + " : " + x.DeliveryAreaName});
+            ViewBag.inventorys = new SelectList(inventorys, "Id", "Value");
             return View(order);
         }
         [HttpGet]
@@ -81,6 +112,7 @@ namespace Core.Controllers
                                 balanceItems.DriverId=order.DriverId;
                                 balanceItems.RunningBalance=latestBalance.SingleOrDefault();
                                 _context.Update(balanceItems);
+                                await _context.SaveChangesAsync();
                             }
                            _context.Update(thisOrder);
                             await _context.SaveChangesAsync();

@@ -10,7 +10,9 @@ If you have any problems with your orders please call or text our support line a
 <table class="table">
     <thead>
         <tr>
-                
+                <th>
+                    @Html.DisplayNameFor(model => model.DriverId)
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.OrderDate)
                 </th>
@@ -38,8 +40,10 @@ If you have any problems with your orders please call or text our support line a
 @foreach (var item in Model) {
         <tr>
            
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
+            <td> 
+                @Html.DropDownListFor(modelItem=>item.DriverId, (IEnumerable<SelectListItem>) ViewBag.drivers, new {disabled="disabled"})
+            </td>
+            <td>   @Html.DisplayFor(modelItem => item.OrderDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DeliveryDate)
