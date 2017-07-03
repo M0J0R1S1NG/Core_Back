@@ -51,7 +51,7 @@ namespace Core.Controllers
         public async Task<IActionResult> Index()
         { 
             var uid=_userManager.GetUserId(User);
-            ViewBag.UserId=uid;
+           //
             
             int thisDriverId=(from d in _context.Drivers 
                              where d.UserGuid==Guid.Parse(uid)
@@ -87,7 +87,7 @@ namespace Core.Controllers
             ViewBag.partners = new SelectList(partners, "Id", "Value");
              var inventorys = InventoryByAreaVar.OrderBy(c => c.DeliveryAreaName).Select(x => new {Id = x.InventoryId, Value = x.Label + " : " + x.DeliveryAreaName});
             ViewBag.inventorys = new SelectList(inventorys, "Id", "Value");
-            var ThisDriverBalances=await _context.DriverBalances.Where(x=> x.Status>0 && x.ID==thisDriverId).ToListAsync();
+            var ThisDriverBalances=await _context.DriverBalances.Where(x=>  x.DriverId==thisDriverId).ToListAsync();
             
             return View(ThisDriverBalances);
           
