@@ -92,7 +92,7 @@ namespace Core.Controllers
             if (ModelState.IsValid)
             {
                 //Https://@Context.Request.Host/DebitWay/Create
-
+  
                 string acceptUrl="";
                 
                 //int strlength =debitWay.return_url.Length;
@@ -127,28 +127,28 @@ namespace Core.Controllers
                 string SpecialInstructions=customString[1];
                 string newPartnerId=customString[2];
                string[]  thisOrdersSMS = new string[numDrivers];
-            string[]  thisOrdersDriverIds = new string[numDrivers]; 
+                string[]  thisOrdersDriverIds = new string[numDrivers]; 
                List<string> newSMSNumbers;
                List<string> newDriversIds;
-
-
-                for (var j=0;j <=numDrivers-1; j++ ){
-                     newSMSNumbers=customString[j+3].Split(':').ToList();
-                     thisOrdersSMS.Append(newSMSNumbers[1]);
-                     thisOrdersSMS[j]=newSMSNumbers[1];
-                }
-                for (var j=0;j <=numDrivers-1; j++ ){
-                    newDriversIds=customString[j+3+numDrivers].Split(':').ToList();
-                    thisOrdersDriverIds.Append(newDriversIds[1]);
-                     thisOrdersDriverIds[j]=newDriversIds[1];
-                }
-
+               
+               if (numDrivers>1){
+                    for (var j=0;j <=numDrivers-1; j++ ){
+                        newSMSNumbers=customString[j+3].Split(':').ToList();
+                        thisOrdersSMS.Append(newSMSNumbers[1]);
+                        thisOrdersSMS[j]=newSMSNumbers[1];
+                    }
+                    for (var j=0;j <=numDrivers-1; j++ ){
+                        newDriversIds=customString[j+3+numDrivers].Split(':').ToList();
+                        thisOrdersDriverIds.Append(newDriversIds[1]);
+                        thisOrdersDriverIds[j]=newDriversIds[1];
+                    }
+                    string newSMSNumber=thisOrdersSMS[0];
+               }
                 
-                string newSMSNumber=thisOrdersSMS[0];
+                
                
 
-                string[] newDriverIds=customString[5].Split(':');
-                string thisDriver = newDriverIds[1];
+
                 Partner  areaPartner=await _context.Partners.Where(x=> x.Id==Int32.Parse(newPartnerId)).SingleAsync();
                 IQueryable<Driver> areaDrivers =  _context.Drivers.Where(x=> x.PartnerId==Int32.Parse(newPartnerId)).OrderBy(x=> x.Status).Select(x => new Driver {EmailAddress=x.EmailAddress,PhoneNumber=x.PhoneNumber,ID=x.ID });
                 
@@ -163,7 +163,7 @@ namespace Core.Controllers
                 // if (thisOrder.SpecialInstructions.Contains("Must add")) {thisOrder.SpecialInstructions= "";}
                 thisOrder.Status=2;
                 thisOrder.CustomerId = Int32.Parse(newPartnerId);//put partnerId in here
-                thisOrder.DriverId=Int32.Parse(thisDriver);//fill in 
+                //thisOrder.DriverId=Int32.Parse(thisDriver);//fill in 
                 thisOrder.PhoneNumber=await _userManager.GetPhoneNumberAsync(user); //+ "," +  newSMSNumber;
                 var thisOrderDeliveryFlatFee=thisOrder.Weight;
                 _context.Update(thisOrder);
