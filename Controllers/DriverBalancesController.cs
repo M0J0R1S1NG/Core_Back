@@ -46,17 +46,19 @@ namespace Core.Controllers
             _logger = loggerFactory.CreateLogger<ManageController>(); 
         }
 
-
+        [Authorize]
         // GET: DriverBalances
         public async Task<IActionResult> Index()
         { 
-            var uid=_userManager.GetUserId(User);
+            string  uid=_userManager.GetUserId(User);
            //
             
             int thisDriverId=(from d in _context.Drivers 
                              where d.UserGuid==Guid.Parse(uid)
                             
                              select d.ID).Single();
+            var ThisDriverBalances=await _context.DriverBalances.Where(x=>  x.DriverId==thisDriverId).ToListAsync();
+            
             var  driverids =   from d in _context.Drivers
                                         join us in _context.Users on d.UserGuid equals    Guid.Parse(us.Id) 
                                         join pa in _context.Partners on d.PartnerId equals pa.Id     // first join
@@ -66,7 +68,7 @@ namespace Core.Controllers
                                         {
                                            Id=d.ID,Value=us.FirstName + " Partner: " +  pa.Name
                                         };
-                                        ViewBag.drivers = new SelectList(driverids, "Id", "Value");
+            ViewBag.drivers = new SelectList(driverids, "Id", "Value");
 
             IQueryable<InventoryByArea>  InventoryByAreaVar = from i in _context.Inventorys
                                         join ig in _context.InventoryGroups on  i.ID equals    ig.InventoryId      // first join
@@ -87,7 +89,7 @@ namespace Core.Controllers
             ViewBag.partners = new SelectList(partners, "Id", "Value");
              var inventorys = InventoryByAreaVar.OrderBy(c => c.DeliveryAreaName).Select(x => new {Id = x.InventoryId, Value = x.Label + " : " + x.DeliveryAreaName});
             ViewBag.inventorys = new SelectList(inventorys, "Id", "Value");
-            var ThisDriverBalances=await _context.DriverBalances.Where(x=>  x.DriverId==thisDriverId).ToListAsync();
+            
             
             return View(ThisDriverBalances);
           
