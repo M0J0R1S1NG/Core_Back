@@ -92,13 +92,7 @@ namespace Core.Controllers
             if (ModelState.IsValid)
             {
                 //Https://@Context.Request.Host/DebitWay/Create
-  
                 string acceptUrl="";
-                
-                //int strlength =debitWay.return_url.Length;
-                    //as long as return url is same legth as DebitWay/Create or 15
-                    //Https://" + Request.Host  + "/DebitWay/Create";
-                //acceptUrl= debitWay.return_url.Substring(0,strlength-15);
                 acceptUrl="Https://" + Request.Host;
                 debitWay.transaction_date_datetime=DateTime.Now;
                 if (debitWay.status=="cash"){
@@ -144,18 +138,8 @@ namespace Core.Controllers
                     }
                     string newSMSNumber=thisOrdersSMS[0];
                }
-                
-                
-               
-
-
                 Partner  areaPartner=await _context.Partners.Where(x=> x.Id==Int32.Parse(newPartnerId)).SingleAsync();
                 IQueryable<Driver> areaDrivers =  _context.Drivers.Where(x=> x.PartnerId==Int32.Parse(newPartnerId)).OrderBy(x=> x.Status).Select(x => new Driver {EmailAddress=x.EmailAddress,PhoneNumber=x.PhoneNumber,ID=x.ID });
-                
-             
-                
-                
-                
                 Order thisOrder = _context.Orders.Where(o=> o.GUID == Guid.Parse(debitWay.merchant_transaction_id)).First();
                 var user = await _userManager.FindByIdAsync(userId);
                 thisOrder.DeliveryDate = DateTime.Now.AddMinutes(30);
@@ -178,43 +162,27 @@ namespace Core.Controllers
                 smsmessage += thisOrder.GeocodedAddress + (char)10 + (char)13;
                 smsmessage+= "Special Instructions:" + thisOrder.SpecialInstructions + (char)10 + (char)13;
                 smsmessage += "Your order number is " + thisOrder.ID + "-" + thisOrder.AppUser ;
+
                 await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), smsmessage);
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "New Order", message);
-                             
                 await _smsSender.SendSmsAsync(areaPartner.SMSNumber,acceptUrl + " " +  _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
                 await _emailSender.SendEmailAsync(areaPartner.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order",   message);
-              
-
                 foreach (var myDrivers in areaDrivers){
                     string acceptOrderLink =acceptUrl + "/Orders/Accept?DriverId=" +myDrivers.ID+"&ID=" + thisOrder.ID  ;
                      acceptOrderLink +=  "&code=" + thisOrder.AppUser;
                     string driverSMS =acceptOrderLink+"  " + _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details;
-                     
-                    
                     await _smsSender.SendSmsAsync(myDrivers.PhoneNumber, driverSMS);
                     await _emailSender.SendEmailAsync(myDrivers.EmailAddress,  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", driverSMS);
                  }
-                //await _smsSender.SendSmsAsync("4168028129", _userManager.GetPhoneNumberAsync(user).Result + " " + thisOrder.GeocodedAddress + " " +  thisOrder.Details);
-                
-                //await _emailSender.SendEmailAsync("andrewmoore46@gmail.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
-                //await _emailSender.SendEmailAsync("moorea@uberduber.com",  _userManager.GetPhoneNumberAsync(user).Result + " " + "New Order", message);
-                //var item = new JsonResult( _context.Orders.SingleOrDefaultAsync());
-
-
-                //deduct from inventory
                 string[] item_codes = debitWay.item_code.Split(',');
                     var itemQ= item_codes[0].Split('x');;
                     var quantity= itemQ[0];
                     var InventoryId=itemQ[1];
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    var newbal=0;
                     var newtot=0.0;
                     var newcost=0.0;
                     //var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.DriverId==Int32.Parse("0")).Max(n => n.ID);
                     //var latestBalance= _context.DriverBalances.Where(x=> x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
-                    
-                    
-                    for (var i=0 ;i<item_codes.Length-1;i++){
+                     for (var i=0 ;i<item_codes.Length-1;i++){
                         DriverBalance newBalance = new DriverBalance();
                             itemQ = item_codes[i].Split('x');
                             quantity = itemQ[0];

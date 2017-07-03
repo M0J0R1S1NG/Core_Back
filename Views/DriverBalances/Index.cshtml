@@ -1,8 +1,17 @@
 @model IEnumerable<Core.Models.DriverBalance>
-
+<h2>Driver Inventory and Cash Balances</h2>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+        @{var tot=0.0;}
+        @foreach (var item in Model) {
+            
+            tot+=item.TotalAmount;
+            @: Inventory @item.quantity   X   @item.InventoryId 
+
+            
+        } 
+        @tot
 <table class="table">
     <thead>
         <tr>

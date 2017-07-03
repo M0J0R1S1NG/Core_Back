@@ -91,6 +91,68 @@ namespace Core.Controllers
         [HttpGet]
         //[ValidateAntiForgeryToken]
         // GET: Orders/Accept
+        public async Task<IActionResult> NoShow(int ID,string code, [Bind(" DriverId")] Order order)
+        {
+                if (ModelState.IsValid)
+                {
+                     var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
+
+                    if (order == null || code==null || thisOrder.Status==7)
+                    {
+                        return NotFound();
+                    }
+                    if (thisOrder.AppUser ==Guid.Parse(code)){
+                        thisOrder.Status=7;
+                        
+                        _context.Update(thisOrder);
+                        await _context.SaveChangesAsync();
+                        
+                        double currBalance=0; 
+                         int LatestDriverBalanceID=0;                       
+                         LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.Status>0 && x.DriverId==order.DriverId).Max(n => n.ID);
+                         if(LatestDriverBalanceID.CompareTo(0)>=0){
+                            double latestBalance= _context.DriverBalances.Where(x=>x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance ).SingleOrDefault();
+
+                            if(latestBalance.CompareTo(0)>=0){ currBalance=0;}else{currBalance=latestBalance;}
+                         }
+                        IList<DriverBalance> thisBalance = _context.DriverBalances.Where(z=> z.DriverId== thisOrder.DriverId && z.merchant_transaction_id==thisOrder.GUID).ToList();
+                        foreach (var balanceItems in thisBalance){
+                            balanceItems.Status=-1;
+                            balanceItems.DriverId=order.DriverId;
+                            balanceItems.RunningBalance=currBalance-Decimal.ToDouble(thisOrder.Total);
+                            _context.Update(balanceItems);
+                            
+                        }          
+                        await _context.SaveChangesAsync();    
+                        var debitWay =_context.DebitWay.Where(x=> x.merchant_transaction_id.Contains(thisOrder.GUID.ToString())).Single();   
+                        string[] item_codes = debitWay.item_code.Split(',');
+                        var itemQ= item_codes[0].Split('x');
+                        var quantity= itemQ[0];
+                        var InventoryId=itemQ[1];
+                        
+                        var newtot=0.0;
+                        var newcost=0.0;
+                        //var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.DriverId==Int32.Parse("0")).Max(n => n.ID);
+                        //var latestBalance= _context.DriverBalances.Where(x=> x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
+                        
+                        
+                        for (var i=0 ;i<item_codes.Length-1;i++){
+                                itemQ = item_codes[i].Split('x');
+                                quantity = itemQ[0];
+                                InventoryId = itemQ[1];
+                                Inventory thisInventory=_context.Inventorys.Where(z=> z.ID==Int32.Parse(InventoryId)).Single();
+                                thisInventory.Quantity=thisInventory.Quantity+Int32.Parse(quantity);
+                                newcost+=thisInventory.Cost * Int32.Parse(quantity);
+                                newtot+=thisInventory.Price * Int32.Parse(quantity);
+                                //newBalance.RunningBalance-=thisInventory.Cost;
+                                _context.Update(thisInventory);
+                        }
+                                await _context.SaveChangesAsync();
+                                return StatusCode(200);
+                    }
+                }
+                return NotFound();
+        }
         public async Task<IActionResult> Delivered(int ID,string code, [Bind(" DriverId")] Order order)
         {
                 if (ModelState.IsValid)
@@ -103,18 +165,19 @@ namespace Core.Controllers
                     }
                         if (thisOrder.AppUser ==Guid.Parse(code)){
                             thisOrder.Status=10;
+                            
+                            _context.Update(thisOrder);
+                            await _context.SaveChangesAsync();
                             var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.Status>0 && x.DriverId==order.DriverId).Max(n => n.ID);
                             var latestBalance= _context.DriverBalances.Where(x=>x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
-                            
-                            var thisBalance = _context.DriverBalances.Where(z=> z.DriverId== thisOrder.DriverId && z.merchant_transaction_id==thisOrder.GUID);
+                            IList<DriverBalance> thisBalance = _context.DriverBalances.Where(z=> z.DriverId== thisOrder.DriverId && z.merchant_transaction_id==thisOrder.GUID).ToList();
                            foreach (var balanceItems in thisBalance){
                                 balanceItems.Status=1;
                                 balanceItems.DriverId=order.DriverId;
-                                balanceItems.RunningBalance=latestBalance.SingleOrDefault();
+                                balanceItems.RunningBalance=latestBalance.SingleOrDefault()+Decimal.ToDouble(thisOrder.Total);
                                 _context.Update(balanceItems);
-                                await _context.SaveChangesAsync();
+                                
                             }
-                           _context.Update(thisOrder);
                             await _context.SaveChangesAsync();
                             return StatusCode(200);
                     }
@@ -129,8 +192,8 @@ namespace Core.Controllers
                 if (ModelState.IsValid)
                 {
                 var thisOrder = await _context.Orders.SingleAsync(m => m.ID == ID);
-
-                if (order == null || code==null || thisOrder.Status==5)
+                IList<DriverBalance> thisDriverBalance =  _context.DriverBalances.Where(m => m.DriverId == 0 && m.merchant_transaction_id==thisOrder.GUID ).ToList();;
+                if (order == null || code==null || thisOrder.Status==5 || thisOrder==null || thisDriverBalance==null)
                 {
                     return NotFound();
                 }
@@ -139,8 +202,23 @@ namespace Core.Controllers
                     thisOrder.Status=5;
                     thisOrder.DeliveryDate=DateTime.Now.AddMinutes(30);
                     thisOrder.DriverId = order.DriverId;
+
                     _context.Update(thisOrder);
                     await _context.SaveChangesAsync();
+                    
+
+                    foreach (var item in thisDriverBalance){
+                        item.DriverId=thisOrder.DriverId;
+                        item.Status=3;
+
+                        
+                    }
+                         _context.UpdateRange(thisDriverBalance);
+                        await _context.SaveChangesAsync();
+
+
+
+                    
                     var thisDriver= await _context.Drivers.SingleAsync(m=> m.ID == order.DriverId );
                     var thisDriverUser= await _context.Users.SingleAsync(m=> Guid.Parse(m.Id) == thisDriver.UserGuid );
                     var user = await _context.Users.SingleAsync(m=>  Guid.Parse(m.Id)== thisOrder.AppUser);
@@ -152,8 +230,10 @@ namespace Core.Controllers
                      DriverSMS+= "Click link when delivered:";
                      string acceptUrl="Https://" + Request.Host;
                      string acceptOrderLink =acceptUrl + "/Orders/Delivered?DriverId=" + thisDriver.ID +"&ID=" + thisOrder.ID  ;
-                     acceptOrderLink +=  "&code=" + thisOrder.AppUser;
-                    DriverSMS+= acceptOrderLink;
+                     string NoShowOrderLink =acceptUrl + "/Orders/NoShow?DriverId=" + thisDriver.ID +"&ID=" + thisOrder.ID  ;
+                     acceptOrderLink +=  "&code=" + thisOrder.AppUser+ (char)10 + (char)13;
+                     NoShowOrderLink += "&code=" + thisOrder.AppUser+ (char)10 + (char)13;
+                    DriverSMS+= acceptOrderLink+ (char)10 + (char)13 + NoShowOrderLink;
 
                     var item_codeSplit=thisOrder.PhoneNumber.Split(',');
                     var OrderCustomerPhone = item_codeSplit[0];
