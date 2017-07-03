@@ -213,8 +213,9 @@ namespace Core.Controllers
                     //var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.DriverId==Int32.Parse("0")).Max(n => n.ID);
                     //var latestBalance= _context.DriverBalances.Where(x=> x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
                     
-                    DriverBalance newBalance = new DriverBalance();
+                    
                     for (var i=0 ;i<item_codes.Length-1;i++){
+                        DriverBalance newBalance = new DriverBalance();
                             itemQ = item_codes[i].Split('x');
                             quantity = itemQ[0];
                             InventoryId = itemQ[1];
@@ -225,7 +226,7 @@ namespace Core.Controllers
                             newBalance.DeliveryDate=DateTime.Now;
                             newBalance.CreatedDate =DateTime.Now;
                             //newBalance.DriverId=Int32.Parse(thisDriver);
-                            newBalance.DriverId=0;
+                            //newBalance.DriverId=0;
                             newBalance.PartnerId=Int32.Parse(newPartnerId);
                             newBalance.quantity=Int32.Parse(quantity);
                             newBalance.InventoryId=Int32.Parse(InventoryId);
