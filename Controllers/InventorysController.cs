@@ -255,6 +255,24 @@ namespace Core.Controllers
 
 
                                         ViewBag.InventoryByArea = inventory;
+
+
+            dynamic inventory2 =   from d in _context.Inventorys
+                                        join ig in _context.InventoryGroups on  d.ID equals    ig.InventoryId      // first join
+                                        join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
+                                        join pa in _context.Partners on da.PartnerId equals pa.Id
+                                        join dr in _context.Drivers on pa.Id equals dr.PartnerId
+                                        join us in _context.Users on dr.UserGuid equals Guid.Parse(us.Id)  //grap the user stuff
+                                        where pa.Id == thisPartner.Id
+                                        
+                                        orderby da.Name
+                                        select  new 
+                                        {
+                                        DaPartnerId=da.PartnerId,FirstName= us.FirstName,LastName=us.LastName,DriverGuid=dr.UserGuid ,DaName= da.Name,DaOpenTime=da.OpenTime,DaCloseTime=da.ClosedTime, Label=d.Label,ID=d.ID,Quantity= d.Quantity,Price=d.Price,ImageFilePath=d.ImageFilePath,Status=d.Status,OnHand=d.OnHand,BestBefore=d.BestBefore,OrderDate=d.OrderDate,Cost=d.Cost,Supplier=d.Supplier,Notes=d.Notes,Photo=d.Photo,THCContent=d.THCContent,CBDContent=d.CBDContent,Likes=d.Likes,PricePerGram=d.PricePerGram,PricePerQuarter=d.PricePerQuarter,PricePerhalf=d.PricePerhalf,PricePerOz=d.PricePerOz,CostPerGram=d.CostPerGram,Discount=d.Discount,UPC=d.UPC,Qualities=d.Qualities,catagory=d.catagory,PartnerId=d.PartnerId
+                                        };
+
+
+                                        ViewBag.InventoryByArea2 = inventory2;
             //var inventory = await _context.Inventorys.SingleOrDefaultAsync(m => m.ID == id);
             if (inventory == null)
             {

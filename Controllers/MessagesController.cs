@@ -11,7 +11,7 @@ using Core.Models;
 
 namespace Core.Controllers
 {
-    [Authorize(Roles="Admin")]
+    
     public class MessagesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,15 +22,32 @@ namespace Core.Controllers
         }
 
         // GET: Partners
-        public IActionResult SMS_Text_Reply()
+        [HttpGet]
+       public async Task<string> SMS_Text_Reply()
         {
-            return View();
-        }
-        public IActionResult SMS_Voice_Reply()
-        {
-            return View();
-        }
+            string vaout = "";
+            vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+            vaout+="<Response>";
+            vaout+="<Sms>";
+            vaout+="This sms number if for outgoing messages only.  You can call or text 416-802-8129 to get in touch with UberDuber Delivery Services.  Thanks";
+            vaout+="</Sms>";
+            vaout+="</Response>";
 
+            return vaout;
+        }
+        [HttpGet]
+         public async Task<string> SMS_Voice_Reply()
+        {
+            string vaout = "";
+            vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+            vaout+="<Response>";
+            vaout+="<Sms>";
+            vaout+="This sms number if for outgoing messages only.  You can call or text 416-802-8129 to get in touch with UberDuber Delivery Services.  Thanks";
+            vaout+="</Sms>";
+            vaout+="</Response>";
+
+            return vaout;
+        }
 
     }
 }

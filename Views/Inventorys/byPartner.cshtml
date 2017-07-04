@@ -179,6 +179,15 @@
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
+            <td>
+                Shared Between Areas: 
+                @foreach(var area in ViewBag.InventoryByArea2) {
+                      if (area.ToString().Split(',')[32].Split('=')[1].Split('}')[0].Trim(' ').Contains(@area.ToString().Split(',')[0].Split('=')[1].Trim(' '))) {
+                          @area.ToString().Split(',')[0].Split('=')[1]
+                      }
+                      
+                }
+            </td>
         </tr>
 }
     </tbody>
