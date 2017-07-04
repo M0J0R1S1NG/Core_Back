@@ -31,6 +31,7 @@ namespace Core.Controllers
             vaout+="<Sms>";
             vaout+="This sms number if for outgoing messages only.  You can call or text 416-802-8129 to get in touch with UberDuber Delivery Services.  Thanks";
             vaout+="</Sms>";
+              vaout+="<Media>https://UberDuber.com/images/uber_duber_square.png</Media>";
             vaout+="</Response>";
 
             return vaout;
