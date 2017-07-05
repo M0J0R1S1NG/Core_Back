@@ -102,7 +102,7 @@ namespace Core
             {
                 options.SslPort = 443;
                 
-                options.Filters.Add(new RequireHttpsAttribute());
+               options.Filters.Add(new RequireHttpsAttribute());
                 
             
             }).AddJsonOptions(options =>

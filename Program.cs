@@ -31,7 +31,7 @@ namespace Core
             }else{
                 var cert = new X509Certificate2("mypfx.pfx", "a2bman");
                 var host = new WebHostBuilder()
-                    .UseUrls("https://lwww.uberduber.net/", "http://www.uberduber.net/")  //host.Start();
+                    .UseUrls("https://www.uberduber.net/", "http://www.uberduber.net/")  //host.Start();
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseKestrel(cfg => cfg.UseHttps(cert))
                     .UseIISIntegration()
