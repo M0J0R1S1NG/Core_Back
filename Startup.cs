@@ -98,18 +98,36 @@ namespace Core
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.CookieHttpOnly = true;
             });
-            services.AddMvc(options =>
-            {
-                options.SslPort = 443;
-                
-               options.Filters.Add(new RequireHttpsAttribute());
-                
             
-            }).AddJsonOptions(options =>
-               {
-                   options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-               });;
+            
+            
+             if (Environment.GetEnvironmentVariable("DEVHOST")==null)
+            {
+               
+                    services.AddMvc(options =>
+                        {
+                            options.SslPort = 443;
+                            options.Filters.Add(new RequireHttpsAttribute());
+                        }
+                    ).AddJsonOptions(options =>
+                            {
+                                options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                            }
+                    );
 
+            }else{
+            
+                    services.AddMvc(options =>
+                        {
+                            options.SslPort = 443;
+                            //options.Filters.Add(new RequireHttpsAttribute());
+                        }
+                    ).AddJsonOptions(options =>
+                            {
+                                options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                            }
+                    );
+            }
           
               
             services.AddAuthorization(options =>

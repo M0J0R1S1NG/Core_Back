@@ -594,8 +594,8 @@
                     message = "Your area will be open very soon. Please add your email and submit the form behind this message and we will notify you when the area opens.";
                     NotInArea=false; 
                 }
-    
-                var myAnswer = alert(title + " - " + message);
+                var myAnswer = 0;
+                if (!InDeliveryAreaConfirmed){ myAnswer = confirm(title + " - " + message)};
                 if (myAnswer){
                     
                 }else{

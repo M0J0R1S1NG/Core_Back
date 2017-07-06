@@ -11,7 +11,6 @@ using MimeKit;
 using MailKit;
 using MailKit.Net;
 using MailKit.Security;
-
 using MailKit.Net.Smtp;
 namespace Core.Services
 {
@@ -30,7 +29,74 @@ namespace Core.Services
             SendAsync(email, subject, message).Wait();
             return Task.FromResult(0);
         }
-    public Task  SendEmail(string emails, string body, string subject)
+        public Task SendEmailAsyncGoogle(string email, string subject, string message)
+        {
+            SendAsyncGoogle(email, subject, message).Wait();
+            return Task.FromResult(0);
+        }
+    public  Task  SendEmailGoogle(string emails, string body, string subject)
+    {
+        var emailMessage = new MimeMessage();
+
+        emailMessage.From.Add(new MailboxAddress("UberDuber Order", "uberdubercom@gmail.com"));
+        
+            emailMessage.To.Add(new MailboxAddress(emails, emails));
+        
+        emailMessage.Subject = subject;
+        emailMessage.Body = new TextPart("html") { Text = body };
+        
+        
+        
+        
+        
+        using (var client = new SmtpClient())
+            {
+                 client.Connect(
+                    "smtp.gmail.com",
+                        587,
+                    false);
+               
+                // Note: since we don't have an OAuth2 token, disable
+                // the XOAUTH2 authentication mechanism.
+                client.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                // Note: only needed if the SMTP server requires authentication
+                if(true)
+                {
+                        client.Authenticate("UberDuberCom", "M0j0R1s1ng!");
+                       
+                }
+               
+                 client.Send(emailMessage);
+                 client.DisconnectAsync(true).ConfigureAwait(false);
+            }
+        
+        
+         return Task.FromResult(0);
+        
+        
+        
+        
+        
+        using (var client = new SmtpClient())
+        {
+            client.Connect("smtp.gmail.com", 587);
+
+
+            // Note: since we don't have an OAuth2 token, disable
+            // the XOAUTH2 authentication mechanism.
+            client.AuthenticationMechanisms.Remove("XOAUTH2");
+
+            // Note: only needed if the SMTP server requires authentication
+            //client.Authenticate("uberdubercom", "M0j0R1s1ng!");
+
+            client.Send(emailMessage);
+            client.Disconnect(true);
+        }
+
+        return Task.FromResult(0);
+    }
+        public Task  SendEmail(string emails, string body, string subject)
     {
         var emailMessage = new MimeMessage();
 
@@ -70,6 +136,28 @@ namespace Core.Services
             //mail.Body = message;
             //await System.Net.Mail.SendMailAsync(mail);
             await SendEmail(email,message,subject);
+        }public async Task SendAsyncGoogle(string email, string subject, string message)
+        {
+        //     var sentFrom = "uberdubercom@gmail.com";
+        //    MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient();
+        //    client.
+        //    client.Authenticate()
+        //     await client.ConnectAsync("smtp.gmail.com", 587);
+        //     client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+        //     client.UseDefaultCredentials = false;
+        //     var gmailUser = Options.gmailUser;
+        //     var gmailPassword = Options.gmailPassword;
+        //     System.Net.NetworkCredential credentials = new NetworkCredential(
+        //          gmailUser,
+        //          gmailPassword
+        //          );
+        //     client.EnableSsl = true;
+        //     client.Credentials = credentials;
+        //     var mail = new System.Net.Mail.MailMessage(sentFrom,email);
+        //     mail.Subject = subject;
+        //     mail.Body = message;
+        //     await System.Net.Mail.SendMailAsync(mail);
+            await SendEmailGoogle(email,message,subject);
         }
 
         public Task SendSmsAsync(string number, string message)

@@ -53,118 +53,161 @@ namespace Core.Controllers
         }
         // GET: Partners
 
-       public async Task<string> SMS_Text_Reply(string From ,string Body ,string AccountSid,string FromCity,string FromCountry, 
-                                                string FromState,string FromZip,string ToCity,string ToCountry, 
-                                                string ToState,string ToZip,string SmsStatus,string To,string SMsMessageSid, 
-                                                string SmsSid,string ApiVersion,string NewData="" )
+       public async Task<string> SMS_Text_Reply(string From ,string Body ,string AccountSid,string FromCity,
+                                                string FromCountry,string FromState,string FromZip,string ToCity,
+                                                string ToCountry,string ToState,string ToZip,string SmsStatus,
+                                                string To,string SMsMessageSid,string SmsSid,string ApiVersion)
         {
-            // string vaout = "";
-            // vaout += "<?xml version='1.0' encoding='UTF-8'?>";
-            // vaout+="<Response>";
-            // vaout+="<Sms>";
-            // vaout+="This sms number if for outgoing messages only.  You can call or text 416-802-8129 to get in touch with UberDuber Delivery Services.  Thanks";
-            // vaout+="</Sms>";
-            // vaout+="</Response>";
+            var vaout="";
+            var urlString = "";
+            var bodyStr= Body.ToUpper();
+            if (bodyStr.StartsWith("SENDME")){
+                var nothing=1;
+                var items=bodyStr.Split(',');
+                for (var i=0;i<=items.length();i++)
+                {
+                        
+                }
+            }else if (bodyStr.StartsWith("ORDER")){
 
-            //var Msgresponse = new  MessagingResponse();
-        
-            //Msgresponse.Message("TestLink", action: "/Messages/Sms_Text_Reply?NewData=11119999", method: "GET");
-            
-            //Msgresponse.Redirect("GET", "/Messages/Sms_Text_Reply?NewData=11119999");
-            //System.Console.WriteLine(Msgresponse.ToString());
-            // var User =  _context.Users.Where(x=> x.PhoneNumber==From).SingleOrDefault();
-           
-            // if (User.PhoneNumber.Length<1){
-            //    //New user
-            //         User.PhoneNumber=From;
-            //         User.City=FromCity;
-            //         User.Country=FromCountry;
-            //         User.PostalCode=FromZip;
-            //         User.Province=FromState;
+                vaout = "";
+                vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                vaout+="<Response>";
+                vaout+="<Message>";
+                vaout+="UberDuber Delivery." + (char) 10 + (char) + 13 + "If you would like to order- reply 'order' or text 'order' to 647-799-2699." + (char) 10 + (char) + 13 + "Use 416-802-8129 to get an UberDuber representative.  Thanks";
+                vaout+="</Message>";
+                vaout+="</Response>";
+                Response.ContentType="text/xml";
+            }else{
+               ApplicationUser ThisUser = _context.Users.Where(z=> From.Contains(z.PhoneNumber)).First();
+               if (ThisUser==null)
+                {
+                        vaout = "";
+                        vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                        vaout+="<Response>";
+                        vaout+="<Message>";
+                        vaout+="Hi " + From  + " We just have a few questions to get your order together.  First what's your name?  Please type all replys on a single line";
+                        vaout+="</Message>";
+                        vaout+="</Response>";
+                        Response.ContentType="text/xml";
+                }else{
+                        int userDA=ThisUser.DeliveryAreaId;
+                        string menuStr = ""  ;
+                        List<InventoryByArea>  InventoryByAreaVar = (from d in _context.Inventorys
+                                                join ig in _context.InventoryGroups on  d.ID equals    ig.InventoryId      // first join
+                                                join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
+                                                where da.ID == userDA
+                                                where d.Quantity > 0
+                                                orderby da.Name
+                                                select  new InventoryByArea
+                                                {
+                                                Label=d.Label, Name=da.Name,ID=da.ID,Quantity= d.Quantity,Price=d.Price,ImageFilePath=d.ImageFilePath, InventoryId=d.ID
+                                                }).ToList();
+                        foreach (var item in InventoryByAreaVar){
+                                menuStr+= "ID " + item.InventoryId + " = " +  item.Label + " @ $" + item.Price + (char)10; 
+                        }
+                        string DeliveryAddress =ThisUser.DeliveryAddress;
+                        string Name=ThisUser.FirstName;
+                        string Email = ThisUser.Email;
+                        string Password="";
+                        string SpecialInstructions="";
+                        string OrderDetails = menuStr;
+                        string Total="";
 
-            // }else{
-            //    //Existing User
-            //    //var AppUser=_signInManager.SignInAsync(User,true);
+                        vaout = "";
+                        vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                        vaout+="<Response>";
+                        vaout+="<Message>";
+                        vaout+="Hi " + Name + (char) 10 +  DeliveryAddress  + (char) 10;
+                        //vaout+="To select your items enter the format quantity1xID1,quantity2xID2... eg 3x1,1x6  means 3 x item1 and 1 x item6 from the fllowing menu.  We will confirm your order";
+                        vaout+="The following items are available in your area right now"  + (char)10 +  (char)13 ;
+                        vaout+=menuStr;
+                        vaout+=  (char)10 +"To order items text 'sendme,' followed by the item Id's you want seperated by commas " + (char)10 + "Example text 'sendme,3,3,1'  means 2 x item3 1 x item1";
 
-            // }
-            
-            
-            var User =  _context.Users.Where(x=> x.PhoneNumber==From).SingleOrDefault();
+                        vaout+="</Message>";
+                        vaout+="<Redirect>";
+                        urlString+= "SmsOut?From='" + From + "'";
+                        urlString+= "&To='" + From + "'";
+                        urlString+= "&Body='" + Body + "'";
+                        urlString+= "&AccountSid='" + AccountSid + "'";
+                        urlString+= "&FromCity='" + FromCity + "'";
+                        urlString+= "&FromCountry='" + FromCountry + "'";
+                        urlString+= "&FromState='" + FromState + "'";
+                        urlString+= "&FromZip='" + FromZip + "'";
+                        urlString+= "&ToCity='" + ToCity + "'";
+                        urlString+= "&ToCountry='" + ToCountry + "'";
+                        urlString+= "&ToState='" + ToState + "'";
+                        urlString+= "&ToZip='" + ToZip + "'";
+                        urlString+= "&SmsStatus='" + SmsStatus + "'";
+                        urlString+= "&SMsMessageSid='" + SMsMessageSid + "'";
+                        urlString+= "&SmsSid='" + SmsSid + "'";
+                        urlString+= "&ApiVersion='" + ApiVersion + "'";
+                        urlString+= "&NewData='" + Body + "'";
 
-
-            string message_body = Body;
-            string from_number = From;
-            string vaout = "";
-            vaout += "Phone Number: " + From + (char) 10 + (char) + 13;
-            vaout += "City: " + FromCity + (char) 10 + (char) + 13;
-            vaout += "Province: " + FromState + (char) 10 + (char) + 13;
-            vaout += "Country: "+ FromCountry + (char) 10 + (char) + 13;
-            vaout += "Postal Code:"+ FromZip + (char) 10 + (char) + 13;
-            vaout += "Body: " + Body + (char) 10 + (char) + 13;
-            vaout += "Status: " + SmsStatus + (char) 10 + (char) + 13;
-            Response.ContentType="text/plain"; 
-             
-             
-             
-             
-             
-             
-             vaout = "";
-            vaout += "<?xml version='1.0' encoding='UTF-8'?>";
-            vaout+="<Response>";
-            // vaout+="<Sms>";
-            // vaout+="This sms number is for outgoing messages only.  You can call or text 6477992699 to get in touch with UberDuber Delivery Services.  Thanks";
-            // vaout+="</Sms>"; 
-            vaout+="<Message>Hello World!</Message>";
-            vaout+="<Redirect>https://www.uberduber.net/Messages/SmsOut?From=me$body=thisbody</Redirect>";
-            
-            vaout+="</Response>";
-            Response.ContentType="text/xml";
-            
-
-
-
-            vaout = "http://www.uberduber.net/Messages/SMSOut?NewData=Helloworld";
-            Response.ContentType="text/plain";
-            //Response.Body="<a href=/Messages/SMSOut?From=6475284350&body=Helloworld>TestLink</a>";
-
-
-
-
-
-            vaout = "";
-            vaout += "<?xml version='1.0' encoding='UTF-8'?>";
-            vaout+="<Response>";
-            vaout+="<Message>";
-            vaout+="This sms number is for UberDuber delivery ordering if you would like to proceed text the word 'order' back to this number 647-799-2699. Otherwise call or text 416-802-8129 to get in touch with an UberDuber live representative.  Thanks";
-            vaout+="</Message>";
-            vaout+="<Redirect>SmsOut?NewData=TestingData</Redirect>";
-            vaout+="</Response>";
-            Response.ContentType="text/xml";
-          
+                        urlString+= "&Email='" + Email + "'";
+                        urlString+= "&Name='" + Name + "'";
+                        urlString+= "&Password='" + Password + "'";
+                        urlString+= "&SpecialInstructions='" + SpecialInstructions + "'";
+                        urlString+= "&OrderDetails='" + OrderDetails + "'";
+                        urlString+= "&DeliveryAddress='" + DeliveryAddress + "'";
+                        urlString+= "&Total='" + Total + "'";
+                    
+                        vaout+=Uri.EscapeDataString(urlString);
+                        //vaout+=urlString;
+                        vaout+="</Redirect>";
+                        //vaout+="</Message>";
+                        vaout+="</Response>";
+                        Response.ContentType="text/xml";
+                }
+            } 
             return  vaout;
         }
-         
-         
-         
-         
-         public string SMSOut(string From ,string Body ,string AccountSid,string FromCity,string FromCountry, 
-                                                string FromState,string FromZip,string ToCity,string ToCountry, 
-                                                string ToState,string ToZip,string SmsStatus,string To,string SMsMessageSid, 
-                                                string SmsSid,string ApiVersion,string NewData="" )
-        {
-            string message_body = Body;
-            string from_number = From;
-            string vaout = "/SMSOut?NewData=" + NewData + (char) 10 + (char) + 13;
-            
-            
-            vaout += "Phone Number: " + From + (char) 10 + (char) + 13;
+         public string SMSOut(string From ,string Body ,string AccountSid,string FromCity,
+                                                string FromCountry,string FromState,string FromZip,string ToCity,
+                                                string ToCountry,string ToState,string ToZip,string SmsStatus,
+                                                string To,string SMsMessageSid,string SmsSid,string ApiVersion,
+                                                string NewData="",string Email="",string Name="",string Password="",
+                                                string SpecialInstructions="",string OrderDetails="",string DeliveryAddress="",string Total="" 
+                                                )
+        {       
+                string vaout="";
+                string hostStr="Https://" + Request.Host;
+                
+                vaout+= hostStr + "/messages/SmsOut?From='" + From + "'";
+                vaout+= "&To='" + To + "'";
+                vaout+= "&Body='" + Body + "'";
+                vaout+= "&AccountSid='" + AccountSid + "'";
+                vaout+= "&FromCity='" + FromCity + "'";
+                vaout+= "&FromCountry='" + FromCountry + "'";
+                vaout+= "&FromState='" + FromState + "'";
+                vaout+= "&FromZip='" + FromZip + "'";
+                vaout+= "&ToCity='" + ToCity + "'";
+                vaout+= "&ToCountry='" + ToCountry + "'";
+                vaout+= "&ToState='" + ToState + "'";
+                vaout+= "&ToZip='" + ToZip + "'";
+                vaout+= "&SmsStatus='" + SmsStatus + "'";
+                vaout+= "&SMsMessageSid='" + SMsMessageSid + "'";
+                vaout+= "&SmsSid='" + SmsSid + "'";
+                vaout+= "&ApiVersion='" + ApiVersion + "'";
+                vaout+= "&NewData='" + Body + "'";
+
+                vaout+= "&Email='" + Email + "'";
+                vaout+= "&Name='" + Name + "'";
+                vaout+= "&Password='" + Password + "'";
+                vaout+= "&SpecialInstructions='" + SpecialInstructions + "'";
+                vaout+= "&OrderDetails='" + OrderDetails + "'";
+                vaout+= "&DeliveryAddress='" + DeliveryAddress + "'";
+                vaout+= "&Total='" + Total + "'";
+               
+             var UrlStr = vaout ;
+            vaout = "Phone Number: " + From + (char) 10 + (char) + 13;
             vaout += "City: " + FromCity + (char) 10 + (char) + 13;
             vaout += "Province: " + FromState + (char) 10 + (char) + 13;
             vaout += "Country: "+ FromCountry + (char) 10 + (char) + 13;
             vaout += "Postal Code:"+ FromZip + (char) 10 + (char) + 13;
             vaout += "Body: " + Body + (char) 10 + (char) + 13;
             vaout += "Status: " + SmsStatus + (char) 10 + (char) + 13;
+            vaout += UrlStr;
             Response.ContentType="text/plain";
             return vaout;
         }
