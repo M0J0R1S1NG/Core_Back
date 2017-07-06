@@ -60,15 +60,7 @@ namespace Core.Controllers
         {
             var vaout="";
             var urlString = "";
-            var bodyStr= Body.ToUpper();
-            if (bodyStr.StartsWith("SENDME")){
-                var nothing=1;
-                var items=bodyStr.Split(',');
-                for (var i=0;i<=items.length();i++)
-                {
-                        
-                }
-            }else if (bodyStr.StartsWith("ORDER")){
+            if (Body.ToUpper()!=("ORDER")){
 
                 vaout = "";
                 vaout += "<?xml version='1.0' encoding='UTF-8'?>";
