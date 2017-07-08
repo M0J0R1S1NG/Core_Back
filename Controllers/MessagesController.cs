@@ -297,7 +297,7 @@ namespace Core.Controllers
                     try
                     {
                         string hostStr="";
-                        var geocodeRequest="";
+                        //var geocodeRequest="";
                         if (Environment.GetEnvironmentVariable("DEVHOST")==null){
                             hostStr="Https://" + Request.Host;
                         }else{
@@ -306,17 +306,27 @@ namespace Core.Controllers
                              
 
 
-                        geocodeRequest = hostStr + "/REST/v1/Locations?query=";
+                        //geocodeRequest = hostStr + "/REST/v1/Locations?query=";
                         //HttpContent content;
                         //Response.ContentType= "application/x-www-form-urlencoded";
                         
-                        var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
+                        //var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
                         var getStr=Uri.EscapeUriString($"{hostStr}/DebitWay/Create?{buildStr3}");
-                        var response = await client.GetAsync(getStr);
-                        response.EnsureSuccessStatusCode();
-                        var stringResult = await response.Content.ReadAsStringAsync();
-                        var  retLocation = JsonConvert.DeserializeObject<DebitWay>(stringResult);
-                         Response.ContentType="text/plain";
+                        //var response = await client.GetAsync(getStr);
+                        //response.EnsureSuccessStatusCode();
+                        //var stringResult = await response.Content.ReadAsStringAsync();
+                        //var  retLocation = JsonConvert.DeserializeObject<DebitWay>(stringResult);
+                        Response.ContentType="text/plain";
+                         vaout = "";
+                        vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                        vaout += "<Response>";
+                        vaout += "<Message>";
+                        vaout += "UberDuber Delivery.  Thank You!.  Your order has been submitted.  You will get auto confirmation messages when your order is boxed and again when its been dispatched.  If you like our products and services please tell your friends.";
+                        vaout += "</Message>";
+                        vaout += "</Response>";
+                        Response.ContentType="text/xml";
+                        return  vaout;
+                        //return "UberDuber Delivery.  Thank You!.  Your order has been submitted.  You will get auto confirmation messages when your order is boxed and again when its been dispatched.  If you like our products and services please tell your friends.";
                  } 
                     catch (HttpRequestException httpRequestException)
                     {
