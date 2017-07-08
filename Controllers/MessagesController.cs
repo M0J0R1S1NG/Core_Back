@@ -14,12 +14,17 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Core.Models.AccountViewModels;
 using Core.Services;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Twilio;
 using Twilio.TwiML;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
+using System.Net.Http;
+using Core.Helpers.BingMapTypes;
+using Core.Controllers;
+using System.Text.Encodings;
 
 
 namespace Core.Controllers
@@ -34,7 +39,7 @@ namespace Core.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
-
+        //private readonly IGeocoder _geoCoder;
         public MessagesController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -42,6 +47,7 @@ namespace Core.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory)
+            //IGeocoder geoCoder)
         {
             _context = context;
             _userManager = userManager;
@@ -50,6 +56,8 @@ namespace Core.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            //_geoCoder = geoCoder;
+
         }
         // GET: Partners
 
@@ -58,30 +66,522 @@ namespace Core.Controllers
                                                 string ToCountry,string ToState,string ToZip,string SmsStatus,
                                                 string To,string SMsMessageSid,string SmsSid,string ApiVersion)
         {
+
+
+       
+
             var vaout="";
             var urlString = "";
-            if (Body.ToUpper()!=("ORDER")){
+            var orerItemStr = "";
+            string buildStr = "";
+            
+            
+             string[] vars;
+            if (Body.ToUpper().Contains("CONFIRM") ){
+                vars= Body.Split(' ');
+                if (vars.Length<=0){
+                    vaout = "";
+                    vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                    vaout += "<Response>";
+                    vaout += "<Message>";
+                    vaout += "Sorry we didnt get a propery formated confirmation code please try again enter your text reply exactly like this 'confirm code#'  using the code from the previous text message";
+                    vaout += "</Message>";
+                    vaout += "</Response>";
+                    Response.ContentType="text/xml";
+                    return  vaout;
+                }
+                int orderId=Int32.Parse(vars[1]);
+
+                Order thisOrder=_context.Orders.Where(x=> x.ID==orderId).Single();
+                ApplicationUser thisUser = _context.Users.Where(x=> x.Id==thisOrder.AppUser.ToString()).Single();
+                var driversbyAreaPartner =
+	
+                    from ed in _context.DeliveryAreas
+                    
+                    join p in  _context.Partners on ed.PartnerId equals p.Id
+                    join b in  _context.Drivers on p.Id equals  b.PartnerId
+                    join u in  _context.ApplicationUser on b.UserGuid.ToString() equals u.Id
+                    //where u.FirstName=="AndrewUser" 
+                    where ed.ID==5
+                    select new
+                    {
+                        Driver=ed.ID,
+                        DeliveryArea=ed.Name,
+                        DriverId=b.ID,
+                        drivername =u.FirstName,
+                        //drivername = (from x in Core_Users join z in Drivers on x.Id equals z.UserGuid.ToString() where z.ID == b.ID select new {drivername = x.FirstName}),
+                        DriverNumber=b.PhoneNumber,
+                        PartnerNumber=p.PhoneNumber,
+                        PartnerSMS=p.SMSNumber,
+                        p.Name,
+                        p.Id
+                        
+                    };
+                    int d=0;
+                    string DriverIdStr="";
+                    string SMSStr="";
+                    int thisPartnerId=-1;
+                    foreach (var thisDriver in driversbyAreaPartner) {
+                         d+=1;
+                              DriverIdStr+="DriverId"+d+":"+thisDriver.DriverId+",";
+                              SMSStr+="SMS"+d+":"+thisDriver.DriverNumber+",";
+                              thisPartnerId=thisDriver.Id;
+                    }
+                        string SpecialInstructionsStr=thisUser.StreetName  + thisUser.UnitNumber;
+                            DriverIdStr=DriverIdStr.TrimEnd(',');
+                            SMSStr= SMSStr.TrimEnd(',');   
+                            string customStr=thisUser.Id + ","+ SpecialInstructionsStr+"," + thisPartnerId + "," + SMSStr + "," + DriverIdStr;
+
+                if (thisOrder==null){
+                     vaout = "";
+                    vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                    vaout += "<Response>";
+                    vaout += "<Message>";
+                    vaout += "Sorry we couldnt find this order Id. Please try again. Enter your text reply exactly like this 'confirm code#'.  If you cant find your confirmation code. Restart by texting 'order'";
+                    vaout += "</Message>";
+                    vaout += "</Response>";
+                    Response.ContentType="text/xml";
+                    return  vaout;
+                }
+                        string identifier="";
+                        string website_unique_id="";
+                        string return_url="";
+                        string transaction_date=DateTime.Now.ToString();
+                        string language="en";
+                        string first_name=thisUser.FirstName;
+                        string last_name=thisUser.LastName;
+                        string address=thisUser.StreetName;
+                        string city=thisUser.City;
+                        string email=thisUser.Email;
+                        string state_or_province=thisUser.Province;
+                        string zip_or_postal_code=thisUser.PostalCode;
+                        string phone=thisUser.PhoneNumber;
+                        string shipping_address=thisUser.DeliveryAddress;
+                        string shipping_city=thisUser.City;
+                        string shipping_state_or_province=thisUser.Province;
+                        string shipping_zip_or_postal_code=thisUser.PostalCode;
+                        string shipping_country=thisUser.Country;
+                        string item_name=thisOrder.Details;
+                        string amount=thisOrder.Total.ToString();
+                        string quantity="0";
+                        string item_code=thisOrder.PhoneNumber;
+                        string custom=customStr;
+                        string shipment="yes";
+                        string merchant_transaction_id=thisOrder.GUID.ToString();                          
+                        string status="cash";    //cash interca credit paypal SMSCash=5
+                        string time_stamp=DateTime.Now.ToString();
+                        
+
+                    buildStr= "{" ;
+                    buildStr += "'identifier':'" +  identifier + "',";
+                    buildStr += "'website_unique_id:'" +  website_unique_id + "',";
+                    buildStr += "'return_url:'" +  return_url + "',";
+                    buildStr += "'transaction_date:'" +  transaction_date + "',";
+                    buildStr += "'language:'" +  language + "',";
+                    buildStr += "'first_name:'" +  first_name + "',";
+                    buildStr += "'last_name:'" +  last_name + "',";
+                    buildStr += "'address:'" +  address + "',";
+                    buildStr += "'city:'" +  city + "',";
+                    buildStr += "'state_or_province:'" +  state_or_province + "',";
+                    buildStr += "'zip_or_postal_code:'" +  zip_or_postal_code + "',";
+                    buildStr += "'shipping_state_or_province:'" +  email + "',";
+                    buildStr += "'phone:'" +  phone + "',";
+                    buildStr += "'shipping_address:'" +  shipping_address + "',";
+                    buildStr += "'shipping_city:'" +  shipping_city + "',";
+                    buildStr += "'shipping_state_or_province:'" +  shipping_state_or_province + "',";
+                    buildStr += "'shipping_zip_or_postal_code:'" +  shipping_zip_or_postal_code + "',";
+                    buildStr += "'shipping_country:'" +  shipping_country + "',";
+                    buildStr += "'item_name:'" +  item_name + "',";
+                    buildStr += "'amount:'" +  amount + "',";
+                    buildStr += "'quantity:'" +  quantity + "',";
+                    buildStr += "'item_code:'" +  item_code + "',";
+                    buildStr += "'custom:'" +  custom + "',";
+                    buildStr += "'shipment:'" +  shipment + "',";
+                    buildStr += "'merchant_transaction_id:'" +  merchant_transaction_id + "',";                          
+                    buildStr += "'status:'" +  status + "',";
+                    buildStr += "'time_stamp:'" +  time_stamp + "',";
+                    buildStr += "}";
+                     string buildStr2="";                    
+                    buildStr2 += "identifier='" +  identifier + "'";
+                    buildStr2 += "&website_unique_id='" +  website_unique_id + "'";
+                    buildStr2 += "&return_url='" +  return_url + "'";
+                    buildStr2 += "&transaction_date='" +  transaction_date + "'";
+                    buildStr2 += "&language='" +  language + "'";
+                    buildStr2 += "&first_name='" +  first_name + "'";
+                    buildStr2 += "&last_name='" +  last_name + "'";
+                    buildStr2 += "&address='" +  address + "'";
+                    buildStr2 += "&city='" +  city + "'";
+                    buildStr2 += "&state_or_province='" +  state_or_province + "'";
+                    buildStr2 += "&zip_or_postal_code='" +  zip_or_postal_code + "'";
+                    buildStr2 += "&shipping_state_or_province='" +  email + "'";
+                    buildStr2 += "&phone='" +  phone + "'";
+                    buildStr2 += "&shipping_address='" +  shipping_address + "'";
+                    buildStr2 += "&shipping_city='" +  shipping_city + "'";
+                    buildStr2 += "&shipping_state_or_province='" +  shipping_state_or_province + "'";
+                    buildStr2 += "&shipping_zip_or_postal_code='" +  shipping_zip_or_postal_code + "'";
+                    buildStr2 += "&shipping_country='" +  shipping_country + "'";
+                    buildStr2 += "&item_name='" +  item_name + "'";
+                    buildStr2 += "&amount='" +  amount + "'";
+                    buildStr2 += "&quantity='" +  quantity + "'";
+                    buildStr2 += "&item_code='" +  item_code + "'";
+                    buildStr2 += "&custom='" +  custom + "'";
+                    buildStr2 += "&shipment='" +  shipment + "'";
+                    buildStr2 += "&merchant_transaction_id='" +  merchant_transaction_id + "'";                          
+                    buildStr2 += "&status='" +  status + "'";
+                    buildStr2 += "&time_stamp='" +  time_stamp + "'";
+ string buildStr3="";                    
+                    buildStr3 += "identifier=" +  identifier ;
+                    buildStr3 += "&website_unique_id=" +  website_unique_id ;
+                    buildStr3 += "&return_url=" +  return_url ;
+                    buildStr3 += "&transaction_date=" +  transaction_date ;
+                    buildStr3 += "&language=" +  language ;
+                    buildStr3 += "&first_name=" +  first_name ;
+                    buildStr3 += "&last_name=" +  last_name ;
+                    buildStr3 += "&address=" +  address ;
+                    buildStr3 += "&city=" +  city ;
+                    buildStr3 += "&state_or_province=" +  state_or_province ;
+                    buildStr3 += "&zip_or_postal_code=" +  zip_or_postal_code ;
+                    buildStr3 += "&shipping_state_or_province=" +  email ;
+                    buildStr3 += "&phone=" +  phone ;
+                    buildStr3 += "&shipping_address=" +  shipping_address ;
+                    buildStr3 += "&shipping_city=" +  shipping_city ;
+                    buildStr3 += "&shipping_state_or_province=" +  shipping_state_or_province ;
+                    buildStr3 += "&shipping_zip_or_postal_code=" +  shipping_zip_or_postal_code ;
+                    buildStr3 += "&shipping_country=" +  shipping_country ;
+                    buildStr3 += "&item_name=" +  item_name ;
+                    buildStr3 += "&amount=" +  amount ;
+                    buildStr3 += "&quantity=" +  quantity ;
+                    buildStr3 += "&item_code=" +  item_code ;
+                    buildStr3 += "&custom=" +  custom ;
+                    buildStr3 += "&shipment=" +  shipment ;
+                    buildStr3 += "&merchant_transaction_id=" +  merchant_transaction_id ;                          
+                    buildStr3 += "&status=" +  status ;
+                    buildStr3 += "&time_stamp=" +  time_stamp ;
+
+
+
+                        var DebitWayVars = new DebitWay();
+                        DebitWayVars.identifier="";
+                        DebitWayVars.website_unique_id="";
+                        DebitWayVars.return_url="";
+                        DebitWayVars.transaction_date=DateTime.Now.ToString();
+                        DebitWayVars.language="en";
+                        DebitWayVars.first_name=thisUser.FirstName;
+                        DebitWayVars.last_name=thisUser.LastName;
+                        DebitWayVars.address=thisUser.StreetName;
+                        DebitWayVars.city=thisUser.City;
+                        DebitWayVars.email=thisUser.Email;
+                        DebitWayVars.state_or_province=thisUser.Province;
+                        DebitWayVars.zip_or_postal_code=thisUser.PostalCode;
+                        DebitWayVars.phone=thisUser.PhoneNumber;
+                        DebitWayVars.shipping_address=thisUser.DeliveryAddress;
+                        DebitWayVars.shipping_city=thisUser.City;
+                        DebitWayVars.shipping_state_or_province=thisUser.Province;
+                        DebitWayVars.shipping_zip_or_postal_code=thisUser.PostalCode;
+                        DebitWayVars.shipping_country=thisUser.Country;
+                        DebitWayVars.item_name=thisOrder.Details;
+                        DebitWayVars.amount=Convert.ToDouble(thisOrder.Total);
+                        DebitWayVars.quantity=0;
+                        DebitWayVars.item_code=thisOrder.PhoneNumber;
+                        DebitWayVars.custom="";
+                        DebitWayVars.shipment="yes";
+                        DebitWayVars.merchant_transaction_id=thisOrder.GUID.ToString();                          
+                        DebitWayVars.status="cash";    //cash interca credit paypal SMSCash=5
+                        DebitWayVars.time_stamp=DateTime.Now;
+
+
+
+
+                 using (var client = new HttpClient())
+                {
+                    try
+                    {
+                        var geocodeRequest="";
+                        string hostStr="Http://" + Request.Host;
+                        geocodeRequest = hostStr + "/REST/v1/Locations?query=";
+                        HttpContent content;
+                        //Response.ContentType= "application/x-www-form-urlencoded";
+                        var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
+
+                        var getStr=Uri.EscapeUriString($"{hostStr}/DebitWay/Create?{buildStr3}");
+                        var response = await client.GetAsync(getStr);
+                        response.EnsureSuccessStatusCode();
+                        var stringResult = await response.Content.ReadAsStringAsync();
+                        var  retLocation = JsonConvert.DeserializeObject<DebitWay>(stringResult);
+                         Response.ContentType="text/plain";
+                 } 
+                    catch (HttpRequestException httpRequestException)
+                    {
+                        return httpRequestException.Message ;
+                    }
+                }
+            }
+            
+            
+            
+            
+            if (Body.ToUpper().Contains("CHECKADDRESS") ){
+            vars = Body.Split(':');
+            if (vars.Length<=0){
+                vaout = "";
+                vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                vaout += "<Response>";
+                vaout += "<Message>";
+                vaout += "Sorry we didnt get an address to chceck";
+                vaout += "</Message>";
+                vaout += "</Response>";
+                Response.ContentType="text/xml";
+                return  vaout;
+
+            }
+            string DeliveryAddress=vars[1];
+            using (var client = new HttpClient())
+                {
+                    try
+                    {
+                            var geocodeRequest="";
+                            geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=";
+                            geocodeRequest+=DeliveryAddress;
+                            //var identityTypes='&includeEntityTypes=Address,Neighborhood,PopulatedPlace,Postcode1,AdminDivision1,AdminDivision2,CountryRegion';
+                            //geocodeRequest+= identityTypes ;
+                            geocodeRequest+= "&includeNeighborhood=true";
+                            geocodeRequest+= "&jsonp=GeocodeCallbackGeo&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
+                           // CallRestService( encodeURI(geocodeRequest));
+
+
+                           
+                        client.BaseAddress = new Uri("https://dev.virtualearth.net");
+                        var response = await client.GetAsync($"/REST/v1/Locations?Query={DeliveryAddress}&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA&includeNeighborhood=true");
+                        response.EnsureSuccessStatusCode();
+                        var stringResult = await response.Content.ReadAsStringAsync();
+                        var  retLocation = JsonConvert.DeserializeObject<Core.Helpers.BingMapTypes.RootObject>(stringResult);
+                         Response.ContentType="text/plain";
+
+                           var   addressName=retLocation.resourceSets[0].resources[0].name;
+                           var   addressLat= retLocation.resourceSets[0].resources[0].point.coordinates[0];
+                           var   addressLon=  retLocation.resourceSets[0].resources[0].point.coordinates[1];
+                           var   formattedAddress= retLocation.resourceSets[0].resources[0].address.formattedAddress;
+                           var   postalCode=  retLocation.resourceSets[0].resources[0].address.postalCode;
+                           var   adminDistrict =retLocation.resourceSets[0].resources[0].address.adminDistrict;
+                           var   adminDistrict2 = retLocation.resourceSets[0].resources[0].address.adminDistrict2;
+                           var   countryRegion = retLocation.resourceSets[0].resources[0].address.countryRegion;
+                           var   locality = retLocation.resourceSets[0].resources[0].address.locality;
+                           var   neighbourhood = retLocation.resourceSets[0].resources[0].entityType[0];
+                           var   addressLine =retLocation.resourceSets[0].resources[0].address.addressLine;
+                               
+                            
+
+
+                           List<DeliveryArea> DeliveryAreas = _context.DeliveryAreas.Where(x=> x.Status>=0).ToList();
+                            Points dumbPoint =new Points();
+                            List<Points> newPoints = new List<Points>{
+                                dumbPoint
+                            };
+                            newPoints.RemoveAt(0);
+                            
+                            double valLat=0,valLon=0;
+                            char[]  delimiters = {')',','};
+                            int oddeven=0;
+                           foreach(var thisArea in DeliveryAreas){
+                              var  rectPoints=thisArea.Points.Replace("new Microsoft.Maps.Location", "").Split(delimiters);  
+                                foreach (var str in rectPoints){
+                                    
+                                    if (str!=""){
+                                        if (oddeven==0){
+                                            valLat=  Convert.ToDouble(str.Replace(" ","").Replace("(",""));
+                                            oddeven=1;
+                                        }else{
+                                            valLon=  Convert.ToDouble(str.Replace(" ","").Replace("(",""));
+                                            Points thisPoint =new Points();
+                                            thisPoint.latitude = valLat;
+                                            thisPoint.longitude =valLon;
+                                            newPoints.Add(thisPoint);
+                                            oddeven=0;
+
+                                        }
+                                    }
+                                }
+                                
+                                
+                                var headstr="";
+                                bool InDeliveryArea= pointInPolygon(newPoints,addressLat ,addressLon);
+                                newPoints.RemoveRange(0,newPoints.Count());
+                                    if(InDeliveryArea ){ 
+                                        headstr = $"All set you are in a delivery area "+ (char)10;
+                                    }else{
+                                        headstr= $"Sorry you are not in a delivery area."+ (char)10;
+                                     }
+                                    vaout = "";
+                                    vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                                    vaout += "<Response>";
+                                    vaout += "<Message>";
+                                    vaout+=headstr+(char)10+(char)10;
+                                    vaout += $"Lat:"+ addressLat + (char)10;
+                                    vaout += $"Lon:"+ addressLon + (char)10 +(char)10;
+                                    vaout += $"Address:"+ formattedAddress + (char)10;
+                                    // vaout += $"AddressName:"+ addressName + (char)10;
+                                    // vaout += $"addressLat:"+ addressLat + (char)10;
+                                    // vaout += $"addressLon:"+ addressLon + (char)10;
+                                    // vaout += $"formattedAddress:"+ formattedAddress + (char)10;
+                                    // vaout += $"postalCode:"+ postalCode + (char)10;
+                                    // vaout += $"adminDistrict:"+ adminDistrict + (char)10;
+                                    // vaout += $"adminDistrict2:"+ adminDistrict2 + (char)10;
+                                    // vaout += $"countryRegion:"+ countryRegion + (char)10;
+                                    // vaout += $"locality:"+ locality + (char)10;
+                                    // vaout += $"neighbourhood:"+ neighbourhood + (char)10;
+                                    // vaout += $"addressLine:"+ addressLine + (char)10;
+
+                                    vaout += "</Message>";
+                                    vaout += "</Response>";
+                                    Response.ContentType="text/xml";
+                                    if(InDeliveryArea ){ 
+                                        return vaout;
+                                    }
+                           }
+                           return vaout;
+                        
+                            
+                    }
+                    catch (HttpRequestException httpRequestException)
+                    {
+                        return httpRequestException.Message ;
+                    }
+                }
+
+
+
+
+
+
+
+
+                List<DeliveryArea> Das = _context.DeliveryAreas.ToList();
+                
+                foreach (var area in Das){
+                     
+                }
+
+
+            }
+            if (Body.ToUpper().Contains("SENDME") || Body.ToUpper().Contains("SEND ME")){
+                string[] orderItems = Body.Split(',');
+                if (orderItems.Length>0){
+                    if (orderItems[0].ToUpper().Contains("SENDME") || orderItems[0].ToUpper().Contains("SEND ME")){
+                        var firstItem=-1;
+                        int thisInventoryId=-1;
+                        if (orderItems[0].Length>0){
+                            if (orderItems[0].Substring( orderItems[0].ToUpper().LastIndexOf('E')+1).Length>0){
+                               firstItem=Int32.Parse(orderItems[0].Substring( orderItems[0].ToUpper().LastIndexOf('E')+1));
+                            }
+                        }
+                        orderItems[0]=firstItem.ToString();
+                        if (orderItems.Length>1){
+                            thisInventoryId = Int32.Parse(orderItems[1]);
+                        }
+                        
+                        if (thisInventoryId>=0 || firstItem>=0){
+                            ApplicationUser ThisUser = _context.Users.Where(z=> From.Contains(z.PhoneNumber)).First();
+                            if (ThisUser!=null){       
+                            List<Inventory>  InventoryByAreaVar = (from d in _context.Inventorys
+                                                        where orderItems.Contains(d.ID.ToString())
+                                                        select  d
+                                                        ).ToList();
+
+                                Order newOrder = new Order();  
+                                newOrder.PhoneNumber=From;	
+                                newOrder.AppUser=Guid.Parse(ThisUser.Id);
+                                newOrder.GUID=Guid.NewGuid();	
+                                newOrder.GeocodedAddress=ThisUser.DeliveryAddress;
+                                newOrder.OrderDate=DateTime.Now;
+                                newOrder.PaymentType=5;
+                                newOrder.Status=-1;
+                                newOrder.SpecialInstructions="";
+                                newOrder.Total=0;
+                                newOrder.DeliveryDate=DateTime.Now;
+                                decimal taxes = Convert.ToDecimal(1.13);
+                                decimal DeliveryCharge = Convert.ToDecimal(5);
+                                string item_code ="";
+                                foreach (var item in InventoryByAreaVar){
+                                    //  orderItemStr+= "ID " + item.ToString() + (char)10+(char)13;
+                                    string thisId=item.ID.ToString(); 
+                                    foreach (var orderIDs in orderItems){
+                                        if (orderIDs==thisId){
+                                            string orderItemStr= "" + (char)10 + item.Label + "@ $" +  item.Price.ToString();
+                                            newOrder.Details+=orderItemStr;
+                                            newOrder.Total+=Convert.ToDecimal(item.Price);
+                                        }
+                                    }
+                                }
+                                var testvar = (
+                                            from o in orderItems 
+                                            group o by o into g
+                                            orderby g.Count() descending
+                                            select g.Count() +"x" +g.Key
+                                        );
+                                foreach (var codevar in testvar){
+                                    item_code+=codevar;
+                                }        
+                                item_code+=",";//  To match the format of the other strings in there.
+                                newOrder.PhoneNumber=item_code;
+                                newOrder.Total=(newOrder.Total + DeliveryCharge)*taxes;
+                                _context.Add(newOrder);
+                                await _context.SaveChangesAsync();
+                                vaout = "";
+                                vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                                vaout += "<Response>";
+                                vaout += "<Message>";
+                                vaout += "The following items are ready for deliverey"+(char)10 + (char)10 + newOrder.Details + (char)10 + (char)10;
+                                vaout += "Going to:" +  newOrder.GeocodedAddress +(char)10 + (char)10 ;
+                                vaout += "The total after tax and delivery charges is $" + newOrder.Total + (char)10 + (char)10 ; 
+                                vaout += "Confirm by texting the following exactly as shown 'confirm " + newOrder.ID + "'";
+                                vaout += "</Message>";
+                                vaout += "</Response>";
+                                Response.ContentType="text/xml";
+                                return  vaout;
+                            }
+                        }
+                    }    
+                    //Something went wrong got sendme but didnt parse properly   
+                    vaout = "";
+                    vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                    vaout += "<Response>";
+                    vaout += "<Message>";
+                    vaout += "Sorry Something went wrong with your order please use the folowwing format:  'sendme,3,3,1' where you want to order 2 of item 3, ";
+                    vaout += "and 1 of item 1. Delivered to your home address. " + (char)10 + (char)10 +" To see the menu text 'order'";
+                    vaout += "</Message>";
+                    vaout += "</Response>";
+                    Response.ContentType="text/xml";
+                     return  vaout;
+                }
+                 
+                
+                
+            }else if (Body.ToUpper()!=("ORDER")){
 
                 vaout = "";
                 vaout += "<?xml version='1.0' encoding='UTF-8'?>";
-                vaout+="<Response>";
-                vaout+="<Message>";
-                vaout+="UberDuber Delivery." + (char) 10 + (char) + 13 + "If you would like to order- reply 'order' or text 'order' to 647-799-2699." + (char) 10 + (char) + 13 + "Use 416-802-8129 to get an UberDuber representative.  Thanks";
-                vaout+="</Message>";
-                vaout+="</Response>";
+                vaout += "<Response>";
+                vaout += "<Message>";
+                vaout += "UberDuber Delivery." + (char)10 + (char)13 + "If you would like a delivery reply 'order'" + (char)10;
+                vaout +=  "Use 416-802-8129 to voice order Thanks";
+                vaout += "</Message>";
+                vaout += "</Response>";
                 Response.ContentType="text/xml";
+                return  vaout;
             }else{
-               ApplicationUser ThisUser = _context.Users.Where(z=> From.Contains(z.PhoneNumber)).First();
-               if (ThisUser==null)
-                {
+               ApplicationUser ThisUser = _context.Users.Where(z=> From.Contains(z.PhoneNumber)).FirstOrDefault();
+               
+               
+               if (ThisUser==null){
                         vaout = "";
                         vaout += "<?xml version='1.0' encoding='UTF-8'?>";
                         vaout+="<Response>";
                         vaout+="<Message>";
-                        vaout+="Hi " + From  + " We just have a few questions to get your order together.  First what's your name?  Please type all replys on a single line";
+                        vaout+="Hi " + From  + (char)10 + "We just have a few questions to get your order together.  First lets check your address. " + (char)10 + "Please text your delivery address like this 'CheckAddress:123 yonge st. Toronto, Ontario, M5W5H6.";
                         vaout+="</Message>";
                         vaout+="</Response>";
                         Response.ContentType="text/xml";
+                        return vaout;
                 }else{
                         int userDA=ThisUser.DeliveryAreaId;
                         string menuStr = ""  ;
@@ -114,42 +614,43 @@ namespace Core.Controllers
                         //vaout+="To select your items enter the format quantity1xID1,quantity2xID2... eg 3x1,1x6  means 3 x item1 and 1 x item6 from the fllowing menu.  We will confirm your order";
                         vaout+="The following items are available in your area right now"  + (char)10 +  (char)13 ;
                         vaout+=menuStr;
-                        vaout+=  (char)10 +"To order items text 'sendme,' followed by the item Id's you want seperated by commas " + (char)10 + "Example text 'sendme,3,3,1'  means 2 x item3 1 x item1";
+                        vaout+=  (char)10 +"To order items text 'sendme,' followed by the item Id's you want seperated by commas " + (char)10 + "Example text 'send me3,3,1'  means 2 x item3 1 x item1";
 
                         vaout+="</Message>";
-                        vaout+="<Redirect>";
-                        urlString+= "SmsOut?From='" + From + "'";
-                        urlString+= "&To='" + From + "'";
-                        urlString+= "&Body='" + Body + "'";
-                        urlString+= "&AccountSid='" + AccountSid + "'";
-                        urlString+= "&FromCity='" + FromCity + "'";
-                        urlString+= "&FromCountry='" + FromCountry + "'";
-                        urlString+= "&FromState='" + FromState + "'";
-                        urlString+= "&FromZip='" + FromZip + "'";
-                        urlString+= "&ToCity='" + ToCity + "'";
-                        urlString+= "&ToCountry='" + ToCountry + "'";
-                        urlString+= "&ToState='" + ToState + "'";
-                        urlString+= "&ToZip='" + ToZip + "'";
-                        urlString+= "&SmsStatus='" + SmsStatus + "'";
-                        urlString+= "&SMsMessageSid='" + SMsMessageSid + "'";
-                        urlString+= "&SmsSid='" + SmsSid + "'";
-                        urlString+= "&ApiVersion='" + ApiVersion + "'";
-                        urlString+= "&NewData='" + Body + "'";
+                        //vaout+="<Redirect>";
+                        // urlString+= "SmsOut?From='" + From + "'";
+                        // urlString+= "&To='" + From + "'";
+                        // urlString+= "&Body='" + Body + "'";
+                        // urlString+= "&AccountSid='" + AccountSid + "'";
+                        // urlString+= "&FromCity='" + FromCity + "'";
+                        // urlString+= "&FromCountry='" + FromCountry + "'";
+                        // urlString+= "&FromState='" + FromState + "'";
+                        // urlString+= "&FromZip='" + FromZip + "'";
+                        // urlString+= "&ToCity='" + ToCity + "'";
+                        // urlString+= "&ToCountry='" + ToCountry + "'";
+                        // urlString+= "&ToState='" + ToState + "'";
+                        // urlString+= "&ToZip='" + ToZip + "'";
+                        // urlString+= "&SmsStatus='" + SmsStatus + "'";
+                        // urlString+= "&SMsMessageSid='" + SMsMessageSid + "'";
+                        // urlString+= "&SmsSid='" + SmsSid + "'";
+                        // urlString+= "&ApiVersion='" + ApiVersion + "'";
+                        // urlString+= "&NewData='" + Body + "'";
 
-                        urlString+= "&Email='" + Email + "'";
-                        urlString+= "&Name='" + Name + "'";
-                        urlString+= "&Password='" + Password + "'";
-                        urlString+= "&SpecialInstructions='" + SpecialInstructions + "'";
-                        urlString+= "&OrderDetails='" + OrderDetails + "'";
-                        urlString+= "&DeliveryAddress='" + DeliveryAddress + "'";
-                        urlString+= "&Total='" + Total + "'";
+                        // urlString+= "&Email='" + Email + "'";
+                        // urlString+= "&Name='" + Name + "'";
+                        // urlString+= "&Password='" + Password + "'";
+                        // urlString+= "&SpecialInstructions='" + SpecialInstructions + "'";
+                        // urlString+= "&OrderDetails='" + OrderDetails + "'";
+                        // urlString+= "&DeliveryAddress='" + DeliveryAddress + "'";
+                        // urlString+= "&Total='" + Total + "'";
                     
-                        vaout+=Uri.EscapeDataString(urlString);
+                        //vaout+=Uri.EscapeDataString(urlString);
                         //vaout+=urlString;
-                        vaout+="</Redirect>";
+                        //vaout+="</Redirect>";
                         //vaout+="</Message>";
                         vaout+="</Response>";
                         Response.ContentType="text/xml";
+                         return  vaout;
                 }
             } 
             return  vaout;
@@ -216,5 +717,32 @@ namespace Core.Controllers
             return vaout;
         }
 
+
+        private class Points{
+            public  Double latitude {get;set;} 
+            public  Double longitude {get;set;}
+        }
+        private bool pointInPolygon(List<Points> points,double lat ,double lon) {
+            var i=0;
+            var j=points.Count()-1;
+            var inPoly=false;
+
+            for (i=0; i<points.Count(); i++) 
+            {
+                if (points[i].longitude<lon && points[j].longitude>=lon 
+                || points[j].longitude<lon && points[i].longitude>=lon) 
+                {
+                if (points[i].latitude+(lon-points[i].longitude)/ 
+                    (points[j].longitude-points[i].longitude)*(points[j].latitude 
+                    -points[i].latitude)<lat) 
+                {
+                    inPoly=!inPoly; 
+                }
+                }
+                j=i; 
+            }
+            return inPoly; 
+        }
     }
 }
+

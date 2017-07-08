@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Http;
 
+using Microsoft.AspNetCore.Mvc.Formatters.Json;
 namespace Core
 {
     public class Startup
@@ -121,11 +122,14 @@ namespace Core
                         {
                             options.SslPort = 443;
                             //options.Filters.Add(new RequireHttpsAttribute());
+                            options.Filters.Add(new ProducesAttribute("application/xml"));
+                            //options.OutputFormatters.Add(new JsonDataContractSerializer());
                         }
                     ).AddJsonOptions(options =>
                             {
                                 options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                             }
+                            
                     );
             }
           

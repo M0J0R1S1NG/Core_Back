@@ -11,7 +11,7 @@ simpleCart({
         { attr: "quantity", label: "Qty"},
         //{ view: "increment", label: false},
         { view: "currency", attr: "total", label: "SubTotal" },
-        { view: "", attr: "id" , label: false } 
+        {view:"number", attr: "invid" , label: false } 
     ],
     // "div" or "table" - builds the cart as a
     // table or collection of divs

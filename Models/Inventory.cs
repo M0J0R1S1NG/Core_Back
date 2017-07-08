@@ -10,36 +10,43 @@ namespace Core.Models
     {
         public int ID { get; set; }
  
- [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
         public string Label { get; set; }
-[DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
-
+        
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
         public string Description { get; set; }
+
         public int Status { get; set; }
         public bool OnHand { get; set; }
- [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy}")]
-         public DateTime BestBefore { get; set; }
-  [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy}")]
-         public DateTime OrderDate { get; set; }
+        
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy}")]
+        public DateTime BestBefore { get; set; }
+        
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:dddd, MMMM dd, yyyy}")]
+        public DateTime OrderDate { get; set; }
          
         public double Quantity { get; set; }
+
         [DisplayFormat(DataFormatString="{0:C}")]
         public double Price { get; set; }
+
         [DisplayFormat(DataFormatString="{0:C}")]
         public double Cost { get; set; }
-[DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
-
+        
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
         public string Supplier { get; set; }
-[DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
-
+        
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
         public string Notes { get; set; }
         public Byte[] Photo { get; set; }
+        
         [DisplayFormat(DataFormatString="{0}%")]
         public double THCContent { get; set; }
+        
         [DisplayFormat(DataFormatString="{0}%")]
-
         public double CBDContent { get; set; }
         public int Likes { get; set; }
+        
         [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[Null]")]
         public string ImageFilePath {get;set;}
         [DisplayFormat(DataFormatString="{0:C}")]
