@@ -172,63 +172,6 @@ namespace Core.Controllers
                         string time_stamp=DateTime.Now.ToString();
                         
 
-                    buildStr= "{" ;
-                    buildStr += "'identifier':'" +  identifier + "',";
-                    buildStr += "'website_unique_id:'" +  website_unique_id + "',";
-                    buildStr += "'return_url:'" +  return_url + "',";
-                    buildStr += "'transaction_date:'" +  transaction_date + "',";
-                    buildStr += "'language:'" +  language + "',";
-                    buildStr += "'first_name:'" +  first_name + "',";
-                    buildStr += "'last_name:'" +  last_name + "',";
-                    buildStr += "'address:'" +  address + "',";
-                    buildStr += "'city:'" +  city + "',";
-                    buildStr += "'state_or_province:'" +  state_or_province + "',";
-                    buildStr += "'zip_or_postal_code:'" +  zip_or_postal_code + "',";
-                    buildStr += "'shipping_state_or_province:'" +  email + "',";
-                    buildStr += "'phone:'" +  phone + "',";
-                    buildStr += "'shipping_address:'" +  shipping_address + "',";
-                    buildStr += "'shipping_city:'" +  shipping_city + "',";
-                    buildStr += "'shipping_state_or_province:'" +  shipping_state_or_province + "',";
-                    buildStr += "'shipping_zip_or_postal_code:'" +  shipping_zip_or_postal_code + "',";
-                    buildStr += "'shipping_country:'" +  shipping_country + "',";
-                    buildStr += "'item_name:'" +  item_name + "',";
-                    buildStr += "'amount:'" +  amount + "',";
-                    buildStr += "'quantity:'" +  quantity + "',";
-                    buildStr += "'item_code:'" +  item_code + "',";
-                    buildStr += "'custom:'" +  custom + "',";
-                    buildStr += "'shipment:'" +  shipment + "',";
-                    buildStr += "'merchant_transaction_id:'" +  merchant_transaction_id + "',";                          
-                    buildStr += "'status:'" +  status + "',";
-                    buildStr += "'time_stamp:'" +  time_stamp + "',";
-                    buildStr += "}";
-                     string buildStr2="";                    
-                    buildStr2 += "identifier='" +  identifier + "'";
-                    buildStr2 += "&website_unique_id='" +  website_unique_id + "'";
-                    buildStr2 += "&return_url='" +  return_url + "'";
-                    buildStr2 += "&transaction_date='" +  transaction_date + "'";
-                    buildStr2 += "&language='" +  language + "'";
-                    buildStr2 += "&first_name='" +  first_name + "'";
-                    buildStr2 += "&last_name='" +  last_name + "'";
-                    buildStr2 += "&address='" +  address + "'";
-                    buildStr2 += "&city='" +  city + "'";
-                    buildStr2 += "&state_or_province='" +  state_or_province + "'";
-                    buildStr2 += "&zip_or_postal_code='" +  zip_or_postal_code + "'";
-                    buildStr2 += "&shipping_state_or_province='" +  email + "'";
-                    buildStr2 += "&phone='" +  phone + "'";
-                    buildStr2 += "&shipping_address='" +  shipping_address + "'";
-                    buildStr2 += "&shipping_city='" +  shipping_city + "'";
-                    buildStr2 += "&shipping_state_or_province='" +  shipping_state_or_province + "'";
-                    buildStr2 += "&shipping_zip_or_postal_code='" +  shipping_zip_or_postal_code + "'";
-                    buildStr2 += "&shipping_country='" +  shipping_country + "'";
-                    buildStr2 += "&item_name='" +  item_name + "'";
-                    buildStr2 += "&amount='" +  amount + "'";
-                    buildStr2 += "&quantity='" +  quantity + "'";
-                    buildStr2 += "&item_code='" +  item_code + "'";
-                    buildStr2 += "&custom='" +  custom + "'";
-                    buildStr2 += "&shipment='" +  shipment + "'";
-                    buildStr2 += "&merchant_transaction_id='" +  merchant_transaction_id + "'";                          
-                    buildStr2 += "&status='" +  status + "'";
-                    buildStr2 += "&time_stamp='" +  time_stamp + "'";
  string buildStr3="";                    
                     buildStr3 += "identifier=" +  identifier ;
                     buildStr3 += "&website_unique_id=" +  website_unique_id ;
@@ -260,34 +203,7 @@ namespace Core.Controllers
 
 
 
-                        var DebitWayVars = new DebitWay();
-                        DebitWayVars.identifier="";
-                        DebitWayVars.website_unique_id="";
-                        DebitWayVars.return_url="";
-                        DebitWayVars.transaction_date=DateTime.Now.ToString();
-                        DebitWayVars.language="en";
-                        DebitWayVars.first_name=thisUser.FirstName;
-                        DebitWayVars.last_name=thisUser.LastName;
-                        DebitWayVars.address=thisUser.StreetName;
-                        DebitWayVars.city=thisUser.City;
-                        DebitWayVars.email=thisUser.Email;
-                        DebitWayVars.state_or_province=thisUser.Province;
-                        DebitWayVars.zip_or_postal_code=thisUser.PostalCode;
-                        DebitWayVars.phone=thisUser.PhoneNumber;
-                        DebitWayVars.shipping_address=thisUser.DeliveryAddress;
-                        DebitWayVars.shipping_city=thisUser.City;
-                        DebitWayVars.shipping_state_or_province=thisUser.Province;
-                        DebitWayVars.shipping_zip_or_postal_code=thisUser.PostalCode;
-                        DebitWayVars.shipping_country=thisUser.Country;
-                        DebitWayVars.item_name=thisOrder.Details;
-                        DebitWayVars.amount=Convert.ToDouble(thisOrder.Total);
-                        DebitWayVars.quantity=0;
-                        DebitWayVars.item_code=thisOrder.PhoneNumber;
-                        DebitWayVars.custom="";
-                        DebitWayVars.shipment="yes";
-                        DebitWayVars.merchant_transaction_id=thisOrder.GUID.ToString();                          
-                        DebitWayVars.status="cash";    //cash interca credit paypal SMSCash=5
-                        DebitWayVars.time_stamp=DateTime.Now;
+
 
 
 
@@ -310,7 +226,7 @@ namespace Core.Controllers
                         //HttpContent content;
                         //Response.ContentType= "application/x-www-form-urlencoded";
                         
-                        var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
+                        //var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
                         var getStr=Uri.EscapeUriString($"{hostStr}/DebitWay/Create?{buildStr3}");
                         var response = await client.GetAsync(getStr);
                         response.EnsureSuccessStatusCode();
@@ -328,9 +244,9 @@ namespace Core.Controllers
             
             
             
-            if (Body.ToUpper().Contains("CHECKADDRESS") ){
+            if (Body.ToUpper().Contains("ADDRESS:") ){
             vars = Body.Split(':');
-            if (vars.Length<=0){
+            if (vars.Length<=1){
                 vaout = "";
                 vaout += "<?xml version='1.0' encoding='UTF-8'?>";
                 vaout += "<Response>";
@@ -438,7 +354,36 @@ namespace Core.Controllers
                                     // vaout += $"locality:"+ locality + (char)10;
                                     // vaout += $"neighbourhood:"+ neighbourhood + (char)10;
                                     // vaout += $"addressLine:"+ addressLine + (char)10;
+                        //vaout+="<Redirect>";
+                        // urlString+= "SmsOut?From='" + From + "'";
+                        // urlString+= "&To='" + From + "'";
+                        // urlString+= "&Body='" + Body + "'";
+                        // urlString+= "&AccountSid='" + AccountSid + "'";
+                        // urlString+= "&FromCity='" + FromCity + "'";
+                        // urlString+= "&FromCountry='" + FromCountry + "'";
+                        // urlString+= "&FromState='" + FromState + "'";
+                        // urlString+= "&FromZip='" + FromZip + "'";
+                        // urlString+= "&ToCity='" + ToCity + "'";
+                        // urlString+= "&ToCountry='" + ToCountry + "'";
+                        // urlString+= "&ToState='" + ToState + "'";
+                        // urlString+= "&ToZip='" + ToZip + "'";
+                        // urlString+= "&SmsStatus='" + SmsStatus + "'";
+                        // urlString+= "&SMsMessageSid='" + SMsMessageSid + "'";
+                        // urlString+= "&SmsSid='" + SmsSid + "'";
+                        // urlString+= "&ApiVersion='" + ApiVersion + "'";
+                        // urlString+= "&NewData='" + Body + "'";
 
+                        // urlString+= "&Email='" + Email + "'";
+                        // urlString+= "&Name='" + Name + "'";
+                        // urlString+= "&Password='" + Password + "'";
+                        // urlString+= "&SpecialInstructions='" + SpecialInstructions + "'";
+                        // urlString+= "&OrderDetails='" + OrderDetails + "'";
+                        // urlString+= "&DeliveryAddress='" + DeliveryAddress + "'";
+                        // urlString+= "&Total='" + Total + "'";
+                    
+                        //vaout+=Uri.EscapeDataString(urlString);
+                        //vaout+=urlString;
+                        //vaout+="</Redirect>";
                                     vaout += "</Message>";
                                     vaout += "</Response>";
                                     Response.ContentType="text/xml";
@@ -498,7 +443,6 @@ namespace Core.Controllers
                                                         ).ToList();
 
                                 Order newOrder = new Order();  
-                                newOrder.PhoneNumber=From;	
                                 newOrder.AppUser=Guid.Parse(ThisUser.Id);
                                 newOrder.GUID=Guid.NewGuid();	
                                 newOrder.GeocodedAddress=ThisUser.DeliveryAddress;
@@ -587,7 +531,7 @@ namespace Core.Controllers
                         vaout += "<?xml version='1.0' encoding='UTF-8'?>";
                         vaout+="<Response>";
                         vaout+="<Message>";
-                        vaout+="Hi " + From  + (char)10 + "We just have a few questions to get your order together.  First lets check your address. " + (char)10 + "Please text your delivery address like this 'CheckAddress:123 yonge st. Toronto, Ontario, M5W5H6.";
+                        vaout+="Hi " + From  + (char)10 + "We could not find your sms number in our database.  If you want to register for a delivery we have a quick few questions to get your order on its way."+ (char)10 +(char)10+ "  First lets check your address. " + (char)10 + "Please text your delivery address like this 'Address:123 yonge st. Toronto, Ontario, M5W5H6.";
                         vaout+="</Message>";
                         vaout+="</Response>";
                         Response.ContentType="text/xml";
@@ -714,13 +658,19 @@ namespace Core.Controllers
             Response.ContentType="text/plain";
             return vaout;
         }
-         public async Task<string> SMS_Voice_Reply()
+         public async Task<string> SMS_Voice_Reply(string From ,string Body ,string AccountSid,string FromCity,
+                                                string FromCountry,string FromState,string FromZip,string ToCity,
+                                                string ToCountry,string ToState,string ToZip,string SmsStatus,
+                                                string To,string SMsMessageSid,string SmsSid,string ApiVersion,
+                                                string NewData="",string Email="",string Name="",string Password="",
+                                                string SpecialInstructions="",string OrderDetails="",string DeliveryAddress="",string Total="" 
+                                                )
         {
             string vaout = "";
             vaout += "<?xml version='1.0' encoding='UTF-8'?>";
             vaout+="<Response>";
             vaout+="<Sms>";
-            vaout+="This sms number if for outgoing messages only.  You can call or text 416-802-8129 to get in touch with UberDuber Delivery Services.  Thanks";
+            vaout+="This sms number is for SMS ordering and outgoing notifications only.  Please text the 'word' order to this number " + To + " for instructionsor.  Or call 416-802-8129 to get in touch with UberDuber Order Desk.  Thanks";
             vaout+="</Sms>";
             vaout+="</Response>";
 

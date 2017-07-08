@@ -236,11 +236,11 @@ namespace Core.Controllers
                      NoShowOrderLink += "&code=" + thisOrder.AppUser+ (char)10 + (char)13;
                     DriverSMS+= acceptOrderLink+ (char)10 + (char)13 + NoShowOrderLink;
 
-                    var item_codeSplit=thisOrder.PhoneNumber.Split(',');
-                    var OrderCustomerPhone = item_codeSplit[0];
+                    // var item_codeSplit=thisOrder.PhoneNumber.Split(',');
+                    // var OrderCustomerPhone = item_codeSplit[0];
                     
 
-                    await _smsSender.SendSmsAsync(OrderCustomerPhone, smsmessage);
+                    await _smsSender.SendSmsAsync(user.PhoneNumber, smsmessage);
                     await _smsSender.SendSmsAsync(thisDriver.PhoneNumber, DriverSMS);
 
 

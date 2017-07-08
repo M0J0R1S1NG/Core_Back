@@ -113,17 +113,17 @@ namespace Core.Controllers
                    
                 }
                 string[] customString = debitWay.custom.Split(',');
-               customString.ToList().Add("hjsdkah");                
-               int numvars=customString.Length;
+                customString.ToList().Add("hjsdkah");                
+                int numvars=customString.Length;
                 int numDrivers = (numvars-3)/2;
 
                 string userId=customString[0].Trim();
                 string SpecialInstructions=customString[1];
                 string newPartnerId=customString[2];
-               string[]  thisOrdersSMS = new string[numDrivers];
+                string[]  thisOrdersSMS = new string[numDrivers];
                 string[]  thisOrdersDriverIds = new string[numDrivers]; 
-               List<string> newSMSNumbers;
-               List<string> newDriversIds;
+                List<string> newSMSNumbers;
+                List<string> newDriversIds;
                
                if (numDrivers>1){
                     for (var j=0;j <=numDrivers-1; j++ ){
@@ -148,7 +148,7 @@ namespace Core.Controllers
                 thisOrder.Status=2;
                 thisOrder.CustomerId = Int32.Parse(newPartnerId);//put partnerId in here
                 //thisOrder.DriverId=Int32.Parse(thisDriver);//fill in 
-                thisOrder.PhoneNumber=await _userManager.GetPhoneNumberAsync(user); //+ "," +  newSMSNumber;
+                //thisOrder.PhoneNumber=await _userManager.GetPhoneNumberAsync(user); //+ "," +  newSMSNumber;
                 var thisOrderDeliveryFlatFee=thisOrder.Weight;
                 _context.Update(thisOrder);
                 await _context.SaveChangesAsync();
@@ -217,6 +217,7 @@ namespace Core.Controllers
                             newBalance.LastChangeDate=DateTime.Now;
                             _context.Update(thisInventory);
                              _context.Add(newBalance);
+                             //_context.Update(newBalance);
                             await  _context.SaveChangesAsync();     
                 }
                
