@@ -76,7 +76,7 @@ namespace Core.Controllers
             string buildStr = "";
             
             
-             string[] vars;
+            string[] vars;
             if (Body.ToUpper().Contains("CONFIRM") ){
                 vars= Body.Split(' ');
                 if (vars.Length<=0){
@@ -84,7 +84,7 @@ namespace Core.Controllers
                     vaout += "<?xml version='1.0' encoding='UTF-8'?>";
                     vaout += "<Response>";
                     vaout += "<Message>";
-                    vaout += "Sorry we didnt get a propery formated confirmation code please try again enter your text reply exactly like this 'confirm code#'  using the code from the previous text message";
+                    vaout += "Sorry the text you sent back:"+ Body  +" could not be parsed properly.  Please enter your text reply exactly like this 'Confirm  code#'. Use the code we sent after you submitted 'sendme'. If you cant find your confirmation code. Restart by texting 'order'";
                     vaout += "</Message>";
                     vaout += "</Response>";
                     Response.ContentType="text/xml";
@@ -137,7 +137,7 @@ namespace Core.Controllers
                     vaout += "<?xml version='1.0' encoding='UTF-8'?>";
                     vaout += "<Response>";
                     vaout += "<Message>";
-                    vaout += "Sorry we couldnt find this order Id. Please try again. Enter your text reply exactly like this 'confirm code#'.  If you cant find your confirmation code. Restart by texting 'order'";
+                    vaout += "Sorry we couldnt find this order Id: "+orderId +" in the system. Please try again. Enter your text reply exactly like this 'Confirm code#'.  If you cant find your confirmation code. Restart by texting 'order'";
                     vaout += "</Message>";
                     vaout += "</Response>";
                     Response.ContentType="text/xml";
@@ -471,6 +471,7 @@ namespace Core.Controllers
 
 
             }
+            Body=Body.Replace(" ","");
             if (Body.ToUpper().Contains("SENDME") || Body.ToUpper().Contains("SEND ME")){
                 string[] orderItems = Body.Split(',');
                 if (orderItems.Length>0){
@@ -488,7 +489,8 @@ namespace Core.Controllers
                         }
                         
                         if (thisInventoryId>=0 || firstItem>=0){
-                            ApplicationUser ThisUser = _context.Users.Where(z=> From.Contains(z.PhoneNumber)).First();
+                            //ApplicationUser ThisUser = _context.Users.Where(z=> From.Contains(z.PhoneNumber)).First();
+                             ApplicationUser ThisUser = _context.Users.Where(z=> From.Contains(z.PhoneNumber)).FirstOrDefault();
                             if (ThisUser!=null){       
                             List<Inventory>  InventoryByAreaVar = (from d in _context.Inventorys
                                                         where orderItems.Contains(d.ID.ToString())
@@ -527,9 +529,9 @@ namespace Core.Controllers
                                             select g.Count() +"x" +g.Key
                                         );
                                 foreach (var codevar in testvar){
-                                    item_code+=","+codevar;
+                                    item_code+=codevar+",";
                                 }        
-                                item_code+=",";//  To match the format of the other strings in there.
+                                
                                 newOrder.PhoneNumber=item_code;
                                 newOrder.Total=(newOrder.Total + DeliveryCharge)*taxes;
                                 _context.Add(newOrder);
