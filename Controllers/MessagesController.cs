@@ -91,7 +91,7 @@ namespace Core.Controllers
                     return  vaout;
                 }
                 int orderId=Int32.Parse(vars[1]);
-
+               
                 Order thisOrder=_context.Orders.Where(x=> x.ID==orderId).Single();
                 ApplicationUser thisUser = _context.Users.Where(x=> x.Id==thisOrder.AppUser.ToString()).Single();
                 var driversbyAreaPartner =
@@ -102,7 +102,7 @@ namespace Core.Controllers
                     join b in  _context.Drivers on p.Id equals  b.PartnerId
                     join u in  _context.ApplicationUser on b.UserGuid.ToString() equals u.Id
                     //where u.FirstName=="AndrewUser" 
-                    where ed.ID==5
+                    where ed.ID==thisUser.DeliveryAreaId
                     select new
                     {
                         Driver=ed.ID,
@@ -117,15 +117,18 @@ namespace Core.Controllers
                         p.Id
                         
                     };
+
                     int d=0;
                     string DriverIdStr="";
                     string SMSStr="";
                     int thisPartnerId=-1;
+                     var DeliveryAreaName="";
                     foreach (var thisDriver in driversbyAreaPartner) {
                          d+=1;
                               DriverIdStr+="DriverId"+d+":"+thisDriver.DriverId+",";
                               SMSStr+="SMS"+d+":"+thisDriver.DriverNumber+",";
                               thisPartnerId=thisDriver.Id;
+                              DeliveryAreaName=thisDriver.DeliveryArea;
                     }
                         string SpecialInstructionsStr=thisUser.StreetName  + thisUser.UnitNumber;
                             DriverIdStr=DriverIdStr.TrimEnd(',');
@@ -137,7 +140,7 @@ namespace Core.Controllers
                     vaout += "<?xml version='1.0' encoding='UTF-8'?>";
                     vaout += "<Response>";
                     vaout += "<Message>";
-                    vaout += "Sorry we couldnt find this order Id: "+orderId +" in the system. Please try again. Enter your text reply exactly like this 'Confirm code#'.  If you cant find your confirmation code. Restart by texting 'order'";
+                    vaout += "Sorry we couldnt find order: "+orderId +" in the system. Please try again. Enter your text reply exactly like this 'Confirm code#'.  If you cant find your confirmation code. Restart by texting 'order'";
                     vaout += "</Message>";
                     vaout += "</Response>";
                     Response.ContentType="text/xml";
@@ -231,8 +234,19 @@ namespace Core.Controllers
                         var response = await client.GetAsync(getStr);
                         response.EnsureSuccessStatusCode();
                         var stringResult = await response.Content.ReadAsStringAsync();
-                        var  retLocation = JsonConvert.DeserializeObject<DebitWay>(stringResult);
-                         Response.ContentType="text/plain";
+                        
+                        //var  retLocation = JsonConvert.DeserializeObject<DebitWay>(stringResult);
+                        vaout = "";
+                        vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                        vaout += "<Response>";
+                        vaout += "<Message>";
+                        vaout += "Thank You " + thisUser.FirstName + ". Your order is being processed.  You will be notified when your local delivery area: " + DeliveryAreaName + " gets the order and again when its been dispatched to a driver.";
+                        vaout += "</Message>";
+                        vaout += "</Response>";
+                        Response.ContentType="text/xml";
+                        return  vaout;
+
+                         
                  } 
                     catch (HttpRequestException httpRequestException)
                     {

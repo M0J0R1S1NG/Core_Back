@@ -90,7 +90,7 @@ namespace Core.Controllers
              var inventorys = InventoryByAreaVar.OrderBy(c => c.DeliveryAreaName).Select(x => new {Id = x.InventoryId, Value = x.Label + " : " + x.DeliveryAreaName});
             ViewBag.inventorys = new SelectList(inventorys, "Id", "Value");
             
-            
+            return View(_context.DriverBalances.ToList());
             return View(ThisDriverBalances);
           
         }
