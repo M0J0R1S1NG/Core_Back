@@ -168,7 +168,7 @@ namespace Core.Controllers
                         string custom=customStr;
                         string shipment="yes";
                         string merchant_transaction_id=thisOrder.GUID.ToString();                          
-                        string status="cash";    //cash interca credit paypal SMSCash=5
+                        string status="sms";    //cash interca credit paypal SMSCash=5
                         string time_stamp=DateTime.Now.ToString();
                         
 
@@ -297,7 +297,7 @@ namespace Core.Controllers
                     try
                     {
                         string hostStr="";
-                        //var geocodeRequest="";
+                        var geocodeRequest="";
                         if (Environment.GetEnvironmentVariable("DEVHOST")==null){
                             hostStr="Https://" + Request.Host;
                         }else{
@@ -306,27 +306,17 @@ namespace Core.Controllers
                              
 
 
-                        //geocodeRequest = hostStr + "/REST/v1/Locations?query=";
+                        geocodeRequest = hostStr + "/REST/v1/Locations?query=";
                         //HttpContent content;
                         //Response.ContentType= "application/x-www-form-urlencoded";
                         
-                        //var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
+                        var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
                         var getStr=Uri.EscapeUriString($"{hostStr}/DebitWay/Create?{buildStr3}");
-                        //var response = await client.GetAsync(getStr);
-                        //response.EnsureSuccessStatusCode();
-                        //var stringResult = await response.Content.ReadAsStringAsync();
-                        //var  retLocation = JsonConvert.DeserializeObject<DebitWay>(stringResult);
-                        Response.ContentType="text/plain";
-                         vaout = "";
-                        vaout += "<?xml version='1.0' encoding='UTF-8'?>";
-                        vaout += "<Response>";
-                        vaout += "<Message>";
-                        vaout += "UberDuber Delivery.  Thank You!.  Your order has been submitted.  You will get auto confirmation messages when your order is boxed and again when its been dispatched.  If you like our products and services please tell your friends.";
-                        vaout += "</Message>";
-                        vaout += "</Response>";
-                        Response.ContentType="text/xml";
-                        return  vaout;
-                        //return "UberDuber Delivery.  Thank You!.  Your order has been submitted.  You will get auto confirmation messages when your order is boxed and again when its been dispatched.  If you like our products and services please tell your friends.";
+                        var response = await client.GetAsync(getStr);
+                        response.EnsureSuccessStatusCode();
+                        var stringResult = await response.Content.ReadAsStringAsync();
+                        var  retLocation = JsonConvert.DeserializeObject<DebitWay>(stringResult);
+                         Response.ContentType="text/plain";
                  } 
                     catch (HttpRequestException httpRequestException)
                     {
@@ -537,7 +527,7 @@ namespace Core.Controllers
                                             select g.Count() +"x" +g.Key
                                         );
                                 foreach (var codevar in testvar){
-                                    item_code+=codevar;
+                                    item_code+=","+codevar;
                                 }        
                                 item_code+=",";//  To match the format of the other strings in there.
                                 newOrder.PhoneNumber=item_code;

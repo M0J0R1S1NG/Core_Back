@@ -95,7 +95,7 @@ namespace Core.Controllers
                 string acceptUrl="";
                 acceptUrl="Https://" + Request.Host;
                 debitWay.transaction_date_datetime=DateTime.Now;
-                if (debitWay.status=="cash"){
+                if (debitWay.status=="cash" || debitWay.status=="sms"){
                     debitWay.transaction_result="success";
                     debitWay.transaction_type=debitWay.status;
                 }else if (debitWay.status=="paypal"){
@@ -216,19 +216,22 @@ namespace Core.Controllers
                             newBalance.LastChangeBy=userId;
                             newBalance.LastChangeDate=DateTime.Now;
                             _context.Update(thisInventory);
-                            await _context.AddAsync(newBalance);
+                             _context.Add(newBalance);
                             await  _context.SaveChangesAsync();     
                 }
                
                 
 
-
+                if (debitWay.status=="sms"){
+                    return Ok();
+                }
                 if (debitWay.transaction_result!="success"){
                     ViewData["message"]="Failed Transaction";
 
                     return RedirectToAction("forsale","Inventorys");
 
                 }
+                
                 return RedirectToAction("Index","orders");
             }
             return View(debitWay);
