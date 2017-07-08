@@ -136,7 +136,7 @@ namespace Core.Controllers
 
                     {
 
-                        return RedirectToAction("index","shopping");
+                        return View();
 
                     } 
 
@@ -160,14 +160,7 @@ namespace Core.Controllers
 
         {   var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            if (!await _userManager.IsPhoneNumberConfirmedAsync(user))
-
-                    {
-
-                        return RedirectToAction("index","Shopping");
-
-                    } 
-
+           
             if (ModelState.IsValid)
 
             {   //addnewrecord

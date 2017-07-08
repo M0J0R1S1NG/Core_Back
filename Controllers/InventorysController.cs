@@ -51,7 +51,7 @@ namespace Core.Controllers
         
         [Authorize]
         [HttpGet]
-        [AllowAnonymous]
+        
         public async Task<IActionResult> ForSale()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);

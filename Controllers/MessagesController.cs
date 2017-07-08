@@ -296,13 +296,21 @@ namespace Core.Controllers
                 {
                     try
                     {
+                        string hostStr="";
                         var geocodeRequest="";
-                        string hostStr="Http://" + Request.Host;
-                        geocodeRequest = hostStr + "/REST/v1/Locations?query=";
-                        HttpContent content;
-                        //Response.ContentType= "application/x-www-form-urlencoded";
-                        var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
+                        if (Environment.GetEnvironmentVariable("DEVHOST")==null){
+                            hostStr="Https://" + Request.Host;
+                        }else{
+                            hostStr="Http://" + Request.Host;
+                        }
+                             
 
+
+                        geocodeRequest = hostStr + "/REST/v1/Locations?query=";
+                        //HttpContent content;
+                        //Response.ContentType= "application/x-www-form-urlencoded";
+                        
+                        var stringContent = new StringContent(JsonConvert.SerializeObject(DebitWayVars));
                         var getStr=Uri.EscapeUriString($"{hostStr}/DebitWay/Create?{buildStr3}");
                         var response = await client.GetAsync(getStr);
                         response.EnsureSuccessStatusCode();
