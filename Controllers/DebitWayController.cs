@@ -207,19 +207,32 @@ namespace Core.Controllers
                             thisInventory.Quantity=thisInventory.Quantity-Int32.Parse(quantity);
                             newcost+=thisInventory.Cost * Int32.Parse(quantity);
                             newtot+=thisInventory.Price * Int32.Parse(quantity);
+                            newBalance.RunningBalance =newBalance.RunningBalance-newtot; 
                             //newBalance.RunningBalance-=thisInventory.Cost;
-                            newBalance.NetAmount=newcost;
-                            newBalance.TotalAmount=newtot;
+                            newBalance.NetAmount=thisInventory.Cost * Int32.Parse(quantity);
+                            newBalance.TotalAmount=thisInventory.Price * Int32.Parse(quantity);
                             newBalance.TransactionType=4;
                             newBalance.DeliveryFeeCustomer=Decimal.ToSingle(thisOrderDeliveryFlatFee);
-                            newBalance.Taxes=debitWay.amount - newtot -Decimal.ToSingle(thisOrderDeliveryFlatFee);
+                            if (i==item_codes.Length-2){
+                                newBalance.Taxes=debitWay.amount - newtot -Decimal.ToSingle(thisOrderDeliveryFlatFee);
+                                newBalance.DeliveryFeeCustomer=newtot;
+                                newBalance.DeliveryFeeSupplier=newcost;
+                                newBalance.DriverPercentageRate=debitWay.amount;
+                             }else{
+                                newBalance.Taxes=0;
+                                newBalance.DeliveryFeeCustomer=0;
+                                newBalance.DeliveryFeeSupplier=0;
+                                newBalance.DriverPercentageRate=0;
+                             }
+                            //newBalance.Taxes=debitWay.amount - newtot -Decimal.ToSingle(thisOrderDeliveryFlatFee);
                             newBalance.LastChangeBy=userId;
                             newBalance.LastChangeDate=DateTime.Now;
                             _context.Update(thisInventory);
                              _context.Add(newBalance);
                              //_context.Update(newBalance);
-                            await  _context.SaveChangesAsync();     
+                           
                 }
+                 await  _context.SaveChangesAsync();     
                
                 
 

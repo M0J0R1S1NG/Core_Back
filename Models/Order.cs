@@ -30,6 +30,8 @@ namespace Core.Models
         [Display(Name = "Delivery Phone Number")]
         public string PhoneNumber { get; set; }
         public decimal Total { get; set; }
+
+        [Display(Name = "Being used to hold deliveryFlatFee")]
         public decimal Weight { get; set; }
         [Display(Name = "Payment Type")]
         public int PaymentType { get; set; }

@@ -118,7 +118,7 @@ namespace Core.Controllers
                         IList<DriverBalance> thisBalance = _context.DriverBalances.Where(z=> z.DriverId== thisOrder.DriverId && z.merchant_transaction_id==thisOrder.GUID).ToList();
                         foreach (var balanceItems in thisBalance){
                             balanceItems.Status=-1;
-                            balanceItems.DriverId=order.DriverId;
+                            //balanceItems.DriverId=order.DriverId;
                             balanceItems.RunningBalance=currBalance-Decimal.ToDouble(thisOrder.Total);
                             _context.Update(balanceItems);
                             
@@ -142,8 +142,8 @@ namespace Core.Controllers
                                 InventoryId = itemQ[1];
                                 Inventory thisInventory=_context.Inventorys.Where(z=> z.ID==Int32.Parse(InventoryId)).Single();
                                 thisInventory.Quantity=thisInventory.Quantity+Int32.Parse(quantity);
-                                newcost+=thisInventory.Cost * Int32.Parse(quantity);
-                                newtot+=thisInventory.Price * Int32.Parse(quantity);
+                                // newcost+=thisInventory.Cost * Int32.Parse(quantity);
+                                // newtot+=thisInventory.Price * Int32.Parse(quantity);
                                 //newBalance.RunningBalance-=thisInventory.Cost;
                                 _context.Update(thisInventory);
                         }
@@ -169,13 +169,15 @@ namespace Core.Controllers
                             
                             _context.Update(thisOrder);
                             await _context.SaveChangesAsync();
-                            var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.Status>0 && x.DriverId==order.DriverId).Max(n => n.ID);
-                            var latestBalance= _context.DriverBalances.Where(x=>x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
+                            //var LatestDriverBalanceID = _context.DriverBalances.Where(x=> x.Status>0 && x.DriverId==order.DriverId).Max(n => n.ID);
+                            //var latestBalance= _context.DriverBalances.Where(x=>x.ID ==LatestDriverBalanceID).Select(z=> z.RunningBalance );
                             IList<DriverBalance> thisBalance = _context.DriverBalances.Where(z=> z.DriverId== thisOrder.DriverId && z.merchant_transaction_id==thisOrder.GUID).ToList();
                            foreach (var balanceItems in thisBalance){
                                 balanceItems.Status=1;
                                 balanceItems.DriverId=order.DriverId;
-                                balanceItems.RunningBalance=latestBalance.SingleOrDefault()+Decimal.ToDouble(thisOrder.Total);
+                                //balanceItems.RunningBalance=latestBalance.SingleOrDefault()+Decimal.ToDouble(thisOrder.Total);
+                                balanceItems.RunningBalance=balanceItems.RunningBalance+Decimal.ToDouble(thisOrder.Total);
+                                
                                 _context.Update(balanceItems);
                                 
                             }
