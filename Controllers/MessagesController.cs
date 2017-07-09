@@ -349,9 +349,9 @@ namespace Core.Controllers
                                 bool InDeliveryArea= pointInPolygon(newPoints,addressLat ,addressLon);
                                 newPoints.RemoveRange(0,newPoints.Count());
                                     if(InDeliveryArea ){ 
-                                        headstr = $"All set you are in a delivery area "+ (char)10;
+                                        headstr = $"All set you are in a 30 minute delivery area Goto UberDuber.com to create an account then come back here to place an order or COME BACK SOON we are working on sms automated registration"+ (char)10;
                                     }else{
-                                        headstr= $"Sorry you are not in a delivery area."+ (char)10;
+                                        headstr= $"Sorry you are not in a delivery area.  We are expanding daily go to UberDuber.com and enter you information and we will notify you when your area opens up."+ (char)10;
                                      }
                                     vaout = "";
                                     vaout += "<?xml version='1.0' encoding='UTF-8'?>";
