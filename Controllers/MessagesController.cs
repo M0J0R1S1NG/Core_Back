@@ -85,8 +85,18 @@ namespace Core.Controllers
                 int orderId=Int32.Parse(vars[1]);
                
                 Order thisOrder=_context.Orders.Where(x=> x.ID==orderId && x.Status<0).Single();
+                if (thisOrder==null){
+                    vaout = "";
+                    vaout += "<?xml version='1.0' encoding='UTF-8'?>";
+                    vaout += "<Response>";
+                    vaout += "<Message>";
+                    vaout += "Sorry we couldnt find order: "+orderId +" in the system. Please try again. Enter your text reply exactly like this 'Confirm code#'.  If you cant find your confirmation code. Restart by texting 'order'";
+                    vaout += "</Message>";
+                    vaout += "</Response>";
+                    Response.ContentType="text/xml";
+                    return  vaout;
+                }
                 ApplicationUser thisUser = _context.Users.Where(x=> x.Id==thisOrder.AppUser.ToString()).Single();
-
                 if (From.Contains(thisUser.PhoneNumber)==false){
                     vaout = "";
                     vaout += "<?xml version='1.0' encoding='UTF-8'?>";
@@ -139,17 +149,7 @@ namespace Core.Controllers
                             SMSStr= SMSStr.TrimEnd(',');   
                             string customStr=thisUser.Id + ","+ SpecialInstructionsStr+"," + thisPartnerId + "," + SMSStr + "," + DriverIdStr;
 
-                if (thisOrder==null){
-                     vaout = "";
-                    vaout += "<?xml version='1.0' encoding='UTF-8'?>";
-                    vaout += "<Response>";
-                    vaout += "<Message>";
-                    vaout += "Sorry we couldnt find order: "+orderId +" in the system. Please try again. Enter your text reply exactly like this 'Confirm code#'.  If you cant find your confirmation code. Restart by texting 'order'";
-                    vaout += "</Message>";
-                    vaout += "</Response>";
-                    Response.ContentType="text/xml";
-                    return  vaout;
-                }
+
                         string identifier="";
                         string website_unique_id="";
                         string return_url="";
