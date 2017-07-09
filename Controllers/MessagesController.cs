@@ -80,20 +80,24 @@ namespace Core.Controllers
             if (Body.ToUpper().Contains("CONFIRM") ){
                 vars= Body.Split(' ');
                 if (vars.Length<=0){
+                   
+                }
+                int orderId=Int32.Parse(vars[1]);
+               
+                Order thisOrder=_context.Orders.Where(x=> x.ID==orderId && x.Status<0).Single();
+                ApplicationUser thisUser = _context.Users.Where(x=> x.Id==thisOrder.AppUser.ToString()).Single();
+
+                if (From.Contains(thisUser.PhoneNumber)==false){
                     vaout = "";
                     vaout += "<?xml version='1.0' encoding='UTF-8'?>";
                     vaout += "<Response>";
                     vaout += "<Message>";
-                    vaout += "Sorry the text you sent back:"+ Body  +" could not be parsed properly.  Please enter your text reply exactly like this 'Confirm  code#'. Use the code we sent after you submitted 'sendme'. If you cant find your confirmation code. Restart by texting 'order'";
+                    vaout += "Sorry the order users phone number :"+ thisUser.PhoneNumber  +" Does not match your number: " + From + ". You can only confirm your own orders you make from your own phone";
                     vaout += "</Message>";
                     vaout += "</Response>";
                     Response.ContentType="text/xml";
                     return  vaout;
                 }
-                int orderId=Int32.Parse(vars[1]);
-               
-                Order thisOrder=_context.Orders.Where(x=> x.ID==orderId).Single();
-                ApplicationUser thisUser = _context.Users.Where(x=> x.Id==thisOrder.AppUser.ToString()).Single();
                 var driversbyAreaPartner =
 	
                     from ed in _context.DeliveryAreas
