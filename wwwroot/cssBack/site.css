@@ -127,7 +127,7 @@ canvas {
     border-radius: 3px;
     font: bold 13px/26px "FreightSans", sans-serif;
     color: #d9d9d9;
-    text-shadow: 1px 1px 1px rgba(0,0,0,.5);
+    /* text-shadow: 1px 1px 1px rgba(0,0,0,.5); */
     padding: 0 12px;
     height: 24px;
     border: 1px solid #000;

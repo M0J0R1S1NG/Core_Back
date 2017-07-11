@@ -145,7 +145,7 @@ namespace Core.Controllers
                                         
                                         //where da.ID == UserAreaId.DeliveryAreaId
                                         where d.Quantity > 0
-                                        orderby da.Name
+                                        orderby d.catagory descending
                                         select  new InventoryByArea
                                         {
                                            Label=d.Label, Name=da.Name,ID=da.ID,Quantity= d.Quantity,Price=d.Price,ImageFilePath=d.ImageFilePath, InventoryId=d.ID

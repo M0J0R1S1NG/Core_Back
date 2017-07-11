@@ -9,13 +9,19 @@
 */
 
 /* Reset */
+.panel-primary > .panel-heading {
+    color: #00ff00;
+    background-color: rgba(0, 0, 0, .5);
+    border-color: #00ff00;
+}
+
 #cartRow  {
 		    margin-right: 2em;
 
 		    
 }
 .yabholder{
-	margin-right: 2em;
+	margin-right: 2.3em;
 }
 .panel{
 	    background-color: rgba(0, 0, 0, 0.56);
@@ -1699,12 +1705,12 @@
 		
 		line-height: 1.5;
 		margin: 0 0 1em 0;
-		 color:black;
-    text-shadow:
-    -1px -1px #fff,
-    1px -1px  #fff,
-    -1px 1px  #fff,
-    1px 1px  #fff;  
+		 color:#00ff00;
+    /* text-shadow:
+    -1px -1px #00ff00,
+    1px -1px  #00ff00,
+    -1px 1px  #00ff00,
+    1px 1px  #00ff00;   */
 	}
 
 		h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
@@ -1714,7 +1720,7 @@
 
 	h2 {
 		font-size: 1.75em;
-		font-weight: 100;
+		font-weight: 600;
 	}
 
 	h3 {
@@ -1779,7 +1785,7 @@
 	hr {
 		border: 0;
 		border-bottom: solid 1px #dbdbdb;
-		margin: 2em 0;
+		margin: 2em 2.3em;
 	}
 
 		hr.major {
@@ -2030,7 +2036,7 @@
 	}
 
 	label {
-		color: #555;
+		/* color: #555; */
 		display: block;
 		font-size: 0.9em;
 		font-weight: 600;

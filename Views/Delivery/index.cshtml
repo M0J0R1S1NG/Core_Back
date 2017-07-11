@@ -15,7 +15,7 @@ if (ViewData["Message"]==null){
 <div class="container">
  <div class="top-buffer"></div>
 <div class="panel panel-primary">
-    <div class="panel-heading panel-head">Delivery Area</div>
+    <div class="panel-heading panel-head"><h2>Delivery Areas<h2></div>
     <div class="panel-body">
      
 <div id="modal-container" class="modal" tabindex="-1" role="dialog">
@@ -203,64 +203,7 @@ function selectedSuggestion(result) {
 </script>
  <script src="/js/delivery.js"></script>
  <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario' async defer></script>
-<style>
-
- .ui-autocomplete {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    float: left;
-    display: none;
-    min-width: 160px;   
-    padding: 4px 0;
-    margin: 0 0 10px 25px;
-    list-style: none;
-    background-color: #ffffff;
-    border-color: #ccc;
-    border-color: rgba(0, 0, 0, 0.2);
-    border-style: solid;
-    border-width: 1px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    -webkit-background-clip: padding-box;
-    -moz-background-clip: padding;
-    background-clip: padding-box;
-    *border-right-width: 2px;
-    *border-bottom-width: 2px;
-}
-.ui-helper-hidden-accessible{
-    display:none;
-    fill-opacity:0;
-    flood-opacity:0;
-
-}
-.ui-menu-item > a.ui-corner-all {
-    display: block;
-    padding: 3px 15px;
-    clear: both;
-    font-weight: normal;
-    line-height: 18px;
-    color: #555555;
-    white-space: nowrap;
-    text-decoration: none;
-}
-
-.ui-state-hover, .ui-state-active {
-    color: #ffffff;
-    text-decoration: none;
-    background-color: #0088cc;
-    border-radius: 0px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    background-image: none;
-}
-
-  </style><style>
+ <style>
 
  .ui-autocomplete {
     position: absolute;
