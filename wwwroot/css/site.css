@@ -19,8 +19,9 @@ textarea {
 
 /* Carousel */
 .carousel-caption p {
-    font-size: 20px;
+    font-size: 15px;
     line-height: 1.4;
+   
 }
 
 /* buttons and links extension to use brackets: [ click me ] */

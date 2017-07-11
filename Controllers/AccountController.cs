@@ -99,9 +99,7 @@ namespace Core.Controllers
                 {
                     _logger.LogWarning(2, "User account locked out.");
                     return View("Lockout");
-                }
-                
-                else
+                }else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.  If you created logged in with your external provider like Google or Facebook, make sure you create a password for this site.  Relogin with your external account provider then goto manage your account and create a password");
                     return View(model);

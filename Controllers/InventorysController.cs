@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 
 namespace Core.Controllers
 {
-   [Authorize(Roles="Admin")]
+   [Authorize]
     public class InventorysController : Controller
     {
         private readonly ApplicationDbContext _context;

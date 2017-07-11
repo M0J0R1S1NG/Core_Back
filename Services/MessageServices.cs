@@ -136,7 +136,8 @@ namespace Core.Services
             //mail.Body = message;
             //await System.Net.Mail.SendMailAsync(mail);
             await SendEmail(email,message,subject);
-        }public async Task SendAsyncGoogle(string email, string subject, string message)
+        }
+        public async Task SendAsyncGoogle(string email, string subject, string message)
         {
         //     var sentFrom = "uberdubercom@gmail.com";
         //    MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient();

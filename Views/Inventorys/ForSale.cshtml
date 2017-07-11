@@ -12,7 +12,10 @@
 @{
     ViewData["Title"] = "Shopping";
 }
-
+ <div class="top-buffer"></div>
+<div class="panel panel-primary">
+    <div class="panel-heading panel-head">Delivery Area</div>
+    <div class="panel-body">
 <h2>@ViewData["Title"]</h2>
 
 <h3>Your home delivery addresss is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]<div onclick="showDeliveryAreaDiv()" class="btn btn-danger">Change</div></h3>
@@ -115,7 +118,7 @@
             <div class="col-md-12">
                 <span id="QuantitiyAvailable">Quantity Available: @item.Quantity packages</span>
                 <div class="simpleCart_shelfItem col-md-12">
-                    <img class="item_add" src="@item.ImageFilePath" height="300px" width="400px" />
+                    <img class="item_add" src="@item.ImageFilePath" height="100px" width="100px" />
                     <h4 class="item_name">@item.Label</h4>
                     <input type="text" value="1" class="item_Quantity">
                     <span class="item_price">$@item.Price</span>
@@ -443,7 +446,8 @@
         </div>
     </div>
 </form>
-
+</div>
+</div>
 <script>
     var AreaIds = []; 
      var NotInArea=false; 
@@ -476,7 +480,8 @@
             },
             credentials: 'AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA' 
         });
-          getLocation();
+         geocode();
+         //getLocation();
           //top.document.getElementById("GeocodedAddress").onchange();
          // manager.
     }
@@ -819,7 +824,7 @@ function getLocation() {
     
     if (navigator.geolocation) {
         //(starting==false) ? startup=false:startup=true;
-        navigator.geolocation.getCurrentPosition(checkPosition);
+        var x = navigator.geolocation.getCurrentPosition(checkPosition);
     } else { 
         alert("We can't determine you current location. Geolocation is not supported by this browser.  You can change your delivery address manually if you are not at your default address");
     }
@@ -836,11 +841,10 @@ return;
   
 }
 function GeocodeCallbackGeo(result){
-        var addressName=result.resourceSets[0].resources[0].name;
 
+        var addressName=result.resourceSets[0].resources[0].name;
         var addressLat= result.resourceSets[0].resources[0].point.coordinates[0];
         var addressLon= result.resourceSets[0].resources[0].point.coordinates[1];
-
         var formattedAddress=result.resourceSets[0].resources[0].address.formattedAddress;
         var postalCode= result.resourceSets[0].resources[0].address.postalCode;
         var adminDistrict = result.resourceSets[0].resources[0].address.adminDistrict

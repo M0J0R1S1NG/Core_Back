@@ -179,7 +179,7 @@ namespace Core.Controllers
                         string time_stamp=DateTime.Now.ToString();
                         
 
- string buildStr3="";                    
+                    string buildStr3="";                    
                     buildStr3 += "identifier=" +  identifier ;
                     buildStr3 += "&website_unique_id=" +  website_unique_id ;
                     buildStr3 += "&return_url=" +  return_url ;
@@ -696,10 +696,7 @@ namespace Core.Controllers
         }
 
 
-        private class Points{
-            public  Double latitude {get;set;} 
-            public  Double longitude {get;set;}
-        }
+
         private bool pointInPolygon(List<Points> points,double lat ,double lon) {
             var i=0;
             var j=points.Count()-1;

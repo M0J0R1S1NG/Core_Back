@@ -40,7 +40,7 @@ if (ViewData["Message"]==null){
     <INPUT id="deliveryArea" type="button" value="Hide Delivery Area" onclick="toggleDeliveryArea();"> 
     <INPUT id="deletePushpins" type="button" value="Clear Addresses"  onclick="clearPushpins();"> 
     <!--<INPUT id="showRequests" type="button" value="Show Requested Addresses" onclick="showRequests();"> -->
-<span>Green areas are open Blue areas are coming very soon <span>
+<span>Green areas are open Blue areas are coming very soon We are hiring delivery people in all areas call if your looking for work no vehicle required  416-802-8129.  </span>
 <span id="tempHolderSpan"></span>
 <div class='container-fluid'>
     <form  id="myForm2" asp-controller="Delivery" asp-action="AddEmail" method="post" >
@@ -191,7 +191,7 @@ function selectedSuggestion(result) {
         });
     window.addEventListener("DOMContentLoaded", function() {
        @if(TempData["emailAddress"]!=null){
-            @:top.document.getElementById("message").value="Thanks you we received your request";
+            @:top.document.getElementById("message").value="Thanks we received your request";
             @:top.document.getElementById("title").value="Request Added";
             @:top.document.getElementById("myLink").href = "Delivery/ModalAction/1?message=" +  encodeURI(top.document.getElementById("message").value) + "&title=" + encodeURI(top.document.getElementById("title").value);
             @:top.document.getElementById("myLink").click();
@@ -259,12 +259,7 @@ function selectedSuggestion(result) {
     -moz-border-radius: 0px;
     background-image: none;
 }
-.myMap, .canvas{
-    max-width: 1800px;
-    max-height:1000px;
-min-width:400px;
-min-height:400px
-}
+
   </style><style>
 
  .ui-autocomplete {
@@ -322,9 +317,9 @@ min-height:400px
     background-image: none;
 }
 .myMap, .canvas{
-    max-width: 1800px;
+    <!--max-width: 1800px;
     max-height:1000px;
 min-width:400px;
-min-height:400px
+min-height:400px-->
 }
   </style>
