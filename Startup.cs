@@ -71,10 +71,10 @@ namespace Core
                 config.Lockout.MaxFailedAccessAttempts = 10;
                 config.Lockout.AllowedForNewUsers = false;
                 config.Password.RequireDigit = true;
-                config.Password.RequiredLength = 8;
-                config.Password.RequireNonAlphanumeric = true;
-                config.Password.RequireUppercase = true;
-                config.Password.RequireLowercase = true;
+                config.Password.RequiredLength = 6;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
+                config.Password.RequireLowercase = false;
                 config.User.RequireUniqueEmail = true;
                 config.SignIn.RequireConfirmedPhoneNumber = false;
             

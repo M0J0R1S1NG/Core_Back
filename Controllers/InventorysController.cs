@@ -54,7 +54,28 @@ namespace Core.Controllers
         
         public async Task<IActionResult> ForSale()
         {
+
+
+
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+                if (user.DeliveryAddress == null){
+                    return RedirectToAction("UpdateUser","Manage");
+                }
+                ViewData["DeliveryAddress"]=user.DeliveryAddress;
+                
+                if (!await _userManager.IsEmailConfirmedAsync(user)){
+                        ModelState.AddModelError(string.Empty, $"You must have a confirmed email to log in. The confirmation email has been re-sent to {User.Identity.Name}");
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                        await _emailSender.SendEmailAsync(User.Identity.Name, "Confirm your account", $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                        return View();
+                }
+                if (!await _userManager.IsPhoneNumberConfirmedAsync(user)){
+                        return RedirectToAction("AddPhoneNumber","Manage");
+                } 
+
+
             var userGuid = Guid.Parse(user.Id);
 
             DebitWay myDebitWay = new Models.DebitWay();
