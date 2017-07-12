@@ -89,7 +89,9 @@ namespace Core.Controllers
             ViewBag.Id = Id;
             ViewBag.Message=message;
             ViewBag.Title=title;
-            return PartialView("ModalContent", new BootstrapModel { });
+            BootstrapModel myBoot= new BootstrapModel { };
+            myBoot.OnlyCancelButton=true;
+            return PartialView("ModalContent",  myBoot);
         }
 
         [HttpPost]

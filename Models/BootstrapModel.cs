@@ -4,6 +4,7 @@ namespace Core.Models
 {
     public class BootstrapModel
     {
+        public bool OnlyCancelButton {get;set;}
         public string ID { get; set; }
         public string AreaLabeledId { get; set; }
         public ModalSize Size { get; set; }
