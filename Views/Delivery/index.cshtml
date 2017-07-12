@@ -200,6 +200,16 @@ function selectedSuggestion(result) {
 
     }, false);
 
+$(function () {
+    // when the modal is closed
+    $('#modal-container').on('hidden.bs.modal', function () {
+        // remove the bs.modal data attribute from it
+        $(this).removeData('bs.modal');
+        // and empty the modal-content element
+        $('#modal-container .modal-content').empty();
+    });
+});
+
 </script>
  <script src="/js/delivery.js"></script>
  <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario' async defer></script>
