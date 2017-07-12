@@ -81,7 +81,15 @@ namespace Core.Controllers
                     }
                     
                 }
-                    
+
+                    if (user.status.ToString().Length>=2  && user.status.ToString().Substring(2,1)!="1"){
+                        return RedirectToAction("Manage","UpdateUser");
+                    }
+
+                    //no phone number confirmed
+                    if (user.status.ToString().Length>=3  && user.status.ToString().Substring(3,1)!="1"){
+                        return RedirectToAction("Manage","VerifyPhoneNumber");
+                    }
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
@@ -318,6 +326,9 @@ namespace Core.Controllers
                 return View("Error");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            user.status=1;
+           await  _userManager.UpdateAsync(user);
+           
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 

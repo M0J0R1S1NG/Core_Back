@@ -2,8 +2,10 @@
 @{
     ViewData["Title"] = "Add Phone Number";
 }
-
-<h2>@ViewData["Title"].</h2>
+ <div class="top-buffer"></div>
+<div class="panel panel-primary">
+    <div class="panel-heading panel-head"><h2>@ViewData["Title"]</h2></div>
+    <div class="panel-body">
 <h4>If you have been redirected here after registering, you must verify your phone number.  Input your cell phone number to get a code.  
     Once completed you can place orders.  We need this information to update you with your order and delivery notifications.
 </h4>
@@ -28,3 +30,4 @@
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
+</div></div>

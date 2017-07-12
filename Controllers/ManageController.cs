@@ -97,6 +97,7 @@ namespace Core.Controllers
                     userToUpdate.FirstName = model.FirstName;
                     userToUpdate.LastName = model.LastName;
                     userToUpdate.DeliveryAreaId = model.DeliveryAreaId;
+                    userToUpdate.status=userToUpdate.status+10;
                      _context.Update(userToUpdate);
                     await _context.SaveChangesAsync();
                
@@ -259,6 +260,8 @@ namespace Core.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    user.status=100+user.status;
+                    await _userManager.UpdateAsync(user);
                     return RedirectToAction(nameof(Index), new { Message = ManageMessageId.AddPhoneSuccess });
                 }
             }

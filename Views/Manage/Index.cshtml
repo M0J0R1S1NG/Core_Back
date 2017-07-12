@@ -2,7 +2,10 @@
 @{
     ViewData["Title"] = "Manage your account";
 }
-
+ <div class="top-buffer"></div>
+<div class="panel panel-primary">
+    <div class="panel-heading panel-head"><h2>@ViewData["Title"]</h2></div>
+    <div class="panel-body">
 
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
@@ -21,7 +24,7 @@
     <h4>Change settings</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Profile Data:</dt>
+        <dt>Address Data:</dt>
         <dd>
              <a asp-controller="Manage" asp-action="UpdateUser" class="btn-bracketed">Manage</a>
         </dd>
@@ -36,11 +39,11 @@
                 <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">Create</a>
             }
         </dd>
-        <dt>External Logins:</dt>
+        <!-- <dt>External Logins:</dt>
         <dd>
 
             @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
-        </dd>
+        </dd> -->
         <dt>Phone Number:</dt>
         <dd>
             <p>
@@ -83,3 +86,4 @@
         </dd>-->
     </dl>
 </div>
+</div></div>

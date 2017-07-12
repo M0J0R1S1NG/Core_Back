@@ -2,8 +2,10 @@
 @{
     ViewData["Title"] = "Verify Phone Number";
 }
-
-<h2>@ViewData["Title"].</h2>
+ <div class="top-buffer"></div>
+<div class="panel panel-primary">
+    <div class="panel-heading panel-head"><h2>@ViewData["Title"]</h2></div>
+    <div class="panel-body">
 
 <form asp-controller="Manage" asp-action="VerifyPhoneNumber" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
     <input asp-for="PhoneNumber" type="hidden" />
@@ -28,3 +30,4 @@
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
+</div></div>
