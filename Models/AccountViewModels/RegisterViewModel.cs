@@ -9,10 +9,7 @@ namespace Core.Models.AccountViewModels
     public class RegisterViewModel
     {
         
-        [Required]
-        [Display(Name = "Delivery Address")]
-        [DataTypeAttribute(DataType.Text)]
-        public String DeliveryAddress;
+        
 
         [Required]
         [EmailAddress]
