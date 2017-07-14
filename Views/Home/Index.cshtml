@@ -17,14 +17,36 @@
 
  
                     <h2>Welcome to UberDuber Canada</h2> 
-                        
-                    <li>Civilized marijuana service at your door. <a href="/Account/Register" > Register</a> now and we'll see you in a 1/2 hour. Its easy and only takes a minute.</li>
-                    <li>Check your<a href="/Delivery">  location</a> to see if you are in one of our delivery areas.  </li>
-                    <li>Use our SMS ordering system.  To begin just text the word hello to 647-799-2699.</li>
-                    <li>Pay by cash or credit at the door or checkout with interac Online for secured and guaranteed service coming in August.</li>
-                    <li>We are opening across the country. If you are interested in running a business in your area, fill out our <a href="/Delivery" > franchise</a> info request it will lock in your area.  </li>
-                    <li>Want a job. We are looking for delivery specialists across Canada. Please email <a href=mailto://admin@uberduber.com > Admin@UberDuber.Com</a> and we will get back to you.</li>
-                 
+
+                    <div class=row> 
+                        <div class="col-xs-6"> 
+                            Members:
+                        </div>
+                        <div class="col-xs-6"> 
+                           <a href="/Account/Login" class="btn btn-info btn-sm" >Login</a>
+                        </div>
+                        <div class="col-xs-6"> 
+                            New Users:
+                        </div>
+                        <div class="col-xs-6"> 
+                           <a href="/Account/Register" class="btn btn-info btn-sm" >Register</a>
+                        </div>
+                        <div class="col-xs-6"> 
+                            Check your address:
+                        </div>
+                        <div class="col-xs-6"> 
+                          <a href="/Delivery" class="btn btn-info btn-sm" >Delivery Areas</a>
+                        </div>
+                        <div class="col-xs-6"> 
+                           New SMS Ordering
+                        </div>
+                        <div class="col-xs-6"> 
+                          <a href="sms://647-799-2699/" class="btn btn-info btn-sm" >647-779-2699</a>
+                        </div>
+                    </div>
+
+                  
+                  
 
 <hr>
  
@@ -65,7 +87,9 @@
         </div>
         <div class="item">
             <img src="~/img/blank3.png" alt="green" class="img-responsive img-carousel"/>
+            
             <div class="carousel-caption" role="option">
+                <h2>Links</h2>           
                 @await Html.PartialAsync("_HomeButtons")
             </div>
         </div>
