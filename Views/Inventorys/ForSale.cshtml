@@ -9,6 +9,12 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 
+
+<link href="~/css/tabcontent.css" rel="stylesheet" type="text/css" />
+<script src="~/js/tabcontent.js" type="text/javascript"></script>
+
+
+
 @{
     ViewData["Title"] = "Shopping";
 }
@@ -16,6 +22,23 @@
 <div class="panel panel-primary">
     <div class="panel-heading panel-head"><h2>@ViewData["Title"]</h2></div>
     <div class="panel-body">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <h3>Your home delivery addresss is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]<div onclick="showDeliveryAreaDiv()" class="btn btn-danger">Change</div></h3>
@@ -97,38 +120,64 @@
              <input id='lat' type="hidden" />
             <input id='lon' type="hidden" />
             
-
+<div class="container shoppingCartDiv">    
   
 
+<ul class="tabs">
 
-<div class="container shoppingCartDiv">    
-    
-    
-<!-- <div id="cartRow" name="cartRow" class="row"> -->
-
-@{var j=0;
-    var curCatagory="";
-    var looping=0;
+@{var j2=0;
+    var curCatagory2="";
+    var looping2=0;
     @foreach (dynamic item in ViewBag.InventoryByArea) {
-    j+=1;  
-            if(item.InventoryCatagory!=curCatagory){
-               if (looping==2){
-                   @: </div>
-                   looping=1;
+    j2+=1;  
+            if(item.InventoryCatagory!=curCatagory2){
+               if (looping2==2){
+                   @: 
+                   looping2=1;
                }
-               if (looping==0){looping=1;} 
-               curCatagory=item.InventoryCatagory;
-               if (looping==1){
-                  <hr> @item.InventoryCatagory
-                    @: <div id="cartRow" name="cartRow" class="row">
-                        looping=2;
+               if (looping2==0){looping2=1;} 
+               curCatagory2=item.InventoryCatagory;
+               if (looping2==1){
+                 
+                    @: <li><a href="#tabGroup@(j2)"> @item.InventoryCatagory</a></li>
+                        looping2=2;
                }
                
             }       
-                @:       <div id="cartArea" class="cartItemArea@(item.ID) col-xs-2" style="display:none">
+               
+   }  
+ 
+}
+
+
+</ul>
+
+
+
+<div class="tabcontents">
+@{var j3=0;
+    var curCatagory3="";
+    var looping3=0;
+    @foreach (dynamic item in ViewBag.InventoryByArea) {
+    j3+=1;  
+            if(item.InventoryCatagory!=curCatagory3){
+               if (looping3==2){
+                   @: </div>
+                   looping3=1;
+               }
+               if (looping3==0){looping3=1;} 
+               curCatagory3=item.InventoryCatagory;
+               if (looping3==1){
+                        @: <div id="tabGroup@(j3)" class="row"> 
+                    
+                        looping3=2;
+               }
+               
+            }       
+                @:       <div id="cartArea" class="cartItemArea@(item.ID) col-xs-3" style="display:none">
                 @:               <div class="simpleCart_shelfItem">
                 @:                   <h4 class="item_name">@item.Label</h4>
-                @:                   <img class="item_add" src="@item.ImageFilePath" height="150px" width="150px" />
+                @:                   <img class="item_add" src="@item.ImageFilePath" height="150px" width="150px" /><br>
                 @:                   <input type="hidden" length=10 type="text" value="1" class="item_Quantity">
                 @:                   <span class="item_price">$@item.Price</span>
                 @:                   <span style="display:none" class="item_invid">@item.InventoryId</span>
@@ -140,8 +189,12 @@
    }  
  
 }
+
 </div>
-<hr />
+
+</div>
+
+
 <h2>Cart</h2>
 
 <div class="yabholder" >

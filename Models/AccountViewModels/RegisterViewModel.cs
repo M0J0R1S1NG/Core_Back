@@ -9,7 +9,7 @@ namespace Core.Models.AccountViewModels
     public class RegisterViewModel
     {
         
-        
+         
 
         [Required]
         [EmailAddress]
