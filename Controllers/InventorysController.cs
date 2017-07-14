@@ -188,7 +188,7 @@ namespace Core.Controllers
         // GET: Inventorys/Create
         public async Task<IActionResult> Create()
         {
-           string[] myvar2 = {"Concentrates","Flowers","Edibales","Topicals","Hashish","Oils","Paraphanalia"};
+           string[] myvar2 = {"Concentrates","Flowers","Edibles","Topicals","Hashish","Oils","Paraphanalia"};
             ViewBag.MyList2=  myvar2.Select(m => new SelectListItem { Text = m, Value = m });
            
             return View();
@@ -226,7 +226,7 @@ namespace Core.Controllers
             List<string> domains = new List<string>();
             domains.Add("DomainA");
             domains.Add("DomainB");
-            string[] myvar2 = {"Concentrates","Flowers","Edibales","Topicals","Hashish","Oils","Paraphanalia"};
+            string[] myvar2 = {"Concentrates","Flowers","Edibles","Topicals","Hashish","Oils","Paraphanalia"};
 
             domains.Select(m => new SelectListItem { Text = m, Value = m });
 
@@ -301,7 +301,7 @@ namespace Core.Controllers
             }  
          
 
-            string[] myvar2 = {"Concentrates","Flowers","Edibales","Topicals","Hashish","Oils","Paraphanalia"};
+            string[] myvar2 = {"Concentrates","Flowers","Edibles","Topicals","Hashish","Oils","Paraphanalia"};
 
             ViewBag.query = _context.Inventorys.Where(c=> c.Status==1);
             var Products = _context.Inventorys.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Label });
