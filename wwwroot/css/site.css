@@ -43,10 +43,12 @@ textarea {
 }
 
 /* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 700px) {
   /* Hide captions */
   .carousel-caption {
-    display: none
+    display: "";
+    font-size:8pt;
+   
   }
 }
 

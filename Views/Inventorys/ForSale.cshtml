@@ -41,7 +41,7 @@
 
 
 
-<h3>Your home delivery addresss is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]<div onclick="showDeliveryAreaDiv()" class="btn btn-danger">Change</div></h3>
+<h3>Your delivery addresss today is: @ViewData["StreetNumber"] -  @ViewData["DeliveryAddress"]<div onclick="showDeliveryAreaDiv()" class="btn btn-danger"> Change</div></h3>
 <div style="display:none" class="container deliveryAddressDiv">
             If you want todays delivery sent somewhere other than your address on file you must confirm below.  The address in this box will be delivered to.  Leave alone to deliver to your account address.
             You can also<br> <input type=button class=btn btn-default value="Use My Current GPS Location" onclick="getLocation()"></input>  
@@ -174,7 +174,7 @@
                }
                
             }       
-                @:       <div id="cartArea" class="cartItemArea@(item.ID) col-xs-2" style="display:none">
+                @:       <div id="cartArea" class="cartItemArea@(item.ID) col-md-2 col-sm-4 col-xs-6" style="display:none">
                 @:               <div class="simpleCart_shelfItem">
                 @:                   <h4 class="item_name">@item.Label</h4>
                 @:                   <img class="item_add" src="@item.ImageFilePath" height="125px" width="125px" /><br>
