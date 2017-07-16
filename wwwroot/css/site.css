@@ -75,3 +75,16 @@ textarea {
 }
 
 }
+@media screen and (max-width: 1000px) {
+
+.navbar-collapse {
+    font-size: smaller;
+}
+@media screen and (max-width: 900px) {
+
+.navbar-collapse {
+    font-size: x-small;
+}
+
+
+}
