@@ -6,7 +6,9 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr>    <th>
+                    Functions
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.UnitNumber)
                 </th>
@@ -97,12 +99,16 @@
                 <th>
                     @Html.DisplayNameFor(model => model.AccessFailedCount)
                 </th>
-            <th></th>
+        
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr> <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UnitNumber)
             </td>
@@ -193,11 +199,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AccessFailedCount)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+           
         </tr>
 }
     </tbody>

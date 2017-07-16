@@ -48,7 +48,9 @@ textarea {
   .carousel-caption {
     display: ""; 
     font-size:10pt;
-  }
+  }.mapFloater{
+    height:25em;
+}
   .carousel-inner{
     /* padding-top: 100px; */
   }
@@ -59,8 +61,17 @@ textarea {
     display: "";
     font-size:8pt;
   }
+.mapFloater{
+    height:20em;
+}
 .carousel-inner{
     padding-top: 100px;
  }
 }
+@media screen and (min-width: 701px) {
 
+.mapFloater{
+    height:40em;
+}
+
+}

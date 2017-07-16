@@ -51,8 +51,9 @@ namespace Core.Controllers
         public async Task<IActionResult> Index()
         { 
             string  uid=_userManager.GetUserId(User);
+
            //
-            
+            if (uid!=null){
             int thisDriverId=(from d in _context.Drivers 
                              where d.UserGuid==Guid.Parse(uid)
                             
@@ -90,9 +91,10 @@ namespace Core.Controllers
              var inventorys = InventoryByAreaVar.OrderBy(c => c.DeliveryAreaName).Select(x => new {Id = x.InventoryId, Value = x.Label + " : " + x.DeliveryAreaName});
             ViewBag.inventorys = new SelectList(inventorys, "Id", "Value");
             
-            return View(_context.DriverBalances.ToList());
+            
             return View(ThisDriverBalances);
-          
+            }
+          return View(_context.DriverBalances.ToList());
         }
 
         // GET: DriverBalances/Details/5
@@ -217,6 +219,8 @@ namespace Core.Controllers
             }
             return View(driverBalance);
         }
+
+
 
         // GET: DriverBalances/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -386,6 +390,64 @@ namespace Core.Controllers
         private bool DriverBalanceExists(int id)
         {
             return _context.DriverBalances.Any(e => e.ID == id);
+        }
+         public IActionResult LoadDriver()
+        {               ViewBag.UserId=_userManager.GetUserId(User);
+          
+                        var  driverids =   from d in _context.Drivers
+                                        join us in _context.Users on d.UserGuid equals    Guid.Parse(us.Id) 
+                                        join pa in _context.Partners on d.PartnerId equals pa.Id     // first join
+                                                
+                                        orderby us.LastName
+                                        select  new 
+                                        {
+                                           Id=d.ID,Value=us.FirstName + " Partner: " +  pa.Name
+                                        };
+
+
+                                        ViewBag.drivers = new SelectList(driverids, "Id", "Value");
+
+
+             IQueryable<InventoryByArea>  InventoryByAreaVar = from i in _context.Inventorys
+                                        join ig in _context.InventoryGroups on  i.ID equals    ig.InventoryId      // first join
+                                        join da in _context.DeliveryAreas on ig.DeliveryAreaId equals da.ID     // second join
+                                        //join us in _context.Users on ig.DeliveryAreaId equals us.DeliveryAreaId
+                                        
+                                        //where da.ID == UserAreaId.DeliveryAreaId
+                                        //where d.Quantity > 0
+                                        orderby da.Name
+                                        select  new InventoryByArea
+                                        {
+                                           DeliveryAreaName=da.Name,Label=i.Label, InventoryCatagory=i.catagory, InventoryDescription=i.Description,DeliveryAreaID=da.ID,Quantity= i.Quantity,Price=i.Price,ImageFilePath=i.ImageFilePath, InventoryId=i.ID
+                                        };
+
+
+                                        
+
+
+           var deliveryareaGuids = _context.DeliveryAreas.OrderBy(c => c.Name).Select(x => new { Id = x.ID, Value = x.Name });
+            ViewBag.deliveryAreas = new SelectList(deliveryareaGuids, "Id", "Value");
+                        
+            var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Email });
+            ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
+            var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+            ViewBag.partners = new SelectList(partners, "Id", "Value");
+             var inventorys = InventoryByAreaVar.OrderBy(c => c.DeliveryAreaName).Select(x => new {Id = x.InventoryId, Value = x.Label + " : " + x.DeliveryAreaName});
+            ViewBag.inventorys = new SelectList(inventorys, "Id", "Value");
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoadDriver([Bind("ID,merchant_transaction_id,DriverId,InventoryId,DriverPercentageRate,DriverFlatRate,quantity,Taxes,TotalAmount,NetAmount,RunningBalance,DeliveryFeeCustomer,DeliveryFeeSupplier,Status,CreditOrDebit,Notes,TransactionType,PartnerId,CustomerId,DeliveryDate,CreatedDate,LastChangeDate,CreateBy,LastChangeBy")] DriverBalance driverBalance)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(driverBalance);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(driverBalance);
         }
     }
 }
