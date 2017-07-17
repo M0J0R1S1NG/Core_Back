@@ -43,18 +43,59 @@ textarea {
 }
 
 /* Hide/rearrange for smaller screens */
- @media screen and (max-width: 700px) {
+ @media screen and (max-width: 600px) {
   /* Hide captions */
   .carousel-caption {
     display: ""; 
     font-size:10pt;
-  }.mapFloater{
+  }
+    .mapFloater{
     height:25em;
 }
   .carousel-inner{
-    /* padding-top: 100px; */
-  }
+     padding-top: 30px; 
+  } 
+    font-size:10pt;
 } 
+@media screen and (max-width: 545px) {
+  /* Hide captions */
+  .carousel-caption {
+    display: "";
+    font-size:9pt;
+  }
+.mapFloater{
+    height:20em;
+}
+.carousel-inner{
+    padding-top: 30px;
+ }
+}
+@media screen and (max-width: 500px) {
+  /* Hide captions */
+  .carousel-caption {
+    display: "";
+    font-size:9pt;
+  }
+.mapFloater{
+    height:20em;
+}
+.carousel-inner{
+    padding-top: 80px;
+ }
+}
+@media screen and (max-width: 445px) {
+  /* Hide captions */
+  .carousel-caption {
+    display: "";
+    font-size:9pt;
+  }
+.mapFloater{
+    height:20em;
+}
+.carousel-inner{
+    padding-top: 100px;
+ }
+}
 @media screen and (max-width: 400px) {
   /* Hide captions */
   .carousel-caption {
@@ -68,8 +109,20 @@ textarea {
     padding-top: 100px;
  }
 }
+@media screen and (min-width: 601px) {
+.carousel-caption {
+    display: ""; 
+    font-size:10pt;
+  }
+.mapFloater{
+    height:25em;
+}
+}
 @media screen and (min-width: 701px) {
-
+.carousel-caption {
+    display: ""; 
+    font-size:11pt;
+  }
 .mapFloater{
     height:40em;
 }
@@ -80,6 +133,7 @@ textarea {
 .navbar-collapse {
     font-size: smaller;
 }
+}
 @media screen and (max-width: 900px) {
 
 .navbar-collapse {
@@ -87,4 +141,10 @@ textarea {
 }
 
 
+}
+@media (min-width: 768px) {
+  .form-horizontal .control-label {
+
+     text-align: left; 
+  }
 }

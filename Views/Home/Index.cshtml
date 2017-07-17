@@ -1,6 +1,6 @@
 ﻿
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="20000" >
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="2000000" >
     <ol class="carousel-indicators" role="complementary">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -11,37 +11,37 @@
         
         <div class="item active"> 
 
-            <img id="img1" src="~/img/blank3.png" alt="Dubes" class="img-responsive img-carousel" />
+            <img id="img1" src="~/img/blank480.png" alt="Dubes" class="img-responsive img-carousel" />
             <div class="carousel-caption" role="option">
                 
 
  
                     <h2>Welcome to UberDuber Canada</h2> 
-
+<hr>
                     <div class=row> 
-                        <div class="col-xs-6"> 
+                        <div class="col-xs-6" align=right> 
                             Members:
                         </div>
-                        <div class="col-xs-6"> 
-                           <a href="/Account/Login" class="btn btn-info btn-sm" >Login</a>
+                        <div class="col-xs-6" align=left> 
+                           <a href="/Account/Login" class="btn" >Login</a>
                         </div>
-                        <div class="col-xs-6"> 
+                        <div class="col-xs-6" align=right> 
                             New Users:
                         </div>
-                        <div class="col-xs-6"> 
-                           <a href="/Account/Register" class="btn btn-info btn-sm" >Register</a>
+                        <div class="col-xs-6" align=left> 
+                           <a href="/Account/Register" class="btn " >Register</a>
                         </div>
-                        <div class="col-xs-6"> 
+                        <div class="col-xs-6" align=right> 
                             Coverage:
                         </div>
-                        <div class="col-xs-6"> 
-                          <a href="/Delivery" class="btn btn-info btn-sm" >Delivery Areas</a>
+                        <div class="col-xs-6" align=left> 
+                          <a href="/Delivery" class="btn" >Delivery Areas</a>
                         </div>
-                        <div class="col-xs-6"> 
+                        <div class="col-xs-6" align=right> 
                            SMS Ordering
                         </div>
-                        <div class="col-xs-6"> 
-                          <a href="sms://647-799-2699/" class="btn btn-info btn-sm" >647-779-2699</a>
+                        <div class="col-xs-6" align=left> 
+                          <a href="sms://647-799-2699/" class="btn " >647-779-2699</a>
                         </div>
                     </div>
 
@@ -53,16 +53,13 @@
             </div>
         </div>
         <div class="item">
-            <img  src="~/img/blank3.png" alt="Uber Duber" class="img-responsive img-carousel"/>
+            <img  src="~/img/blank480.png" alt="Uber Duber" class="img-responsive img-carousel"/>
             <div class="carousel-caption" role="option">
                              <p>
                      <h2><a href="/Franchise1">Franchise Opportunities</a></h2>
                        We are looking for energetic and enterprising people interested in a franchise business in this brand new and dynamic industry.  
                        We offer turnkey solutions and we will have you setup and running in as little as a few days.
-                        Exclusive areas are going fast fill out our 
-                       
-                     
-                       <h4><a class="btn btn-info btn-xs"  href="/franchise"> franchise info request</a></h4>
+                        Exclusive areas are going fast fill out our <a class="btn btn-info btn-xs"  href="/franchise">franchise info request </a> now and reserve your area.
              
 <hr>           
                     
@@ -70,7 +67,7 @@
             </div>
         </div>
         <div class="item">
-            <img  src="~/img/blank3.png" alt="Fields" class="img-responsive img-carousel"  0/>
+            <img  src="~/img/blank480.png" alt="Fields" class="img-responsive img-carousel"  0/>
             <div class="carousel-caption" role="option">
                 <p> <h2>We want your business</h2>
                     So, we guarantee satisfaction.  We are a software company. Our systems are smart. Your menus are driven by your area's inventory and is updated with every order. 
@@ -84,13 +81,16 @@
 
         </div>
         <div class="item">
-            <img src="~/img/blank3.png" alt="green" class="img-responsive img-carousel"/>
+            <img src="~/img/blank480.png" alt="green" class="img-responsive img-carousel"/>
             
             <div class="carousel-caption" role="option">
-                <h2>Uber Duber Website Links</h2>           
+                <h2>Website Links</h2>           
                 @await Html.PartialAsync("_HomeButtons")
+             
             </div>
         </div>
+
+
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
