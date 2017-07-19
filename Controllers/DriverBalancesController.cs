@@ -54,11 +54,11 @@ namespace Core.Controllers
 
            //
             if (uid.Length>10){
-            int thisDriverId=(from d in _context.Drivers 
-                             where d.UserGuid==Guid.Parse(uid)
+            // int thisDriverId=(from d in _context.Drivers 
+            //                  where d.UserGuid==Guid.Parse(uid)
                             
-                             select d.ID).Single();
-            var ThisDriverBalances=await _context.DriverBalances.Where(x=>  x.DriverId==thisDriverId).ToListAsync();
+            //                  select d.ID).Single();
+            var ThisDriverBalances=await _context.DriverBalances.ToListAsync();
             
             var  driverids =   from d in _context.Drivers
                                         join us in _context.Users on d.UserGuid equals    Guid.Parse(us.Id) 
