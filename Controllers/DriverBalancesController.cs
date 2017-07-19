@@ -53,7 +53,7 @@ namespace Core.Controllers
             string  uid=_userManager.GetUserId(User);
 
            //
-            if (uid!=null){
+            if (uid.Length>10){
             int thisDriverId=(from d in _context.Drivers 
                              where d.UserGuid==Guid.Parse(uid)
                             
