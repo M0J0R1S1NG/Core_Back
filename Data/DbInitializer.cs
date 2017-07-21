@@ -13,8 +13,8 @@ namespace Core.Data
         public static void Initialize(ApplicationDbContext  context)
         {
           
-           context.Database.EnsureCreated();
-            //context.Database.Migrate();
+           //context.Database.EnsureCreated();
+            context.Database.Migrate();
             
             // Look for any data.
         //     if (context.Orders.Any())
