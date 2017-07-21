@@ -54,7 +54,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UnitNumber,StreetName,PostalCode,StreetNumber,City,DeliveryAddress,DeliveryAreaId,Province,Country,DoB,status,Mnp,MnpGuid,FirstName,LastName,Language,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Create([Bind("SignupCode,UnitNumber,StreetName,PostalCode,StreetNumber,City,DeliveryAddress,DeliveryAreaId,Province,Country,DoB,status,Mnp,MnpGuid,FirstName,LastName,Language,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UnitNumber,StreetName,PostalCode,StreetNumber,City,DeliveryAddress,DeliveryAreaId,Province,Country,DoB,status,Mnp,MnpGuid,FirstName,LastName,Language,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, [Bind("SignupCode,UnitNumber,StreetName,PostalCode,StreetNumber,City,DeliveryAddress,DeliveryAreaId,Province,Country,DoB,status,Mnp,MnpGuid,FirstName,LastName,Language,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
         {
             if (id != applicationUser.Id)
             {

@@ -8,9 +8,10 @@ using Core.Data;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170719115050_update40")]
+    partial class update40
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -108,8 +109,6 @@ namespace Core.Migrations
                     b.Property<string>("Province");
 
                     b.Property<string>("SecurityStamp");
-
-                    b.Property<string>("SignupCode");
 
                     b.Property<string>("StreetName");
 

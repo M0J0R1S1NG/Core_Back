@@ -1,6 +1,17 @@
 @model Core.Models.Driver
 
+@{
+    Layout = null;
+}
 
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
@@ -8,19 +19,12 @@
     <hr />
     <dl class="dl-horizontal">
         <input type="hidden" asp-for="ID" />
-
         <dt>
             @Html.DisplayNameFor(model => model.UserGuid)
         </dt>
         <dd>
-            @Html.DropDownListFor(model=>model.UserGuid, (IEnumerable<SelectListItem>)ViewBag.userGuids,new {disabled="disabled"})
+            @Html.DisplayFor(model => model.UserGuid)
         </dd>
-        <dd>
-            @Html.DropDownListFor(model=>model.PartnerId, (IEnumerable<SelectListItem>)ViewBag.partners,new {disabled="disabled"})
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EmailAddress)
-        </dt>
         <dt>
             @Html.DisplayNameFor(model => model.GeocodedAddress)
         </dt>
@@ -67,9 +71,33 @@
             @Html.DisplayNameFor(model => model.VehicleId)
         </dt>
         <dd>
-            @Html.DropDownListFor(model=>model.VehicleId, (IEnumerable<SelectListItem>)ViewBag.vehicles,new {disabled="disabled"})
+            @Html.DisplayFor(model => model.VehicleId)
         </dd>
-                <dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.LicenseProvince)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LicenseProvince)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LicenseNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LicenseNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PartnerId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PartnerId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmailAddress)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.StartTime)
         </dt>
         <dd>

@@ -16,6 +16,8 @@ namespace Core.Models
         [Display(Name = "Unit/Apt #")]
         public String StreetNumber {get;set;}
         public String City {get;set;}
+        
+        [Display(Name = "Geocoded Address eg. 1 Yonge St. Toronto, Ontario, M5T2E2")]
         public String DeliveryAddress {get; set;}
         public int DeliveryAreaId {get;set;}
         public String Province {get;set;}
@@ -35,6 +37,10 @@ namespace Core.Models
        [Display(Name = "Last Name")]
        public string LastName {get;set;}
        public string Language {get;set;}
+
+
+       [Display(Name = "Promo/Signup Code")]   
+       public string SignupCode {get;set;}
         
       
     }

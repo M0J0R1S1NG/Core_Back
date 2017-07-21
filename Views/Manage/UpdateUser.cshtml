@@ -19,11 +19,31 @@
         confirmed phone number, and a valid Delivery Address.</h4>
     <hr />
   <input type="hidden" asp-for="Id" />
+
+  @if (ViewBag.signupcode==null){
+        <div class="form-group">
+                <label asp-for="SignupCode" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input  data-toggle="tooltip" data-placement="top" title="If you don't have a promo code leave blank and we will apply the latest signup promotion to your account. Promo codes can be applied to every order and can't be changed by users after they have been entered." asp-for="SignupCode" class="form-control" />
+                    <span asp-validation-for="SignupCode" class="text-danger"></span>
+                </div>
+        </div>
+    }else{
+        <div class="form-group">
+                <label asp-for="SignupCode" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input disabled style="color:black;" asp-for="SignupCode" class="form-control" />
+                    <span asp-validation-for="SignupCode" class="text-danger"></span>
+                </div>
+        </div>
+    }
+  
     <div class="form-group">
         <label asp-for="DeliveryAddress" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-           <div id='searchBoxContainer'> 
-               <input id='DeliveryAddress' name="DeliveryAddress"  type=text  asp-for="DeliveryAddress" class="form-control" />
+           <div id='searchBoxContainer'> <input data-toggle="tooltip" data-placement="top" title="Click here and we will use your GPS location to find your address and fill out the boxes below."  id="findme" class="btn btn-info" value="Fined Me" onclick="getLocation()" />
+               <input id='DeliveryAddress' name="DeliveryAddress"  type=text  asp-for="DeliveryAddress" class="form-control" data-toggle="tooltip" data-placement="top" title="Please make sure to select one of the suggested addresses, as this triggers your delivery area, store items, and dispatched drivers." />
+                
            </div>This address will be varified against our delivery zone
             <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
         </div>
@@ -31,11 +51,18 @@
         <div class="form-group">
             <input type="hidden"  id="DeliveryAreaId" name="DeliveryAreaId"  asp-for="DeliveryAreaId" class="form-control" ></input>
     </div>
+    
      <div class="form-group">
-        <label  class="col-md-2 control-label">Your Delivery Area</label>
-        <div class="col-md-10">
-            <select  id="DeliveryAreaIdList" name="DeliveryAreaIdList"  asp-items=ViewBag.deliveryAreasForSelect  asp-for="DeliveryAreaId" disabled  class="form-control" ></select>
-         </div>
+        <label  class="col-md-2 control-label">Delivery area from above</label>
+         
+            <div class="col-md-10" >
+                <select  id="DeliveryAreaIdList" name="DeliveryAreaIdList"  asp-items=ViewBag.deliveryAreasForSelect  asp-for="DeliveryAreaId" disabled  class="form-control" >
+                    
+                </select>
+            </div>
+
+         
+         
     </div>
 
     <div class="form-group">
@@ -135,7 +162,9 @@
 
 
 <script>
-
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
  function LoadMap() {
         Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', {
             callback: function () {
@@ -149,7 +178,9 @@
             },
             credentials: 'AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA' 
         });
-        getLocation();
+        if (top.document.getElementById('DeliveryAddress').value==""){
+            getLocation();
+        }
     }
  
 

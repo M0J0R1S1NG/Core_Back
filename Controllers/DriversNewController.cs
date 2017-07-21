@@ -7,24 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Core.Controllers
 {
-    [Authorize(Roles="Admin")]
-    public class DriversController : Controller
+    public class DriversNewController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public DriversController(ApplicationDbContext context)
+        public DriversNewController(ApplicationDbContext context)
         {
             _context = context;    
         }
 
-        // GET: Drivers
+        // GET: DriversNew
         public async Task<IActionResult> Index()
         {
-              var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+                          var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
               ViewBag.partners = new SelectList(partners, "Id", "Value");
              var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
@@ -33,10 +31,10 @@ namespace Core.Controllers
             return View(await _context.Drivers.ToListAsync());
         }
 
-        // GET: Drivers/Details/5
+        // GET: DriversNew/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+          if (id == null)
             {
                 return NotFound();
             }
@@ -56,9 +54,10 @@ namespace Core.Controllers
             return View(driver);
         }
 
-        // GET: Drivers/Create
+        // GET: DriversNew/Create
         public IActionResult Create()
-        {       var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
+        {
+            var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
                 var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
                     ViewBag.partners = new SelectList(partners, "Id", "Value");
              
@@ -68,7 +67,7 @@ namespace Core.Controllers
             return View();
         }
 
-        // POST: Drivers/Create
+        // POST: DriversNew/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -84,7 +83,7 @@ namespace Core.Controllers
             return View(driver);
         }
 
-        // GET: Drivers/Edit/5
+        // GET: DriversNew/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,16 +96,10 @@ namespace Core.Controllers
             {
                 return NotFound();
             }
-             var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
-              ViewBag.partners = new SelectList(partners, "Id", "Value");
-             var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
-                    ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
-                      var vehicleGuids = _context.Vehicles.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Make });
-                    ViewBag.vehicles = new SelectList(vehicleGuids, "Id", "Value");
             return View(driver);
         }
 
-        // POST: Drivers/Edit/5
+        // POST: DriversNew/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -141,7 +134,7 @@ namespace Core.Controllers
             return View(driver);
         }
 
-        // GET: Drivers/Delete/5
+        // GET: DriversNew/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,17 +147,12 @@ namespace Core.Controllers
             if (driver == null)
             {
                 return NotFound();
-            } 
-                    var partners = _context.Partners.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.Name });
-                    ViewBag.partners = new SelectList(partners, "Id", "Value");
-                    var userGuids = _context.Users.OrderBy(c => c.Id).Select(x => new { Id = x.Id, Value = x.UserName });
-                    ViewBag.userGuids = new SelectList(userGuids, "Id", "Value");
-                    var vehicleGuids = _context.Vehicles.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Make });
-                    ViewBag.vehicles = new SelectList(vehicleGuids, "Id", "Value");
+            }
+
             return View(driver);
         }
 
-        // POST: Drivers/Delete/5
+        // POST: DriversNew/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

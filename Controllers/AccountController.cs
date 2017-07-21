@@ -63,7 +63,8 @@ namespace Core.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        {
+        {   
+            //if (returnUrl==null){returnUrl="/";}
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -79,6 +80,7 @@ namespace Core.Controllers
                         await _emailSender.SendEmailAsyncGoogle(model.Email, "Confirm your account", $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                         return View(model);
                     }
+                   
                     
                 }
 
@@ -96,7 +98,15 @@ namespace Core.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
-                   
+                    if (user.status>=110){return RedirectToLocal(returnUrl);}
+                    if (user.status<10){
+                        return RedirectToAction("UpdateUser","Manage");
+                    }
+
+                    //no phone number confirmed
+                    if (user.status<110){
+                        return RedirectToAction("AddPhoneNumber","Manage");
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -326,8 +336,10 @@ namespace Core.Controllers
                 return View("Error");
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            user.status=1;
-           await  _userManager.UpdateAsync(user);
+           if(result.Succeeded){ 
+               user.status=1;
+               await  _userManager.UpdateAsync(user);
+           }
            
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }

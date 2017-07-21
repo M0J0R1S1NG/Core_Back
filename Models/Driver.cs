@@ -36,6 +36,13 @@ namespace Core.Models
         public int PartnerId {get;set;}
 
         public string EmailAddress {get;set;}
+
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:hh:mm}")]
+        public DateTime StartTime {get;set;}
+        
+        [DisplayFormat(HtmlEncode = false, ApplyFormatInEditMode = true,DataFormatString="{0:hh:mm}")]
+        public DateTime EndTime {get;set;}
+        public double Hours {get;set;}
         
     }
 }

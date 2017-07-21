@@ -1,17 +1,9 @@
 @model Core.Models.Order
 
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
+ <div class="top-buffer"></div>
+<div class="panel panel-primary">
+    <div class="panel-heading panel-head"><h2>@ViewData["Title"]</h2></div>
+    <div class="panel-body">   
 
 <div>
     <h4>Order</h4>
@@ -107,5 +99,4 @@
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-</body>
-</html>
+    </div></div>

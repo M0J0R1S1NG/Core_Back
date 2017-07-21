@@ -66,13 +66,14 @@ namespace Core.Controllers
             ViewBag.deliveryareas = _context.DeliveryAreas.Where(c=> c.Status>=0);
             var deliveryareaGuids = _context.DeliveryAreas.OrderBy(c => c.ID).Select(x => new { Id = x.ID, Value = x.Name });
             ViewBag.deliveryAreasForSelect = new SelectList(deliveryareaGuids, "Id", "Value");
+            ViewBag.signupcode=users.SignupCode;
             return View(users);
         }
         //
         //POST: /Manage/UpdateUser
         [HttpPost]
        
-        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,DeliveryAreaId,FirstName,LastName,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB")] ApplicationUser model, string returnUrl = null)
+        public async Task<IActionResult> UpdateUser(string Id,[Bind("Id,DeliveryAreaId,FirstName,LastName,DeliveryAddress,StreetName,StreetNumber,PostalCode,City,Province,Country,DoB,SignupCode")] ApplicationUser model, string returnUrl = null)
         {
             var UserId=  _userManager.GetUserId(User);
             if (Id != model.Id || Id ==null || Id != UserId)
@@ -97,7 +98,8 @@ namespace Core.Controllers
                     userToUpdate.FirstName = model.FirstName;
                     userToUpdate.LastName = model.LastName;
                     userToUpdate.DeliveryAreaId = model.DeliveryAreaId;
-                    userToUpdate.status=userToUpdate.status+10;
+                    if (userToUpdate.status<10  || (userToUpdate.status>99 && userToUpdate.status <110)) {userToUpdate.status=+10;}
+                    userToUpdate.SignupCode=model.SignupCode;
                      _context.Update(userToUpdate);
                     await _context.SaveChangesAsync();
                
@@ -260,7 +262,7 @@ namespace Core.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    user.status=100+user.status;
+                    if (user.status<100)user.status+=100;
                     await _userManager.UpdateAsync(user);
                     return RedirectToAction(nameof(Index), new { Message = ManageMessageId.AddPhoneSuccess });
                 }
