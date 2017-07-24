@@ -8,15 +8,46 @@ using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models;
 using Microsoft.AspNetCore.Authorization;
+
+
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Core.Models.AccountViewModels;
+using Core.Services;
+using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+
+
+
 namespace Core.Controllers
 {[Authorize(Roles="Admin")]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _emailSender;
+        private readonly ISmsSender _smsSender;
+        private readonly ILogger _logger;
+        private readonly string _externalCookieScheme;
 
-        public UsersController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IOptions<IdentityCookieOptions> identityCookieOptions,
+            IEmailSender emailSender,
+            ISmsSender smsSender,
+            ILoggerFactory loggerFactory)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
+            _emailSender = emailSender;
+            _smsSender = smsSender;
+            _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         // GET: Users
@@ -24,7 +55,15 @@ namespace Core.Controllers
         {
             return View(await _context.ApplicationUser.ToListAsync());
         }
+        public async Task<IActionResult> Credit()
+        {
 
+            UserCredits creditdata= new UserCredits();
+            
+        
+
+            return View(await _context.Orders.Where(x=> x.AppUser.ToString() ==_userManager.GetUserId(User)).ToListAsync());
+        }
         // GET: Users/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {

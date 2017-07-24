@@ -7,21 +7,31 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+
+
 
 
 namespace Core.Controllers
 {
     public class HomeController : Controller
     {
+        
+        private readonly ILogger _logger;
         private readonly IOptions<SiteSettings> config;
-        public HomeController(IOptions<SiteSettings> config)
+        public HomeController(IOptions<SiteSettings> config, ILoggerFactory loggerFactory)
         {
             this.config = config;
+            _logger = loggerFactory.CreateLogger<AccountController>();
         }
         public IActionResult Index()
         {
-            if (!HttpContext.Request.Host.Host.Contains("uberduber")){
-                return RedirectPermanent("https://www.uberduber.com");
+            try {
+                if ( !HttpContext.Request.Host.Host.Contains("uberduber")){
+                    return RedirectPermanent("https://www.uberduber.com");
+                }
+            }catch(System.NullReferenceException){
+                 _logger.LogInformation(1, "Null Exception on Home/Index");
             }
             return View();
         }
@@ -94,7 +104,7 @@ namespace Core.Controllers
         public IActionResult Returns()
         {
             ViewData["Message"] = "";
-            ViewData["ContactPhoneNumber"] = "1 (416)-802-8129";
+            ViewData["ContactPhoneNumber"] = "1-647-799-2699";
             ViewData["EmailSupport"] = "support@dubes.com";
             
             return View();

@@ -4,8 +4,6 @@
 var map = null;
 
 var myHome;
-//var geocodeRequest2 = "https://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent("21 Lakeview Ave. Toronto, Ontario, Canada") + "&jsonp=GeocodeCallback&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
-//var geocodeRequest = "https://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent("21 Lakeview Ave. Toronto, Ontario, Canada") + "&key=AsBPQXiDKMHud6u68TPcW7rq2UpVmTegFhU7Im1eLE_pFgiEbGLXtoa4xSu2R5fA";
 var pushpin;
 top.addEventListener('resize', function() {
     var width = $(document).width();

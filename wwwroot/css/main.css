@@ -32,18 +32,10 @@
 .panel{
 	    background-color: rgba(0, 0, 0, 0.56);
 }
-.img-responsive {
-	/*max-height:60em;*/
-	/*height: 800px;*/
-	/*min-width: 80%;*/
-}
-.carousel slide{
-	max-width: 80em;
-	/*min-width:10em;*/
-}
+
 .carousel-control.left, .carousel-control.right {
   background: none !important;
-  filter: progid: none !important;
+  filter:progid:none !important;
   outline: 0;
  }
 .carousel .carousel-control {

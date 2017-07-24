@@ -535,7 +535,7 @@ namespace Core.Controllers
                 vaout += "<Response>";
                 vaout += "<Message>";
                 vaout += "UberDuber Delivery." + (char)10 + (char)13 + "If you would like a delivery reply 'order'" + (char)10;
-                vaout +=  "Use 416-802-8129 to voice order Thanks";
+                vaout +=  "Use 647-799-2699 to voice order Thanks";
                 vaout += "</Message>";
                 vaout += "</Response>";
                 Response.ContentType="text/xml";
@@ -688,7 +688,7 @@ namespace Core.Controllers
             vaout += "<?xml version='1.0' encoding='UTF-8'?>";
             vaout+="<Response>";
             vaout+="<Sms>";
-            vaout+="This sms number is for SMS ordering and outgoing notifications only.  Please text the 'word' order to this number " + To + " for instructionsor.  Or call 416-802-8129 to get in touch with UberDuber Order Desk.  Thanks";
+            vaout+="This sms number is for SMS ordering and outgoing notifications only.  Please text the 'word' order to this number " + To + " for instructionsor.  Or call 647-799-2699 to get in touch with UberDuber Order Desk.  Thanks";
             vaout+="</Sms>";
             vaout+="</Response>";
 
