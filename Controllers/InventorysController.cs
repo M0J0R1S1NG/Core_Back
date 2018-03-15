@@ -226,7 +226,7 @@ namespace Core.Controllers
             List<string> domains = new List<string>();
             domains.Add("DomainA");
             domains.Add("DomainB");
-            string[] myvar2 = {"Concentrates","Flowers","Edibles","Topicals","Hashish","Oils","Paraphanalia"};
+            string[] myvar2 = {"Concentrates","Flowers","Edibles","Topicals","Hashish","Oils","Paraphanalia","Plants"};
 
             domains.Select(m => new SelectListItem { Text = m, Value = m });
 
