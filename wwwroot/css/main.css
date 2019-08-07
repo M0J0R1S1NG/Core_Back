@@ -10,7 +10,9 @@
 
 /* Reset */
 
-
+.carousel-caption{
+	color:#000000
+}
 
 .panel-primary > .panel-heading {
     color: #000000;
@@ -29,9 +31,7 @@
 .yabholder{
 	margin-right: 2.3em;
 }
-.panel{
-	    background-color: rgba(0, 0, 0, 0.56);
-}
+
 
 .carousel-control.left, .carousel-control.right {
   background: none !important;
