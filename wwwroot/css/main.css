@@ -13,9 +13,9 @@
 
 
 .panel-primary > .panel-heading {
-    color: #00ff00;
+    color: #000000;
     background-color: rgba(0, 0, 0, .5);
-    border-color: #00ff00;
+    border-color: #000000;
 }
 
 #cartRow  {
@@ -1630,7 +1630,7 @@
 /* Type */
 
 	body, input, select, textarea,canvas {
-		color: #00ff00;
+		color: #000000;
 		font-family: "Raleway", Arial, Helvetica, sans-serif;
 		font-size: 13pt;
 		font-weight: 300;
@@ -1678,7 +1678,7 @@
 		}
 
 	a {
-		color:#00ff00;
+		color:#000000;
 		text-decoration: underline;
 	}
 
@@ -1704,7 +1704,7 @@
 		
 		line-height: 1.5;
 		margin: 0 0 1em 0;
-		 color:#00ff00;
+		 color:#000000;
     /* text-shadow:
     -1px -1px #00ff00,
     1px -1px  #00ff00,
@@ -2547,7 +2547,7 @@
 		}
 
 		table th {
-			color: 555#00ff00;
+			color: 555#000000;
 			font-size: 0.9em;
 			font-weight: 600;
 			padding: 0 0.75em 0.75em 0.75em;
